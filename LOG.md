@@ -66,3 +66,9 @@
 - WebKitのホスト事前検査はldconfigのシステムキャッシュだけを参照し、作業領域のlibGLESv2を認識しない。ctypesで不足ライブラリの実ロード、各ブラウザ実行ファイル・共有ライブラリのlddで未解決依存がないことを確認後、ローカル実行だけ `PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS=1` を指定。テスト・アサーション・TLS・署名検証は無効化していない。CIでは標準の `playwright install --with-deps` を使い、事前検査を省略しない。
 - ローカルE2E実行：`PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS=1 PLAYWRIGHT_BROWSERS_PATH=/workspace/pw-browsers PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/usr/bin/chromium npm run test:e2e`。Chromium配布ZIPは403のため既設Chromiumを使用。WebKitはPlaywright指定のv2370。
 - 実機iPhone Safari、OS実クリップボード権限、スクリーンリーダー、Google公式仕様の再確認、本番Pages配信は引き続き未検証。公式未確認表示を変更していない。
+
+### GitHub Actionsの追加診断
+
+- 修正commit 815b972を既存PR #2へpushし、3件への返信とPR本文更新を実施。
+- CI run [39681828929](https://github.com/tetsujisugimori-coder/gemini-toranomaki/actions/runs/39681828929) は型・lint・単体・build・ブラウザ準備まで成功したがE2Eが失敗。ローカル18件成功とは分けて記録し、レビュー会話はこの時点では未解決のまま。
+- Actionsのログ配布先 results-receiver.actions.githubusercontent.com はForbidden、公開ジョブ画面のログ取得も404で詳細を取得できなかった。失敗をChecksの注釈にも出力するGitHubレポーターをCI時だけ有効化し、再実行で原因を特定する。テストのskipやretryによる成功扱いはしない。
