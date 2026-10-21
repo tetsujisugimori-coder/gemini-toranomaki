@@ -112,9 +112,13 @@ for (const route of ["home", "chapter-1"]) {
         exact: true,
       })
       .click();
-    const url = page.url();
     const title = page.locator("h1");
-    const heading = await title.textContent();
+    const heading =
+      route === "home" ? "Gemini活用虎の巻" : "Geminiの画面とモデル選択";
+    // Hash changes before React commits the destination view. Wait for the
+    // intended page rather than capturing the previous page's heading.
+    await expect(title).toHaveText(heading);
+    const url = page.url();
     const skip = page.getByRole("link", { name: "本文へ移動" });
     // Shift+Tab from the brand reaches the skip link on both engines.
     await page.locator(".brand").focus();
@@ -123,9 +127,9 @@ for (const route of ["home", "chapter-1"]) {
     await page.keyboard.press("Enter");
     await expect(page.locator("main")).toBeFocused();
     expect(page.url()).toBe(url);
-    await expect(title).toHaveText(heading!);
+    await expect(title).toHaveText(heading);
     await page.reload();
-    await expect(title).toHaveText(heading!);
+    await expect(title).toHaveText(heading);
     expect(page.url()).toBe(url);
     await page.goBack();
     await expect(page).toHaveURL(/#curriculum$/);

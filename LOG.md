@@ -72,3 +72,6 @@
 - 修正commit 815b972を既存PR #2へpushし、3件への返信とPR本文更新を実施。
 - CI run [39681828929](https://github.com/tetsujisugimori-coder/gemini-toranomaki/actions/runs/39681828929) は型・lint・単体・build・ブラウザ準備まで成功したがE2Eが失敗。ローカル18件成功とは分けて記録し、レビュー会話はこの時点では未解決のまま。
 - Actionsのログ配布先 results-receiver.actions.githubusercontent.com はForbidden、公開ジョブ画面のログ取得も404で詳細を取得できなかった。失敗をChecksの注釈にも出力するGitHubレポーターをCI時だけ有効化し、再実行で原因を特定する。テストのskipやretryによる成功扱いはしない。
+
+- 診断CI [39682176258](https://github.com/tetsujisugimori-coder/gemini-toranomaki/actions/runs/39682176258) のChecks注釈から原因を特定：Chromiumのホームスキップ試験1件が失敗、他17件は成功。遷移直後に前ページの見出し「全10章・機能一覧」を動的に期待値として取得していたため、再読み込み後の正しい「Gemini活用虎の巻」と一致しなかった。
+- 回帰テストを修正：遷移先の既知の見出しを明示し、Reactの描画完了を待ってからURL・フォーカス・再読み込みを検証する。タイムアウト延長、retry、skip、期待条件の緩和は行っていない。GitHubレポーターを残し、今後のCI失敗もChecksで追跡可能にした。
