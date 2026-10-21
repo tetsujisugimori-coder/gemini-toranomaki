@@ -10,9 +10,9 @@ React + TypeScript + Vite。ルーティングはhashでホーム、一覧、各
 
 ## 永続化と障害時
 
-localStorageキー `gemini-toranomaki:progress:v1` に完了教材IDを保存。復元時は公開中のIDだけ受け入れ、重複を除く。JSON破損、ストレージ拒否・容量不足は例外を捕捉し画面内の操作を継続。初期化は確認後にキーを削除。保存できない場合はその旨を表示。端末間同期はない。テーマはOS設定を初期値とし、画面内で切り替え可能（永続化しない）。
+localStorageキー `gemini-toranomaki:progress:v1` に完了教材IDを保存。復元時は公開中のIDだけ受け入れ、重複を除く。JSON破損、ストレージ拒否・容量不足は例外を捕捉し画面内の操作を継続。初期化は確認後にキーを削除。削除成否と画面内のリセットを区別し、削除失敗時は再読み込みで古い進捗が復活する可能性を通知する。画面内の一時的な進捗操作は継続できる。保存できない場合はその旨を表示。端末間同期はない。テーマはOS設定を初期値とし、画面内で切り替え可能（永続化しない）。
 
-Clipboard API失敗時は手動コピーを案内し、成功と区別。全文は折りたたみで表示。キーボード、ネイティブdetails、ラベル付き入力、フォーカス枠、本文スキップ、画面遷移時の見出しフォーカス、aria-live通知を採用。最小44px操作領域を確保。
+Clipboard API失敗時は手動コピーを案内し、成功と区別。全文は折りたたみで表示。キーボード、ネイティブdetails、ラベル付き入力、フォーカス枠、本文スキップ、画面遷移時の見出しフォーカス、aria-live通知を採用。最小44px操作領域を確保。本文スキップはリンクの既定のhash更新を抑止し、main要素へフォーカスを移す。現在のルート・履歴は変更しない。旧 `#main` URLは元の章を復元できないため `history.replaceState` で `#home` に正規化し、初回アクセスとhash変更の両方で処理する。
 
 ## 正確性と制約
 
@@ -24,4 +24,4 @@ Clipboard API失敗時は手動コピーを案内し、成功と区別。全文�
 
 ## 配信
 
-`/gemini-toranomaki/` の静的配信。PRではCIだけ、mainでPagesビルド・デプロイ。Pages設定は管理者によるGitHub Actionsの選択が必要。mainへのマージと公開は今回実行しない。
+`/gemini-toranomaki/` の静的配信。PagesのSourceはGitHub Actions設定済み。PRでは `.github/workflows/ci.yml` の検証のみ実行する。同ファイルを `workflow_call` でも利用可能にし、main限定のPagesワークフローから `validate` jobとして呼ぶ。`npm ci`、型チェック、lint、単体テスト、production build、ChromiumとWebKitの全E2Eを順に必須とし、全成功後だけ検証したdistを `validated-site` アーティファクトにする。Pagesの `build` は `needs: validate` でその成果物だけをPages形式へ渡し、`deploy` は `needs: build` で公開する。失敗・スキップ・キャンセルからのデプロイ続行条件は設けない。検証内容の重複定義、独立main CI、workflow_runによる循環依存を避ける。contents権限はread、pages/id-tokenのwriteはdeployだけ。PRとmain以外での手動実行は公開しない。mainへのマージと公開は今回実行しない。

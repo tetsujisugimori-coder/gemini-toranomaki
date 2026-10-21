@@ -31,6 +31,7 @@ export function saveProgress(progress: Progress): boolean {
     return false;
   }
 }
+// false means persisted data may remain; callers must not report deletion success.
 export function resetProgress(): boolean {
   try {
     localStorage.removeItem(progressKey);

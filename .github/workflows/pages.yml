@@ -9,17 +9,17 @@ concurrency:
   group: pages
   cancel-in-progress: true
 jobs:
-  build:
+  validate:
     if: github.ref == 'refs/heads/main'
+    uses: ./.github/workflows/ci.yml
+  build:
+    needs: validate
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/download-artifact@v4
         with:
-          node-version: 22
-          cache: npm
-      - run: npm ci
-      - run: npm run typecheck && npm run lint && npm test && npm run build
+          name: validated-site
+          path: dist
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

@@ -28,13 +28,13 @@ E2Eはproduction previewを自動起動し、サブパスで遷移・コピー�
 
 ## 公開
 
-リポジトリのSettings → Pages → Build and deployment → Sourceを **GitHub Actions** に設定してください。CIはPRとmainで実行し、Pagesワークフローはmainへのpush（またはmainでの手動実行）に限定します。PRから本番公開しません。デプロイjobだけに `pages: write` と `id-token: write` を付与しています。
+PagesのSourceは **GitHub Actions** に設定済みです。PRではCI検証だけを実行します。mainへのpush（またはmainでの手動実行）ではPagesが同じCIを再利用し、`npm ci`、型チェック、lint、単体テスト、production build、ChromiumとWebKitの全E2E成功を必須にします。検証済みのdistだけをアーティファクトとして渡し、`validate → build → deploy` の依存関係で公開します。いずれかの失敗・スキップ・キャンセル時は公開しません。PRやmain以外から本番公開しません。独立したmain用CIの二重実行やワークフロー間の完了イベント待ちはありません。デプロイjobだけに `pages: write` と `id-token: write` を付与しています。
 
 Viteのbaseは `/gemini-toranomaki/`。画面遷移はhash方式でPagesの404を避けます。想定公開先：`https://tetsujisugimori-coder.github.io/gemini-toranomaki/`（公開確認は未実施）。
 
 ## データ・制約
 
-教材は `src/curriculum.ts`、進捗は `src/storage.ts`、画面は `src/main.tsx`。進捗はこのブラウザだけに保存され、保存不可時はメモリ内で動作します。第2〜10章の完了は記録できません。初期化は確認操作後に行います。
+教材は `src/curriculum.ts`、進捗は `src/storage.ts`、画面は `src/main.tsx`。進捗はこのブラウザだけに保存され、保存不可時はメモリ内で動作します。第2〜10章の完了は記録できません。初期化は確認操作後に行います。保存領域の削除に失敗した場合も画面内では初期化し、再読み込みで旧進捗が復活する可能性を通知します。本文スキップは現在の章URLや戻る履歴を変更せずフォーカスだけを移動します。旧 `#main` URLは章情報を持たないため、ホームへ置換して復旧します。
 
 公式情報はネットワーク制限で本文を取得できなかったため、最新名称・プラン条件・UIは未確認と表示しています。リンクも到達性の再確認が必要です。教材内にGoogleの公式ロゴ・画像は含みません。
 

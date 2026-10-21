@@ -59,3 +59,16 @@ it("keeps Issue #1 curriculum order and only chapter 1 available", () => {
     expect(l.conditions).toContain("未確認");
   }
 });
+
+it("reports deletion failure when stored progress is still readable", () => {
+  const stored = JSON.stringify({ completed: ["chapter-1"] });
+  vi.stubGlobal("localStorage", {
+    getItem: () => stored,
+    removeItem: () => {
+      throw Error("deletion denied");
+    },
+  });
+  expect(loadProgress().available).toBe(true);
+  expect(resetProgress()).toBe(false);
+  expect(loadProgress().progress.completed).toEqual(["chapter-1"]);
+});

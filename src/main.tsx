@@ -3,11 +3,14 @@ import { createRoot } from "react-dom/client";
 import { lessons } from "./curriculum";
 import { loadProgress, resetProgress, saveProgress } from "./storage";
 import "./style.css";
+function currentRoute() {
+  return location.hash === "#main" ? "home" : location.hash.slice(1) || "home";
+}
 function App() {
   const [initial] = useState(loadProgress);
   const [progress, setProgress] = useState(initial.progress);
   const [storageAvailable, setStorageAvailable] = useState(initial.available);
-  const [route, setRoute] = useState(location.hash.slice(1) || "home");
+  const [route, setRoute] = useState(currentRoute);
   const [theme, setTheme] = useState<"light" | "dark">(() =>
     matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light",
   );
@@ -15,16 +18,20 @@ function App() {
   const [resetting, setResetting] = useState(false);
   const [answer, setAnswer] = useState<number | null>(null);
   const heading = useRef<HTMLHeadingElement>(null);
+  const main = useRef<HTMLElement>(null);
   useEffect(() => {
     const handler = () => {
       if (location.hash === "#main") {
-        document.getElementById("main")?.focus();
-        return;
+        // Old skip-link URLs did not retain their chapter. Recover to home
+        // without adding another history entry or treating "main" as a route.
+        history.replaceState(null, "", "#home");
+        main.current?.focus();
       }
-      setRoute(location.hash.slice(1) || "home");
+      setRoute(currentRoute());
       setMessage("");
       setAnswer(null);
     };
+    if (location.hash === "#main") handler();
     addEventListener("hashchange", handler);
     return () => removeEventListener("hashchange", handler);
   }, []);
@@ -60,7 +67,14 @@ function App() {
   }
   return (
     <>
-      <a className="skip" href="#main">
+      <a
+        className="skip"
+        href="#main"
+        onClick={(event) => {
+          event.preventDefault();
+          main.current?.focus();
+        }}
+      >
         本文へ移動
       </a>
       <header>
@@ -95,7 +109,7 @@ function App() {
           第1章を学ぶ
         </a>
       </nav>
-      <main id="main" tabIndex={-1}>
+      <main id="main" ref={main} tabIndex={-1}>
         <div className="eyebrow">非公式インタラクティブ教材 · v0.1</div>
         {route === "home" ? (
           <>
@@ -328,9 +342,14 @@ function App() {
               <button
                 onClick={() => {
                   setProgress({ completed: [] });
-                  setStorageAvailable(resetProgress());
+                  const ok = resetProgress();
+                  setStorageAvailable(ok);
                   setResetting(false);
-                  setMessage("進捗を初期化しました。");
+                  setMessage(
+                    ok
+                      ? "進捗を初期化しました。"
+                      : "画面内の進捗を初期化しましたが、保存領域の削除に失敗しました。再読み込みすると古い進捗が復活する可能性があります。",
+                  );
                 }}
               >
                 初期化する
