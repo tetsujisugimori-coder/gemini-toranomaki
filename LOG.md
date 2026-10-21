@@ -27,3 +27,10 @@
 - 公式一次資料で第1章の現行条件と全参考URLを再確認し、確認日・条件を更新する。
 - WebKit・実機iPhone Safari・実クリップボード・支援技術を追加検証する。
 - 次の教材候補は第2章Googleサービス連携。権限と個人情報の扱いを先に整理する。第3章Deep Researchはその後の候補。
+
+## GitHub操作の結果
+
+- 作業ブランチへのcommitとリモートpushは成功。
+- `gh pr create --base main --head feat/gemini-guide-v0-1` は `https://api.github.com/graphql` への通信がForbiddenとなり失敗。利用可能な専用PR作成ツールはないため、PRは未作成。
+- PR本文を `docs/pull-request.md` に保存。GitHubの比較・PR作成画面からmain向けに本文を貼り付けて作成するか、環境設定でGitHub API通信許可を適用後に同コマンドを再実行する。既存Git HTTPSプロキシでpushはできているため、新しいトークンは要求していない。
+- mainの変更、force push、マージ、本番公開は行っていない。
