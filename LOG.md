@@ -75,3 +75,10 @@
 
 - 診断CI [39682176258](https://github.com/tetsujisugimori-coder/gemini-toranomaki/actions/runs/39682176258) のChecks注釈から原因を特定：Chromiumのホームスキップ試験1件が失敗、他17件は成功。遷移直後に前ページの見出し「全10章・機能一覧」を動的に期待値として取得していたため、再読み込み後の正しい「Gemini活用虎の巻」と一致しなかった。
 - 回帰テストを修正：遷移先の既知の見出しを明示し、Reactの描画完了を待ってからURL・フォーカス・再読み込みを検証する。タイムアウト延長、retry、skip、期待条件の緩和は行っていない。GitHubレポーターを残し、今後のCI失敗もChecksで追跡可能にした。
+
+### 最終コード検証
+
+- 修正後のローカル型・lint・単体5件・build・actionlint・両ブラウザE2E18件：再度成功。
+- コードHEAD `f6f3b1662f96e9b07090d39513ff02c70f563944` のGitHub Actions [39682476411](https://github.com/tetsujisugimori-coder/gemini-toranomaki/actions/runs/39682476411)：成功。npm ci、型、lint、単体、build、標準ブラウザ依存インストール、Chromium/WebKit E2E **18 passed (12.7s)** を確認。CIではローカル固有の事前検査省略や既設Chromium指定を使用していない。PRのため成果物公開は意図どおりスキップ。
+- 新規PRは作成せずPR #2を更新。3件に修正箇所と検証結果を返信済み。CI成功を確認してレビュー会話を解決し、再レビュー待ちにする。マージ・main push・本番公開は実施しない。
+- 残課題は実機iPhone Safari、実クリップボード、支援技術、公式情報再確認、mainマージ後のPages本番配信。既存ActionのNode 20ランタイム非推奨通知（GitHub側でNode 24に移行）も次回保守候補であり、今回のチェック失敗ではない。
