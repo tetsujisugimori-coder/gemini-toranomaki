@@ -117,3 +117,29 @@
 - Google公式のプライバシーハブ（answer/13594961）と画像生成・編集ヘルプ（answer/14286560）の本文を2026-10-22に取得・確認。機密情報を入力しない注意、誤回答、具体的な画像指示、アカウント・地域・年齢等による提供条件差を確認し、ラボに参照URLと確認日を追加。固定のモデル名・年齢条件を教材に断定せず、最新の公式ページへの確認を案内する。既存第1章の全公式仕様を再検証したとは扱わない。
 - 再現用スクリプトを `/workspace/setup-gemini.sh` として実行し、install_scriptへ全内容を保存する。start_skillは取得済みブラウザとローカル共有ライブラリを使う起動・検証手順へ更新する。プロセスはスナップショット後も維持されるとは仮定しない。
 - 残る未検証：実機iPhone Safari、OS実クリップボード権限、スクリーンリーダー、本番Pages。マージ・本番公開は行わない。環境ドラフトの保存と環境の公開は別で、環境公開はユーザー操作が必要。
+
+## 2026-10-22 — PR #3 P2：コピー遅延完了による進捗上書き
+
+### 着手前確認と原因
+
+- 対象レビューcommit、ローカルHEAD、PR #3 HEAD、リモートの既存 `feat/gemini-lab-v0-2` はすべて `8eb52abb24e3a2ad2e41ace3404472e5bf239215`。未コミット変更なし。README、LOG、Lab・保存処理・既存単体/E2E・Playwright設定を確認。対象checkoutと祖先にAGENTS.mdは存在しなかった。
+- `Lab.update` がrender時のprogressを閉じ込めていた。Clipboard Promiseを待つ古いcopyからupdateを呼ぶと、待機中の最新記録を古いsnapshotで置き換えて保存してしまう。Lab破棄後も古いcallbackからlocalStorageへ書き込めた。
+
+### 最小修正とライフサイクルの判断
+
+- 最新progressをrefへ同期保持し、すべての明示的な学習操作はその最新値へpatchをmerge。同じnextをref・React state・saveLabへ渡す。render前に連続して更新されても取りこぼさない。
+- 保存を状態更新関数の中へ移していない。初期読み込み・mount Effectからの保存も追加していない。保存拒否時は最新refと画面内stateの更新を維持し、従来の保存不可通知を継続する。
+- コピーは開始した体験のcallbackを保持する。ExperienceViewだけが破棄されてもLabが存続する体験間移動では、最新記録へコピー元体験のcopiedだけを反映。破棄済みExperienceViewへの成功・失敗通知は行わない。
+- ラボ外へ移動しLabが破棄された場合の遅延完了は無視する。進捗の所有者をApp等へ移すリファクタリングを避け、再入場した新しいLabの記録を古いインスタンスから上書きしないため。mounted判定はcleanupで無効化し、StrictModeのEffect再実行では再度有効化する。
+- 10章、第1章、章進捗キー、ラボ保存形式、自由入力を保存しない仕様、4体験の内容と固定理解チェック、依存関係、Pages公開ゲートは変更なし。
+
+### 再現と検証
+
+- `tests/lab-copy.spec.ts` に、resolve/rejectをテストが制御するClipboard Promiseを使った6件を追加。固定時間のsleepは使わない。
+- 修正前のproduction buildに追加6件を実行：**5 failed / 1 passed**。同一体験の記録巻き戻り、他体験の記録消失、ラボ破棄後と再入場後の余分な保存、保存拒否時の画面内巻き戻りを実際に検出。初期読み込み時に保存しない試験は修正前も成功した。
+- 修正後：`npm run typecheck`、`npm run lint`、`npm test`（既存13件）、`npm run build`、`git diff --check` 成功。
+- `PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS=1 PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/usr/bin/chromium PLAYWRIGHT_BROWSERS_PATH=/workspace/pw-browsers npm run test:e2e`：**Chromium20件＋WebKit20件＝40件成功**。既存28件を維持し、新規12件（6件/engine）も成功。ローカルのホスト事前検査例外と検証済み共有ライブラリは前節の環境設定を継続利用。CIでは標準のホスト検証を維持。
+- 新規テストで同一体験のtried/applied/check維持、コピー元と別体験の記録併存、localStorageとの一致と再読み込み復元、ラボ破棄直後・再入場後の書き戻し禁止、コピー失敗時の手動コピー案内と再試行、保存拒否中の学習継続、初期表示・再入場での保存不発生を検証。
+- Vite開発サーバー（5174、StrictModeが有効）でも同じ回帰6件がすべて成功。検証用設定はcheckout外 `/workspace/scratch/lab-copy-strict.config.mjs` に置き、アプリやCI設定を変更していない。
+- 実機iPhone Safari、OS実クリップボード、スクリーンリーダーは今回未検証。コピーは制御可能なブラウザAPIモックによる検証。
+- 着手時のGitHub APIではPR #3のインラインレビューコメント、レビュー、通常コメントはいずれも0件。新規PR・マージ・本番公開・レビュー会話の解決は行わない。既存PRへpushし、最終HEADのCIと再レビューを待つ。

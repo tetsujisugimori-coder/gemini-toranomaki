@@ -1,4 +1,4 @@
-import { useId, useState, type RefObject } from "react";
+import { useEffect, useId, useRef, useState, type RefObject } from "react";
 import {
   experiences,
   experienceCheck,
@@ -14,6 +14,17 @@ import {
 } from "./lab-prompts";
 import { emptyRecord, loadLab, saveLab, type RecordState } from "./lab-storage";
 import { lessons } from "./curriculum";
+function useMountedRef() {
+  const mounted = useRef(false);
+  useEffect(() => {
+    mounted.current = true;
+    return () => {
+      mounted.current = false;
+    };
+  }, []);
+  return mounted;
+}
+
 export function KnowledgeCheck({
   check,
   value,
@@ -104,15 +115,24 @@ export function Lab({
 }) {
   const [initial] = useState(loadLab);
   const [progress, setProgress] = useState(initial.progress);
+  const latestProgress = useRef(initial.progress);
+  const mounted = useMountedRef();
   const [available, setAvailable] = useState(initial.available);
   const [notice, setNotice] = useState("");
   const id = route.slice(4) as LabId;
   const experience = experiences.find((e) => e.id === id);
   const update = (id: LabId, patch: Partial<RecordState>) => {
+    // Async copies may retain this callback across renders or experience changes.
+    // A destroyed Lab must never overwrite the storage owned by its replacement.
+    if (!mounted.current) return;
+    const current = latestProgress.current;
     const next = {
-      ...progress,
-      [id]: { ...(progress[id] || emptyRecord()), ...patch },
+      ...current,
+      [id]: { ...(current[id] || emptyRecord()), ...patch },
     };
+    // Advance synchronously, so even updates batched before a render merge correctly.
+    // Keep persistence outside React state updaters and mount effects.
+    latestProgress.current = next;
     setProgress(next);
     const ok = saveLab(next);
     setAvailable(ok);
@@ -237,6 +257,7 @@ function ExperienceView({
   record: RecordState;
   update: (p: Partial<RecordState>) => void;
 }) {
+  const mounted = useMountedRef();
   const e = experiences.find((e) => e.id === id)!;
   const [settings, setSettings] = useState<Settings>({ ...defaults[id] });
   const [before, setBefore] = useState("");
@@ -250,14 +271,19 @@ function ExperienceView({
   async function copy() {
     try {
       await navigator.clipboard.writeText(prompt);
-      setMessage(
-        "プロンプト全文をコピーしました。Geminiでの実行はまだ記録していません。",
-      );
+      if (mounted.current) {
+        setMessage(
+          "プロンプト全文をコピーしました。Geminiでの実行はまだ記録していません。",
+        );
+      }
+      // Keep the originating experience's update callback; Lab merges into latest data.
       update({ copied: true });
     } catch {
-      setMessage(
-        "コピーできませんでした。下の全文を選択して手動でコピーしてください。再度コピーボタンからも試せます。",
-      );
+      if (mounted.current) {
+        setMessage(
+          "コピーできませんでした。下の全文を選択して手動でコピーしてください。再度コピーボタンからも試せます。",
+        );
+      }
     }
   }
   return (
