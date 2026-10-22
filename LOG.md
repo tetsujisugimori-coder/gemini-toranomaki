@@ -169,3 +169,8 @@
 
 - 実機iPhone Safari、スクリーンリーダー、OS実クリップボード、実アカウントのGemini機能・料金・利用枠は未検証。比較実験室は追加せず、今後の候補とする。マージ・本番公開は行わない。
 - GitHubのGit読み取りは成功するが、GitHub APIはproxyのCONNECT 403で拒否される。トークン不足とは判断しない。PR照会・作成・CI結果照会に必要な `api.github.com` を既存2ドメインを保持して環境設定案に追加保存。設定案の保存は現在のネットワークへの適用・環境公開ではない。API操作とリモートCIは許可反映後に実施が必要。
+
+### GitHubへの反映（上記の初期アクセス制限を更新）
+
+- 既存の認証設定のまま再試行し、APIアクセスが可能になった。追加トークンの作成やプロキシ迂回は行っていない。コードcommit `a4a8e6222682346fcfee01468580ea392522a08f` を専用ブランチへpushし、[PR #5](https://github.com/tetsujisugimori-coder/gemini-toranomaki/pull/5) を作成。既存のopen PRは他になし。
+- CI [39767824698](https://github.com/tetsujisugimori-coder/gemini-toranomaki/actions/runs/39767824698) の依存導入・型・lint・単体・build成功を確認。記録時点では標準ブラウザ導入以降を実行中であり、ローカル56件成功とは区別する。最終HEADのCI結論は完了報告で示す。PR本文に検証方法と制限を記載済み。マージ・mainへのpush・本番公開は行わない。
