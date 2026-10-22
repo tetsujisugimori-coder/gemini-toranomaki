@@ -82,3 +82,27 @@
 - コードHEAD `f6f3b1662f96e9b07090d39513ff02c70f563944` のGitHub Actions [39682476411](https://github.com/tetsujisugimori-coder/gemini-toranomaki/actions/runs/39682476411)：成功。npm ci、型、lint、単体、build、標準ブラウザ依存インストール、Chromium/WebKit E2E **18 passed (12.7s)** を確認。CIではローカル固有の事前検査省略や既設Chromium指定を使用していない。PRのため成果物公開は意図どおりスキップ。
 - 新規PRは作成せずPR #2を更新。3件に修正箇所と検証結果を返信済み。CI成功を確認してレビュー会話を解決し、再レビュー待ちにする。マージ・main push・本番公開は実施しない。
 - 残課題は実機iPhone Safari、実クリップボード、支援技術、公式情報再確認、mainマージ後のPages本番配信。既存ActionのNode 20ランタイム非推奨通知（GitHub側でNode 24に移行）も次回保守候補であり、今回のチェック失敗ではない。
+
+## 2026-10-22 — v0.2 Gemini体験ラボ
+
+### 着手前確認と設計判断
+
+- 最新mainはローカル・リモートとも `2426b2d4b646886ce14890776fe63b4dcee7b606`。変更なしの既存checkoutから `feat/gemini-lab-v0-2` を作成。README、LOG、仕様、カリキュラム、src、単体/E2E、CI/Pagesを確認。
+- GitHub GraphQLは403だったが、github.comの公開HTMLからIssue #1とPR #2の本文・レビュー経緯・マージ済み状態を確認。PR #2のスキップリンク、初期化失敗通知、公開ゲートを維持する。
+- 4体験を独立hashルートに追加。10章データ、既存storage、既存テスト、依存定義・lockfile・Actionsは変更しない。
+- 各体験は最初の操作・条件変更・比較・解説と注意点・別題材への応用の5段階。各段階の目的、予想、振り返りを設ける。UI部品は共通化し、教材、プロンプト純粋関数、記録を分離。
+- コピー成功、Gemini実行自己申告、応用自己申告、固定理解チェックの最終回答を区別。自由入力・回答・比較指示は永続保存も外部送信もしない。章の既存キーには触れない。
+- 比較対象は学習者が明示的に保持。条件を一つずつ変更する方法を案内。画像は生成APIを使わず、部分変更指示を作成でき、生成機能が使えなくても教材操作を継続できる。
+- 本編への接続は1・6・7・9章。準備中表示を維持し、ラボ完了を移動の条件にしない。共通安全教材は出典、個人情報、提供条件、人による確認と固定3問の即時理由表示を実装。
+- 教育目標・内容・UI・理解確認の対応表と他教材への応用候補はdocs/curriculum.mdに記録。
+
+### 環境準備と検証
+
+- Node 24.19.0 / npm 11.9.0。`npm ci --cache /tmp/gemini-npm-cache --no-audit --no-fund` 成功。依存・lockfile変更なし。開発サーバー起動とサブパスHTML取得も成功。
+- `npm run typecheck`、`npm run lint`、`npm test`（既存5＋新規8＝13件）、`npm run build` 成功。
+- `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/usr/bin/chromium PLAYWRIGHT_BROWSERS_PATH=/workspace/pw-browsers npm run test:e2e` を実行。最終結果：Chromium **14 passed**、WebKit **14 failed**（配布先403により実行ファイルが存在せず起動不可）。全E2E成功とは扱わない。
+- Chromiumでは既存9件と新規5件が成功。4体験開始、生成、編集、全文コピー、コピー失敗後の再試行、比較、設定復帰、理解チェック、記録復元、保存拒否、章互換、戻る、375/390/1280px・両テーマ・キーボードを検証。390/1280pxのラボ画像も生成し、390pxを目視確認。
+- 初回追加E2Eは選択欄のアクセシブル名に選択肢まで含まれ、厳密なラベル検索がタイムアウト。select/textareaの名前を明示して修正。調査中の重複E2E実行では先行preview終了による接続拒否も発生。最終検証は重複実行せず実施し、Chromium全件成功。skip・retry・期待値の緩和はしていない。
+- Playwrightの標準キャッシュは書込不可だったため `/workspace/pw-browsers` を指定して再試行。cdn.playwright.devおよびplaywright.download.prss.microsoft.comはいずれも403 Domain forbidden。既設Chromiumを使用し、WebKitの取得を迂回していない。
+- Google公式ヘルプも403で本文確認不可。現行名称・提供条件は未確認と表示。実機iPhone Safari、OS実クリップボード、スクリーンリーダー、本番Pagesは未検証。CIとPages公開ゲートは変更していない。
+- 再現用install_script、起動用start_skill、追加通信先（api.github.com、cdn.playwright.dev、playwright.download.prss.microsoft.com、storage.googleapis.com、support.google.com、gemini.google.com）を環境ドラフトに保存。保存は現環境への適用・公開を意味しない。ユーザーによる環境設定のレビュー・保存・環境公開が必要。WebKit検証とGitHub API操作は許可反映後に再実施が必要。
