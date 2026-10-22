@@ -25,3 +25,15 @@ Clipboard API失敗時は手動コピーを案内し、成功と区別。全文�
 ## 配信
 
 `/gemini-toranomaki/` の静的配信。PagesのSourceはGitHub Actions設定済み。PRでは `.github/workflows/ci.yml` の検証のみ実行する。同ファイルを `workflow_call` でも利用可能にし、main限定のPagesワークフローから `validate` jobとして呼ぶ。`npm ci`、型チェック、lint、単体テスト、production build、ChromiumとWebKitの全E2Eを順に必須とし、全成功後だけ検証したdistを `validated-site` アーティファクトにする。Pagesの `build` は `needs: validate` でその成果物だけをPages形式へ渡し、`deploy` は `needs: build` で公開する。失敗・スキップ・キャンセルからのデプロイ続行条件は設けない。検証内容の重複定義、独立main CI、workflow_runによる循環依存を避ける。contents権限はread、pages/id-tokenのwriteはdeployだけ。PRとmain以外での手動実行は公開しない。mainへのマージと公開は今回実行しない。
+
+# v0.2 追加仕様：Gemini体験ラボ
+
+既存main 2426b2dとIssue #1／マージ済みPR #2を確認。章番号・章題・課題、既存の進捗キー、スキップリンク、初期化通知、Pagesの公開ゲートは維持する。独立イントロは `#lab`、4体験は `#lab-ask` / `#lab-rewrite` / `#lab-image` / `#lab-quiz`。完了による移動制限は設けない。
+
+`lab-data.ts` は教材・固定理解チェック、`lab-prompts.ts` は純粋な生成関数、`Lab.tsx` は共通UI、`lab-storage.ts` は進捗を担当する。既存の章教材と分離し、追加ライブラリや汎用教材フレームワークは導入しない。
+
+ラボの記録キーは `gemini-toranomaki:lab:v1`。各体験にコピー成功、Gemini実行の自己申告、応用の自己申告、固定チェックの最終回答番号を記録。操作成功はコピーAPI成功時だけ記録し、実行・理解を自動認定しない。理解は正解保証ではなく、確認課題の最終結果と自己申告を別表示する。旧章データは読み書きしない。保存拒否・破損を処理し、メモリ内で継続する。既存「進捗を初期化」は従来どおり章進捗のみを対象とする。ラボの自己申告はチェックを外して訂正でき、固定課題は再回答できる。
+
+自由入力、設定変更内容、比較用指示、予想、生成回答、振り返りは永続化しない。Geminiへの自動送信・APIアクセスも行わない。コピーと外部タブ操作は学習者が行う。体験を離れると入力は消える。元の設定への復帰は設定のみを初期化し、比較用指示と学習記録は維持する。共通安全チェックは回答直後に理由を表示し、回答は保存しない。
+
+既存余白・テーマを使い、ネイティブinput/select/textarea/details、ラベル、グループ化したラジオ、aria-live、フォーカス表示、狭幅で縦積みの比較を採用する。予想・条件変更・比較・解説・応用の順を表示するが、段階はロックせず再挑戦可能にする。

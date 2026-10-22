@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import { lessons } from "./curriculum";
 import { loadProgress, resetProgress, saveProgress } from "./storage";
 import "./style.css";
+import { Lab } from "./Lab";
 function currentRoute() {
   return location.hash === "#main" ? "home" : location.hash.slice(1) || "home";
 }
@@ -103,6 +104,12 @@ function App() {
           全10章・機能一覧
         </a>
         <a
+          href="#lab"
+          aria-current={route.startsWith("lab") ? "page" : undefined}
+        >
+          Gemini体験ラボ
+        </a>
+        <a
           href="#chapter-1"
           aria-current={route === "chapter-1" ? "page" : undefined}
         >
@@ -110,8 +117,10 @@ function App() {
         </a>
       </nav>
       <main id="main" ref={main} tabIndex={-1}>
-        <div className="eyebrow">非公式インタラクティブ教材 · v0.1</div>
-        {route === "home" ? (
+        <div className="eyebrow">非公式インタラクティブ教材 · v0.2</div>
+        {route === "lab" || route.startsWith("lab-") ? (
+          <Lab route={route} heading={heading} />
+        ) : route === "home" ? (
           <>
             <section className="hero">
               <p className="kicker">ひとつずつ、使える自分へ。</p>
@@ -131,6 +140,16 @@ function App() {
               <p className="small">
                 無料で読めます。教材へのログインは不要です。
               </p>
+            </section>
+            <section className="panel">
+              <h2>Gemini体験ラボ</h2>
+              <p>
+                Geminiで、こんなことができる。説明を読む前に、気になる体験を一つ試してみよう。
+              </p>
+              <a className="primary" href="#lab">
+                体験ラボから始める →
+              </a>
+              <p>全体験を終えなくても本編に進めます。</p>
             </section>
             <section className="panel">
               <h2>学習の始め方</h2>

@@ -1,6 +1,6 @@
 # Gemini活用 虎の巻
 
-Gemini固有の機能とGoogleサービス連携を、操作しながら学ぶ日本語の非公式教材。React / TypeScript / Viteによる静的サイトです。[Issue #1](https://github.com/tetsujisugimori-coder/gemini-toranomaki/issues/1)を仕様の正本とし、v0.1は全10章の目次と第1章のみを実装します。
+Gemini固有の機能とGoogleサービス連携を、操作しながら学ぶ日本語の非公式教材。React / TypeScript / Viteによる静的サイトです。[Issue #1](https://github.com/tetsujisugimori-coder/gemini-toranomaki/issues/1)を仕様の正本とし、v0.1の全10章の目次と第1章に、v0.2で独立イントロ「Gemini体験ラボ」を追加しました。
 
 ## セットアップ・開発
 
@@ -39,3 +39,11 @@ Viteのbaseは `/gemini-toranomaki/`。画面遷移はhash方式でPagesの404�
 公式情報はネットワーク制限で本文を取得できなかったため、最新名称・プラン条件・UIは未確認と表示しています。リンクも到達性の再確認が必要です。教材内にGoogleの公式ロゴ・画像は含みません。
 
 詳細は [仕様](docs/specification.md)、[教材構成](docs/curriculum.md)、[実装履歴](LOG.md) を参照してください。
+
+## v0.2：Gemini体験ラボ
+
+ホームまたはナビの「Gemini体験ラボ」から、質問・文章・画像・クイズの4体験へ進めます。各体験は予想→操作→条件変更→比較→解説→応用を提供します。全体験の完了は不要で、いつでも既存10章へ進めます。
+
+ラボの教材は `src/lab-data.ts`、生成ロジックは `src/lab-prompts.ts`、UIは `src/Lab.tsx`、記録は `src/lab-storage.ts`。章の既存保存キーは維持し、ラボは別キーにコピー成功・実行自己申告・応用自己申告・固定課題の最終回答のみ保存します。入力文章・生成回答・振り返りは保存も自動送信もせず、体験を離れると消えます。既存の章進捗初期化は章のみを対象とします。ラボの記録はチェックの解除や再回答で訂正できます。
+
+ラボの公式参照（プライバシー・画像生成／編集）は2026-10-22に本文確認済み。既存10章全機能の現行仕様を確認したものではありません。ローカルとCIの検証経緯はLOG.mdを参照してください。
