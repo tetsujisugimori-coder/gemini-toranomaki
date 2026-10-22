@@ -135,3 +135,32 @@ for (const width of [320, 375, 600, 780, 1280])
       });
     }
   });
+
+for (const width of [375, 1280])
+  test(`repeat selection and return preserve the exploration focus loop at ${width}px`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: 812 });
+    await page.goto("#chapter-1");
+    const mock = page.getByRole("group", { name: "Geminiの模擬画面" });
+    const selected = mock.getByRole("button", { name: "モデル選択" });
+    const heading = page.locator("#feature-detail h3");
+    await selected.click();
+    await expect(heading).toBeFocused();
+    await selected.click();
+    await expect(heading).toBeFocused();
+    await expect(heading).toBeInViewport();
+    await expect(page.getByText(/探索済み 1 \/ 12/)).toBeVisible();
+    await page.keyboard.press("Tab");
+    await expect(
+      page.getByRole("button", { name: "入口の選択へ戻る" }),
+    ).toBeFocused();
+    await page.keyboard.press("Enter");
+    await expect(selected).toBeFocused();
+    await expect(selected).toBeInViewport();
+    await page.keyboard.press("Tab");
+    await expect(mock.getByRole("button", { name: "入力欄" })).toBeFocused();
+    await page.keyboard.press("Enter");
+    await expect(heading).toHaveText("入力欄");
+    await expect(heading).toBeFocused();
+  });

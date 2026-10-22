@@ -26,6 +26,7 @@ export function Exploration() {
   const [selected, setSelected] = useState<string | null>(null);
   const [resetting, setResetting] = useState(false);
   const detailHeading = useRef<HTMLHeadingElement>(null);
+  const entryButton = useRef<HTMLButtonElement | null>(null);
   const feature = features.find((f) => f.id === selected);
   useEffect(() => {
     if (selected) detailHeading.current?.focus();
@@ -35,7 +36,10 @@ export function Exploration() {
     setProgress(next);
     setAvailable(saveExploration(next));
   }
-  function choose(id: string) {
+  function choose(id: string, button: HTMLButtonElement) {
+    entryButton.current = button;
+    // Re-selecting the same state does not rerun the selection effect.
+    if (selected === id) detailHeading.current?.focus();
     setSelected(id);
     if (!latest.current.visited.includes(id))
       update({ ...latest.current, visited: [...latest.current.visited, id] });
@@ -48,7 +52,7 @@ export function Exploration() {
         type="button"
         aria-pressed={selected === id}
         aria-controls="feature-detail"
-        onClick={() => choose(id)}
+        onClick={(event) => choose(id, event.currentTarget)}
       >
         {f.name}
         <span className="explore-mark">
@@ -107,6 +111,9 @@ export function Exploration() {
               <h3 tabIndex={-1} ref={detailHeading}>
                 {feature.name}
               </h3>
+              <button onClick={() => entryButton.current?.focus()}>
+                入口の選択へ戻る
+              </button>
               <dl>
                 <dt>何ができる？</dt>
                 <dd>{feature.description}</dd>
