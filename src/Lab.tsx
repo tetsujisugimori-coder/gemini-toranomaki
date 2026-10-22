@@ -73,14 +73,23 @@ function Safety() {
       <details>
         <summary>公式情報・利用条件を確認する</summary>
         <a
-          href="https://support.google.com/gemini/"
+          href="https://support.google.com/gemini/answer/13594961?hl=ja"
           target="_blank"
           rel="noreferrer"
         >
-          Gemini アプリ ヘルプ ↗（別タブ）
+          Gemini アプリのプライバシー ハブ ↗（別タブ）
         </a>
         <p>
-          現行の機能名・提供条件は未確認です。ご自身の画面と公式情報を確認してください。
+          2026-10-22：公式のプライバシーハブと画像生成・編集ヘルプで、誤回答・機密情報の注意、画像への具体的な指示、利用条件の差を確認しました。アカウントごとの実画面・利用枠は未確認です。ご自身の画面と最新の公式情報も確認してください。
+        </p>
+        <p>
+          <a
+            href="https://support.google.com/gemini/answer/14286560?hl=ja"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Gemini アプリで画像を生成・編集する ↗（別タブ）
+          </a>
         </p>
       </details>
     </section>

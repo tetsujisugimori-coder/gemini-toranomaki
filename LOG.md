@@ -106,3 +106,14 @@
 - Playwrightの標準キャッシュは書込不可だったため `/workspace/pw-browsers` を指定して再試行。cdn.playwright.devおよびplaywright.download.prss.microsoft.comはいずれも403 Domain forbidden。既設Chromiumを使用し、WebKitの取得を迂回していない。
 - Google公式ヘルプも403で本文確認不可。現行名称・提供条件は未確認と表示。実機iPhone Safari、OS実クリップボード、スクリーンリーダー、本番Pagesは未検証。CIとPages公開ゲートは変更していない。
 - 再現用install_script、起動用start_skill、追加通信先（api.github.com、cdn.playwright.dev、playwright.download.prss.microsoft.com、storage.googleapis.com、support.google.com、gemini.google.com）を環境ドラフトに保存。保存は現環境への適用・公開を意味しない。ユーザーによる環境設定のレビュー・保存・環境公開が必要。WebKit検証とGitHub API操作は許可反映後に再実施が必要。
+
+### 制限解消後の再検証（上記の初期結果を更新）
+
+- GitHub API操作が可能になり、`3de0f50`をpushしてPR #3を作成。CI [39720600766](https://github.com/tetsujisugimori-coder/gemini-toranomaki/actions/runs/39720600766) はsuccess。Checks APIで結論を確認。ログZIPの配布先は依然403で、詳細ログの取得とは区別する。
+- API疎通の変化を受けて配布先も再試行し、WebKit v2370とFFmpegのダウンロードに成功。取得失敗の問題は解消。
+- Debian trixieの署名検証済み索引とaptのチェックサム照合を使い、不足ライブラリを `/workspace/apt-webkit/root` に展開。ブラウザ起動ラッパーはLD_LIBRARY_PATHを上書きするため、各bundleのsys/libへ不足ライブラリの参照を追加。WPE/GTKのELF依存に未解決がないことをlddで確認し、libGLESv2の実ロードも確認。
+- システムldconfigキャッシュへ登録する権限はないため、ローカルのみ `PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS=1` を使用。実依存を別途検証した後のホスト事前判定の省略であり、テスト、署名、チェックサム、TLS検証は無効化しない。CIは従来どおり標準の `playwright install --with-deps` とホスト検証を使用。
+- ローカル最終E2E：Chromium14件＋WebKit14件＝**28件成功**。画像機能を含む実Geminiの操作は学習者側で行うため自動化していない。
+- Google公式のプライバシーハブ（answer/13594961）と画像生成・編集ヘルプ（answer/14286560）の本文を2026-10-22に取得・確認。機密情報を入力しない注意、誤回答、具体的な画像指示、アカウント・地域・年齢等による提供条件差を確認し、ラボに参照URLと確認日を追加。固定のモデル名・年齢条件を教材に断定せず、最新の公式ページへの確認を案内する。既存第1章の全公式仕様を再検証したとは扱わない。
+- 再現用スクリプトを `/workspace/setup-gemini.sh` として実行し、install_scriptへ全内容を保存する。start_skillは取得済みブラウザとローカル共有ライブラリを使う起動・検証手順へ更新する。プロセスはスナップショット後も維持されるとは仮定しない。
+- 残る未検証：実機iPhone Safari、OS実クリップボード権限、スクリーンリーダー、本番Pages。マージ・本番公開は行わない。環境ドラフトの保存と環境の公開は別で、環境公開はユーザー操作が必要。
