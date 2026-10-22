@@ -143,3 +143,29 @@
 - Vite開発サーバー（5174、StrictModeが有効）でも同じ回帰6件がすべて成功。検証用設定はcheckout外 `/workspace/scratch/lab-copy-strict.config.mjs` に置き、アプリやCI設定を変更していない。
 - 実機iPhone Safari、OS実クリップボード、スクリーンリーダーは今回未検証。コピーは制御可能なブラウザAPIモックによる検証。
 - 着手時のGitHub APIではPR #3のインラインレビューコメント、レビュー、通常コメントはいずれも0件。新規PR・マージ・本番公開・レビュー会話の解決は行わない。既存PRへpushし、最終HEADのCIと再レビューを待つ。
+
+## 2026-10-22 — 第1章：画面探検・機能探検マップ
+
+### 事前調査・実装方針・判断理由
+
+- 既存main `82b28954e43dfcb52a5d69a215da0609aaa38f9a` とリモートHEAD一致、変更なしを確認し、専用ブランチ `feat/chapter-1-explorers` を作成。AGENTS.mdなし。README、curriculum、App、Lab、storage、CSS、単体・E2E、CI/Pagesを確認。
+- イントロの4体験は面白さの体験、第1章は画面構造と機能の選択、後続章は詳細実践に分担。第2〜10章は既存の概要ページがあるため、「概要・操作教材は準備中」と明記して実在ルートへ接続。連携・調査・資料・Live・Canvasの詳細手順は追加しない。
+- 12か所の模擬画面から、名称・用途・場面・実画面での課題・関連章・条件を段階表示。実画面の完全再現ではなく、メニューと入力周辺という位置関係を学習用に整理したもの。実際の送信・添付・課金・予約・外部接続を模擬ボタンから実行しない。外部のGeminiを開くリンクと課題の自己申告を明確に分離。
+- 目的別8件と逆方向の機能探索を追加。複数候補は理由と最初の操作を個別に示す。音楽生成が未提供の場合の歌詞相談、写真添付とLive、単独PDFと資料をまとめる方法などを区別。候補表示は利用可能性の保証ではない。
+- 機能名・用途・課題・利用条件・関連章・目的の対応をexploration-dataへ分離。モデル選択と自動モードの思考レベルを別概念として説明。3.1 Pro・4 Argon・鍵表示・低／標準／高はユーザーが2026年10月22日に確認した例と明記。公式の現行仕様を検証したとは扱わず、高でも正解・長文が保証されないことを記載。料金・利用枠を推測で断定しない。
+- 独立storageキーで探索済みと実画面の課題確認を保存。既存の章・ラボキー、完了条件、手順、理解度チェック、コピーは維持。読み取り・書き込み失敗、不正データ、未知IDに対応。探索専用の確認付き初期化と記録取消を提供。初期表示時は保存せず、操作時だけ保存。
+- ネイティブbutton/selectとaria-pressedを使用。選択後は説明見出しへフォーカス。タッチ最小44px、600px以下はメニュー2列＋入力エリア、アニメーションなし。既存の緑系配色・ライト／ダークを使用。
+
+### 検証結果
+
+- `npm run typecheck`、`npm run lint`、`npm test`（既存13件＋新規4件＝17件）、`npm run build`、`git diff --check`：成功。依存定義・lockfile・Actionsの変更なし。
+- Chromium：既設 `/usr/bin/chromium` を使用して既存20件＋新規8件＝**28件成功**。Playwright指定Chromiumの配布URLは403だったため、ローカルでは既設版を使用。CIは従来の標準ブラウザ導入を維持。
+- WebKit v2370：配布アーカイブ取得成功。既存20件＋新規8件＝**28件成功**。合計E2E **56件成功**。各入口の説明、キーボード起動とフォーカス、保存復元・章未完了維持、8目的の候補と理由、実在章への遷移、逆探索、探索専用初期化とキャンセル、保存拒否後の学習を確認。
+- 320・375・600・780・1280pxの両テーマで横はみ出し検査とスクリーンショット生成。既存の375・390・1280px試験も成功。モバイルとデスクトップの画像を目視確認。
+- WebKitに必要なOSライブラリはsudoがないため、Debian公式の署名検証済みapt索引とチェックサム照合付きdownload-onlyを利用し `/workspace/apt-exploration/root` へ展開。ブラウザbundleのsys/libに参照を追加。各bundleのELF依存に未解決がないこととlibGLESv2の実ロードを確認。ldconfigのシステムキャッシュに登録できないため、ローカルのみ `PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS=1` でホスト事前判定を省略。テスト・TLS・署名・チェックサム検証は維持。CIは標準のホスト検証のまま。
+- 再現コマンド：`PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/usr/bin/chromium npm run test:e2e -- --project=chromium --workers=2`、`PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS=1 PLAYWRIGHT_BROWSERS_PATH=/workspace/.cache/ms-playwright npm run test:e2e -- --project=webkit --workers=2`。
+
+### 未検証・残課題・拡張候補
+
+- 実機iPhone Safari、スクリーンリーダー、OS実クリップボード、実アカウントのGemini機能・料金・利用枠は未検証。比較実験室は追加せず、今後の候補とする。マージ・本番公開は行わない。
+- GitHubのGit読み取りは成功するが、GitHub APIはproxyのCONNECT 403で拒否される。トークン不足とは判断しない。PR照会・作成・CI結果照会に必要な `api.github.com` を既存2ドメインを保持して環境設定案に追加保存。設定案の保存は現在のネットワークへの適用・環境公開ではない。API操作とリモートCIは許可反映後に実施が必要。
