@@ -407,3 +407,102 @@ fieldset + fieldset {
     grid-template-columns: 1fr;
   }
 }
+
+/* The mock screen teaches location; buttons reveal explanations, never send data. */
+.mock-screen {
+  display: grid;
+  grid-template-columns: minmax(140px, 0.8fr) minmax(0, 2fr);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--surface);
+}
+.mock-side {
+  background: var(--soft);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.mock-side button {
+  text-align: left;
+}
+.mock-main {
+  padding: 20px;
+  min-width: 0;
+}
+.mock-welcome {
+  padding-block: 28px;
+}
+.mock-composer {
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 12px;
+}
+.mock-composer > button {
+  width: 100%;
+  text-align: left;
+  margin-bottom: 12px;
+}
+.explore-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.exploration button,
+.map-recommendation {
+  overflow-wrap: anywhere;
+}
+.exploration button[aria-pressed="true"],
+[aria-label="マップの探索方向"] button[aria-pressed="true"] {
+  border: 2px solid var(--accent);
+  background: var(--soft);
+  font-weight: 700;
+}
+.explore-mark {
+  color: var(--accent);
+}
+.explore-detail {
+  margin-top: 16px;
+}
+.explore-detail h3:focus {
+  outline: 3px solid #c07123;
+  outline-offset: 4px;
+}
+.explore-detail dt {
+  font-weight: 700;
+  margin-top: 16px;
+}
+.explore-detail dd {
+  margin: 4px 0 0;
+}
+.map-recommendation {
+  border-left: 3px solid var(--accent);
+  padding: 0 0 8px 16px;
+  margin-block: 24px;
+}
+.map-recommendation h4 {
+  margin-bottom: 8px;
+}
+.map-results {
+  min-width: 0;
+}
+@media (max-width: 600px) {
+  .mock-screen {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .mock-side {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .mock-side > p {
+    grid-column: 1 / -1;
+    margin: 0;
+  }
+  .mock-main {
+    padding: 14px;
+  }
+  .mock-welcome {
+    padding-block: 12px;
+  }
+}

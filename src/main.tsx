@@ -4,6 +4,7 @@ import { lessons } from "./curriculum";
 import { loadProgress, resetProgress, saveProgress } from "./storage";
 import "./style.css";
 import { Lab } from "./Lab";
+import { Exploration } from "./Exploration";
 function currentRoute() {
   return location.hash === "#main" ? "home" : location.hash.slice(1) || "home";
 }
@@ -242,6 +243,10 @@ function App() {
                 >
                   Geminiを開く ↗（別タブ）
                 </a>
+                <p>
+                  体験ラボで面白さを試したら、この章では画面の入口と機能の選び方を探検しましょう。すべての入口を探索しなくても、既存の演習へ進めます。
+                </p>
+                <Exploration />
                 <section>
                   <h2>操作してみよう</h2>
                   <p>
