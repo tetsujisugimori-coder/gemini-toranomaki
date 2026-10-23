@@ -40,18 +40,19 @@ describe("progress", () => {
     vi.stubGlobal("localStorage", {
       getItem: () =>
         JSON.stringify({
-          completed: ["chapter-2", 1, "chapter-1", "chapter-1"],
+          completed: ["chapter-3", 1, "chapter-1", "chapter-1"],
         }),
     });
     expect(loadProgress().progress.completed).toEqual(["chapter-1"]);
   });
 });
-it("keeps Issue #1 curriculum order and only chapter 1 available", () => {
+it("keeps Issue #1 curriculum order and chapters 1 and 2 available", () => {
   expect(lessons).toHaveLength(10);
   expect(lessons.map((l) => l.number)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
   expect(lessons[2].title).toBe("Deep Research");
   expect(lessons.filter((l) => l.status === "ready").map((l) => l.id)).toEqual([
     "chapter-1",
+    "chapter-2",
   ]);
   expect(lessons[0].steps).toHaveLength(6);
   for (const l of lessons) {

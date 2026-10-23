@@ -1,3 +1,4 @@
+import { serviceReferences } from "./services-data";
 export interface Reference {
   title: string;
   url: string;
@@ -117,7 +118,7 @@ export const lessons: Lesson[] = topics.map(
     references: [{ title: "Google公式情報（外部サイト）", url }],
     checkedAt:
       "2026-10-22：公式ページ取得がネットワーク制限で拒否されたため、現行仕様は未確認",
-    status: i === 0 ? "ready" : "planned",
+    status: i < 2 ? "ready" : "planned",
     steps: [],
   }),
 );
@@ -166,3 +167,13 @@ lessons[0].quiz = {
   explanation:
     "実際の画面と公式情報を確認します。提供範囲には差があり、AIの回答だけでは利用権限を確認できません。",
 };
+
+lessons[1].goal =
+  "メールの原文・訂正・AIの抽出結果を照合し、Googleサービスの操作前後に人が確認すべきことを判断する。";
+lessons[1].description =
+  "架空の受信箱で予定を読み解き、検索と登録を分けた指示を組み立てます。実アカウントの利用は任意です。";
+lessons[1].references = serviceReferences;
+lessons[1].conditions =
+  "Google公式ヘルプ本文を2026-10-23に確認。アカウント・管理者設定・プラン・地域・端末による実際の提供範囲は未確認です。模擬演習には接続や契約は不要です。";
+lessons[1].checkedAt =
+  "2026-10-23：接続・予定管理・アプリ連携・Gemini in Gmailの公式ヘルプ本文を確認。実アカウントでの操作は未検証";
