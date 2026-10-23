@@ -14,7 +14,9 @@ function ChapterLink({ number }: { number: number }) {
       第{number}章：{lesson.title}
       {lesson.status === "planned"
         ? "（概要・操作教材は準備中）"
-        : "（この章）"}
+        : number === 1
+          ? "（この章）"
+          : "（学習できます）"}
     </a>
   ) : null;
 }
