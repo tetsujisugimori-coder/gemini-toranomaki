@@ -198,10 +198,14 @@ test("optional real exercise stays separate and requires every manual confirmati
   await page.getByRole("button", { name: "検索指示を全文コピー" }).click();
   for (const item of reviewItems.slice(0, -1))
     await page.getByLabel(item, { exact: true }).check();
-  await expect(page.getByLabel("登録依頼の全文")).toHaveCount(0);
+  await expect(page.getByLabel("登録前確認の全文")).toHaveCount(0);
   await page.getByLabel(reviewItems.at(-1)!, { exact: true }).check();
-  await page.getByRole("button", { name: "登録依頼を全文コピー" }).click();
+  await page.getByRole("button", { name: "登録前確認を全文コピー" }).click();
   expect(await copied(page)).toContain("対象カレンダーが未指定なら先に聞いて");
+  expect(await copied(page)).toContain(
+    "このメッセージでは予定の作成・変更・削除を一切実行しない",
+  );
+  await expect(page.getByLabel("最終実行指示の全文")).toHaveCount(0);
   await expect(chapterComplete(page)).not.toBeChecked();
   await expect(
     page.getByLabel(
@@ -209,12 +213,12 @@ test("optional real exercise stays separate and requires every manual confirmati
     ),
   ).not.toBeChecked();
   await page.getByLabel(reviewItems[0], { exact: true }).uncheck();
-  await expect(page.getByLabel("登録依頼の全文")).toHaveCount(0);
+  await expect(page.getByLabel("登録前確認の全文")).toHaveCount(0);
   await page.getByLabel(reviewItems[0], { exact: true }).check();
   await page
     .getByRole("combobox", { name: "検索対象", exact: true })
     .selectOption("sender");
-  await expect(page.getByLabel("登録依頼の全文")).toHaveCount(0);
+  await expect(page.getByLabel("登録前確認の全文")).toHaveCount(0);
 });
 
 test("old chapter data restores, chapter toggles are independent and lab/exploration records survive reset", async ({

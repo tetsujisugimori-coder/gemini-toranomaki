@@ -7,6 +7,7 @@ import {
   troubles,
 } from "./services-data";
 import {
+  buildFinalExecutionPrompt,
   buildRegistrationPrompt,
   buildSearchPrompt,
   defaultServiceSettings,
@@ -144,4 +145,103 @@ it("whitelists only fixed exercise choices and record types; never retains email
   expect(loadServices().available).toBe(false);
   expect(saveServices(sanitizeServices(null))).toBe(false);
   expect(servicesKey).not.toBe(progressKey);
+});
+
+it("real preflight identifies one candidate and presents every field without authorizing an operation", () => {
+  const prompt = buildRegistrationPrompt("real");
+  expect(prompt).toContain(
+    "このメッセージでは予定の作成・変更・削除を一切実行しない",
+  );
+  expect(prompt).toContain("確認と作成を連続実行せず");
+  expect(prompt).toContain("私が明示的に選んだ1件だけ");
+  expect(prompt).toContain("複数候補、対象不明、情報不足");
+  expect(prompt).toContain("登録せず質問");
+  for (const field of [
+    "確認用ID",
+    "イベント名",
+    "開催日",
+    "開始時刻",
+    "終了時刻",
+    "タイムゾーン",
+    "場所",
+    "訂正情報",
+    "対象カレンダー",
+    "所有者",
+    "利用アカウント",
+    "重複確認の結果",
+  ])
+    expect(prompt).toContain(field);
+  expect(prompt).toContain("提示した全項目が一致");
+  expect(prompt).toContain("別の最終実行メッセージ");
+  expect(prompt).toContain(
+    "教材の7項目チェックや以前のコピー、検索依頼は最終承認ではありません",
+  );
+  expect(prompt).not.toContain("新規作成してください");
+  expect(prompt).not.toContain("追加してください");
+});
+
+it("final execution requires filled identity fields matching the displayed single candidate and a later separate approval", () => {
+  const prompt = buildFinalExecutionPrompt();
+  for (const field of [
+    "確認用ID",
+    "イベント名",
+    "開催日",
+    "開始時刻",
+    "終了時刻",
+    "タイムゾーン",
+    "場所",
+    "訂正情報",
+    "対象カレンダー",
+    "重複確認の結果",
+  ])
+    expect(prompt).toMatch(new RegExp(`${field}[^\\n]*：【記入欄`));
+  expect(prompt).toContain("Gemini側の入力欄だけ");
+  expect(prompt).toContain(
+    "未記入・仮の値・テンプレートのままでは最終承認は成立しません",
+  );
+  expect(prompt).toContain("全項目提示より後に送ったこの別メッセージ");
+  expect(prompt).toContain(
+    "全項目が提示済みの対象1件と完全に一致する場合に限り",
+  );
+  expect(prompt).toContain("複数候補、対象不明、情報不足");
+  expect(prompt).toContain("登録せず質問し、停止");
+  expect(prompt).toContain("確認と作成を連続実行しない");
+  expect(prompt).toContain("既存予定の変更・削除");
+  expect(prompt).toContain("承認を無効");
+  expect(prompt).toContain("Googleカレンダーを直接開き");
+  expect(buildRegistrationPrompt("mock")).toContain("実登録禁止");
+  expect(buildRegistrationPrompt("mock")).not.toContain("新規作成を承認");
+});
+
+it("retains legacy copy history alongside new preflight and execution history without persisting authorization or event data", () => {
+  const legacy = {
+    ...sanitizeServices(null),
+    copied: ["real-registration", "mock-search"],
+    tried: true,
+  };
+  const values = new Map([[servicesKey, JSON.stringify(legacy)]]);
+  vi.stubGlobal("localStorage", {
+    getItem: (k: string) => values.get(k) ?? null,
+    setItem: (k: string, v: string) => values.set(k, v),
+  });
+  expect(loadServices().progress).toEqual(legacy);
+  const progress = sanitizeServices({
+    ...loadServices().progress,
+    copied: [...legacy.copied, "real-preflight", "real-execution"],
+    finalReviewed: true,
+    realChecks: ["private"],
+    event: "private",
+    reply: "private",
+  });
+  expect(saveServices(progress)).toBe(true);
+  expect(loadServices().progress.copied).toEqual([
+    "real-registration",
+    "mock-search",
+    "real-preflight",
+    "real-execution",
+  ]);
+  expect(loadServices().progress.tried).toBe(true);
+  for (const field of ["finalReviewed", "realChecks", "event", "reply"])
+    expect(loadServices().progress).not.toHaveProperty(field);
+  expect(values.get(servicesKey)).not.toContain("private");
 });

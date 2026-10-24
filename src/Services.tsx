@@ -9,6 +9,7 @@ import {
   troubles,
 } from "./services-data";
 import {
+  buildFinalExecutionPrompt,
   buildRegistrationPrompt,
   buildSearchPrompt,
   defaultServiceSettings,
@@ -65,6 +66,7 @@ export function Services({
   const [decision, setDecision] = useState<"hold" | "proceed" | null>(null);
   const [approved, setApproved] = useState(false);
   const [copying, setCopying] = useState(false);
+  const [finalReviewed, setFinalReviewed] = useState(false);
   const version = useRef(0);
   const mounted = useRef(false);
   const stepHeading = useRef<HTMLHeadingElement>(null);
@@ -89,12 +91,16 @@ export function Services({
     update({ step });
     setMessage("");
   }
-  function configure(patch: Partial<ServiceSettings>) {
+  function invalidateCopy() {
     version.current++;
-    setSettings((s) => ({ ...s, ...patch }));
-    setRealChecks([]);
     setCopying(false);
     setMessage("");
+  }
+  function configure(patch: Partial<ServiceSettings>) {
+    invalidateCopy();
+    setSettings((s) => ({ ...s, ...patch }));
+    setRealChecks([]);
+    setFinalReviewed(false);
   }
   function toggle(value: string, values: string[], set: (v: string[]) => void) {
     set(
@@ -115,21 +121,39 @@ export function Services({
       : realChecks.length === reviewItems.length;
   const searchPrompt = buildSearchPrompt(settings);
   const registrationPrompt = buildRegistrationPrompt(settings.mode);
-  async function copy(stage: "search" | "registration") {
-    if (copying || (stage === "registration" && !registrationReady)) return;
+  const executionReady =
+    settings.mode === "real" && registrationReady && finalReviewed;
+  async function copy(stage: "search" | "registration" | "execution") {
+    if (
+      copying ||
+      (stage === "registration" && !registrationReady) ||
+      (stage === "execution" && !executionReady)
+    )
+      return;
     const copyVersion = version.current;
     const mode = settings.mode;
     setCopying(true);
     try {
       await navigator.clipboard.writeText(
-        stage === "search" ? searchPrompt : registrationPrompt,
+        stage === "search"
+          ? searchPrompt
+          : stage === "execution"
+            ? buildFinalExecutionPrompt()
+            : registrationPrompt,
       );
       if (!mounted.current || copyVersion !== version.current) return;
       update({
-        copied: [...new Set([...latest.current.copied, `${mode}-${stage}`])],
+        copied: [
+          ...new Set([
+            ...latest.current.copied,
+            mode === "real" && stage === "registration"
+              ? "real-preflight"
+              : `${mode}-${stage}`,
+          ]),
+        ],
       });
       setMessage(
-        `${mode === "mock" ? "模擬" : "任意の実アカウント"}演習の第${stage === "search" ? "1" : "2"}段階を全文コピーしました。送信や登録はしていません。`,
+        `${mode === "mock" ? "模擬" : "任意の実アカウント"}演習の第${stage === "search" ? "1" : mode === "mock" ? "2" : stage === "registration" ? "2A（登録前確認）" : "2B（最終実行）"}段階を全文コピーしました。送信や登録はしていません。`,
       );
     } catch {
       if (mounted.current && copyVersion === version.current)
@@ -145,8 +169,8 @@ export function Services({
     setChecks([]);
     setDecision(null);
     setApproved(false);
-    setCopying(false);
-    version.current++;
+    setFinalReviewed(false);
+    invalidateCopy();
   }
   return (
     <div className="services">
@@ -423,6 +447,21 @@ export function Services({
                 ? "模擬：実際のGmailには検索しません。第2段階も実登録禁止の練習です。"
                 : "任意の実操作：このサイトは接続・送信しません。Gemini側でアカウントと権限を確認し、機密情報や個人情報を使わずに行ってください。実施しなくても章を完了できます。"}
             </p>
+            {settings.mode === "real" && (
+              <div className="notice">
+                <p>
+                  任意の実アカウント演習だけの外部操作です。模擬演習には不要です。ログイン・実連携の成功を教材は保証しません。利用アカウントと権限をGemini側で確認してください。
+                </p>
+                <a
+                  className="primary"
+                  href="https://gemini.google.com/"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Geminiを開く ↗（別タブ）
+                </a>
+              </div>
+            )}
             <div className="lab-compare">
               <label className="lab-field">
                 検索対象
@@ -495,7 +534,11 @@ export function Services({
             >
               検索指示を全文コピー
             </button>
-            <h3>第2段階：確認済みの内容で登録を依頼する</h3>
+            <h3>
+              {settings.mode === "mock"
+                ? "第2段階：実登録禁止の練習"
+                : "第2段階A：登録前の全項目提示を依頼する"}
+            </h3>
             {settings.mode === "mock" ? (
               <p>
                 {approved
@@ -517,8 +560,8 @@ export function Services({
                       type="checkbox"
                       checked={realChecks.includes(item)}
                       onChange={() => {
-                        version.current++;
-                        setCopying(false);
+                        invalidateCopy();
+                        setFinalReviewed(false);
                         toggle(item, realChecks, setRealChecks);
                       }}
                     />
@@ -532,7 +575,11 @@ export function Services({
                 <pre
                   className="service-prompt"
                   tabIndex={0}
-                  aria-label="登録依頼の全文"
+                  aria-label={
+                    settings.mode === "mock"
+                      ? "登録依頼の全文"
+                      : "登録前確認の全文"
+                  }
                 >
                   {registrationPrompt}
                 </pre>
@@ -541,7 +588,9 @@ export function Services({
                   disabled={copying}
                   onClick={() => void copy("registration")}
                 >
-                  登録依頼を全文コピー
+                  {settings.mode === "mock"
+                    ? "登録依頼を全文コピー"
+                    : "登録前確認を全文コピー"}
                 </button>
               </>
             ) : (
@@ -549,8 +598,56 @@ export function Services({
                 登録用の指示は確認待ちです。登録せず確認する判断を優先できます。
               </p>
             )}
+            {settings.mode === "real" && registrationReady && (
+              <>
+                <h3>第2段階B：Gemini側で照合し、別メッセージで最終承認する</h3>
+                <p>
+                  第2段階AをGeminiへ送り、対象を1件に絞って全項目の提示を受けます。原文と自分が確認した情報を照合してください。複数候補・不明点・矛盾・重複が残るなら保留します。
+                </p>
+                <p>
+                  下のチェックも自己申告です。教材は実データとの一致や承認成立を検証できません。チェックやコピーだけで登録は行いません。
+                </p>
+                <label className="option">
+                  <input
+                    type="checkbox"
+                    checked={finalReviewed}
+                    onChange={(e) => {
+                      invalidateCopy();
+                      setFinalReviewed(e.target.checked);
+                    }}
+                  />
+                  Geminiが提示した1件の全項目と、原文で確認した情報が一致した（自己申告）
+                </label>
+                {executionReady ? (
+                  <>
+                    <p>
+                      次のひな形の【記入欄】はGemini側だけで埋めてください。この教材へ実メール・個人情報・Geminiの回答を入力しないでください。全項目が一致して承認できるときだけ、提示を受けた後の別メッセージとして送ります。未記入のままでは実行を依頼しません。対象や内容が変わったら再提示と新たな承認が必要です。
+                    </p>
+                    <pre
+                      className="service-prompt"
+                      tabIndex={0}
+                      aria-label="最終実行指示の全文"
+                    >
+                      {buildFinalExecutionPrompt()}
+                    </pre>
+                    <button
+                      className="primary"
+                      disabled={copying}
+                      onClick={() => void copy("execution")}
+                    >
+                      最終実行指示を全文コピー
+                    </button>
+                  </>
+                ) : (
+                  <p role="status">
+                    Gemini側で1件の全項目提示を受けて照合するまで、最終実行指示は確認待ちです。
+                  </p>
+                )}
+              </>
+            )}
             <p className="small">
               コピー成功は送信・実行・予定作成の成功を意味しません。失敗時は表示中の全文を選択してコピーできます。
+              保留・条件変更で古いコピーの記録と通知は無効になりますが、OSクリップボードへの書き込み自体は取り消せません。
             </p>
           </>
         )}
@@ -610,8 +707,8 @@ export function Services({
                       toggle(item, checks, setChecks);
                       setApproved(false);
                       setDecision(null);
-                      setCopying(false);
-                      version.current++;
+                      setFinalReviewed(false);
+                      invalidateCopy();
                     }}
                   />
                   {item}
@@ -621,8 +718,11 @@ export function Services({
             <div className="lab-actions">
               <button
                 onClick={() => {
+                  invalidateCopy();
                   setDecision("hold");
                   setApproved(false);
+                  setRealChecks([]);
+                  setFinalReviewed(false);
                 }}
               >
                 登録せず確認する
@@ -740,7 +840,9 @@ export function Services({
                       "mock-search": "模擬・検索",
                       "mock-registration": "模擬・登録禁止の練習",
                       "real-search": "任意・検索",
-                      "real-registration": "任意・登録依頼",
+                      "real-registration": "任意・旧登録依頼（履歴）",
+                      "real-preflight": "任意・登録前確認",
+                      "real-execution": "任意・最終実行指示",
                     })[id],
                 )
                 .join("、")

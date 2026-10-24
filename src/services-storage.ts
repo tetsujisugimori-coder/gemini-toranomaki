@@ -65,6 +65,8 @@ export function sanitizeServices(raw: unknown): ServicesProgress {
                 "mock-registration",
                 "real-search",
                 "real-registration",
+                "real-preflight",
+                "real-execution",
               ].includes(v),
             ),
           ),
