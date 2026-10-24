@@ -5,6 +5,7 @@ import { loadProgress, resetProgress, saveProgress } from "./storage";
 import "./style.css";
 import { Lab } from "./Lab";
 import { Exploration } from "./Exploration";
+import { Services } from "./Services";
 function currentRoute() {
   return location.hash === "#main" ? "home" : location.hash.slice(1) || "home";
 }
@@ -44,9 +45,11 @@ function App() {
     document.documentElement.dataset.theme = theme;
   }, [theme]);
   const lesson = lessons.find((l) => l.id === route);
-  const completed = progress.completed.includes("chapter-1");
+  const completed = progress.completed.includes(lesson?.id ?? "");
   const update = (value: boolean) => {
-    const next = { completed: value ? ["chapter-1"] : [] };
+    if (!lesson || lesson.status !== "ready") return;
+    const other = progress.completed.filter((id) => id !== lesson.id);
+    const next = { completed: value ? [...other, lesson.id] : other };
     setProgress(next);
     const ok = saveProgress(next);
     setStorageAvailable(ok);
@@ -115,6 +118,12 @@ function App() {
           aria-current={route === "chapter-1" ? "page" : undefined}
         >
           第1章を学ぶ
+        </a>
+        <a
+          href="#chapter-2"
+          aria-current={route === "chapter-2" ? "page" : undefined}
+        >
+          第2章を学ぶ
         </a>
       </nav>
       <main id="main" ref={main} tabIndex={-1}>
@@ -192,7 +201,7 @@ function App() {
             <p className="lead">第1章で入り口を知り、各機能の実践へ。</p>
             <p>
               章番号・章題・実践課題はIssue
-              #1に準拠。第2〜10章は準備中です。各章を開くと概要と参考情報を確認できます。
+              #1に準拠。第1・2章を学習できます。第3〜10章は準備中です。各章を開くと概要と参考情報を確認できます。
             </p>
             <div className="chapter-list">
               {lessons.map((l) => (
@@ -233,6 +242,8 @@ function App() {
                 <p>この章の操作教材は、今後追加する予定です。</p>
                 <a href="#chapter-1">第1章で画面を確認する →</a>
               </section>
+            ) : lesson.id === "chapter-2" ? (
+              <Services completed={completed} onComplete={update} />
             ) : (
               <>
                 <a
@@ -351,9 +362,9 @@ function App() {
           />
           <p>
             {completed
-              ? "第1章の演習を完了しました。次の教材をお待ちください。"
-              : "第1章の演習から始めましょう。"}{" "}
-            公開済み：1章
+              ? "この章の学習完了を記録しています。"
+              : "第1・2章を自分のペースで学びましょう。"}{" "}
+            公開済み：2章
           </p>
           {!storageAvailable && (
             <p role="status">

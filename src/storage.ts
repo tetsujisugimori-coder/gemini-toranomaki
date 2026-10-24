@@ -12,7 +12,8 @@ export function loadProgress(): { progress: Progress; available: boolean } {
       "completed" in data &&
       Array.isArray(data.completed)
         ? data.completed.filter(
-            (id: unknown): id is string => id === "chapter-1",
+            (id: unknown): id is string =>
+              id === "chapter-1" || id === "chapter-2",
           )
         : [];
     return {
