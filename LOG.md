@@ -349,3 +349,8 @@
 - 修正後の型検査/lint/単体全81件（旧74+新7）/production build/diff-check成功。全562 E2E、独立再レビュー、最終HEADの実CIは確定後に結果を追記する。読込は返すrecordをサニタイズするだけで旧保存値を自動書換えせず、明示保存にも同じフィルタを適用する。新回帰で他章キーの非更新も検査。
 - 別工程のnano_independent_reviewが回答種別分岐/正常旧値・順序/型と未知ID/読込非書換え/保存専用キーを独立確認し、対象単体20件とdiff-check成功。当該P3解消、新規/残存P0〜P3なし。独立工程で全81単体/562 E2E/CIまで再実施したとは扱わない。GitHub上の既存review/commentはなく、返信対象なし。
 - 最終ローカルは型/lint/単体81件/build/diff-check成功、Chromium281＋WebKit281＝既存562 E2Eが一括成功（失敗/skip/expected failureなし）。E2Eの変更・削除・緩和なし。変更4ファイルを限定stageして既存ブランチへcommit/pushし、既存Draft PR #15へ最新状況を反映する。最終HEADのCIはpush後に確認し、対応SHAと実結果をPR/Issueに記録する。merge/auto-merge/本番公開なし、実機/SR/実Google/OS clipboard/教育効果の未検証は従来どおり残す。
+- 初回修正HEAD52a83ce2b7b208e14a5199cbcfd6339b063b20e7のCI run40244968821はE2E561成功/1失敗。既存Live/WebKit390pxの#live-stepフォーカス確認が失敗し、CI時の実際のactiveElementはログから不明。該当ケースの無変更15回再実行は全成功で、自然な再現は得られなかった。初期routeのh1 focus完了を待たずfocus→Enterを始める手順を調査した。
+- 制御実験で初期h1 focusを意図してbutton.focus後に挟むと旧手順はH1のまま失敗し、初期focus完了待機を入れるとH2へ成功。これは同型の順序競合の確認で、実CIの競合順序を特定した証拠ではない。tests/live.spec.tsに初期h1 focusのexpectを1つ追加し、元の全focus/表示/keyboardアサーションを維持。製品Liveや第1〜6章の仕様は変更しない。追加はCI失敗に対する必要なE2E前提の厳密化で、修正範囲は計5ファイル。skip/retry/sleepで隠さない。
+- 上記追加後のLiveレイアウト4幅×2engine×5反復＝40件は全成功。失敗した初回CIはPRにもfailureと記録済み。最終版の全体検証と追加独立確認後に再commit/pushし、新HEADのCIを再確認する。
+- 追加の独立確認でも初期focus expectは前提の追加で緩和なし、390px Chromium/WebKit各1＝2件成功。制御実験も別工程で旧H1失敗/新H2成功。実CI原因は確定とせず競合仮説とする。対象レビュー範囲で残存P0〜P3なし。担当はコード/文書を変更せず、全体と最終CIの成功を独立工程へ帰属させない。
+- 初期focus前提の追加後も型/lint/単体81/build/diff-check成功。全E2Eを再実行してChromium281＋WebKit281＝562件一括成功（失敗/skipなし）。初回CI失敗を消さず、追加3ファイル（E2Eと記録）をcommit/pushして新しい最終HEADの実CIを再確認する。全差分は初回P3修正と合わせ計5ファイル、製品コードはnano-storage.tsだけを維持。

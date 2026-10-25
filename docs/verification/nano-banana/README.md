@@ -118,3 +118,15 @@ Chromiumで4体験を別セッションから操作。1280pxライトの帽子�
 独立再レビューは同じ別エージェント`nano_independent_review`が実装差分と修正前ログを確認し、`vitest run src/nano.test.ts`を別ログで再実行して20件全成功、diff-checkも成功。回答IDごとの排他性、旧正常値/順序/重複除去、未知ID/型/部位、読込時非書換え・保存時専用キーだけの更新を確認した。当該P3は解消、レビュー範囲で新規/残存P0〜P3なし。別工程では全81単体/562 E2E/最終CIを再実行していない。コード/文書は作者が修正し、レビュー担当は変更しない。
 
 最終ローカル結果：型検査/ESLint/全単体81件（第7章20＋既存他章61）/production build/git diff --check成功。Chromium281＋WebKit281＝562 E2Eが一括成功、失敗0・skip/expected failureなし。E2Eの変更なし。最終HEADの実CIはpush後に確認し、対応SHAと結果をPR/Issueへ記録する。今回も実機Safari/Android・スクリーンリーダー・実Google・OS実クリップボード・教育効果の実測は未検証。
+
+### 初回修正CIの既存フォーカステスト失敗と追加検証
+
+初回修正HEAD`52a83ce2b7b208e14a5199cbcfd6339b063b20e7`のCI run40244968821は、型/lint/単体81/buildは成功したが、E2Eは561成功・Live/WebKit390pxの`#live-step` focus確認1件失敗。ログの見出しは体験1で、実際のフォーカス先は不明。未変更の同ケースを15回再実行すると全成功し、CI固有の失敗を自然再現できていない。
+
+初期routeのh1 focusはAppのEffectで実行される一方、このテストは初期focus完了を待たずボタンへfocusしEnterしていた。初期h1 focusを意図して後発させる制御実験では、旧順序はH1がactiveのままで失敗し、初期focus完了待機後の順序はH2へ移動して成功した。これで初期focus待機という前提の必要性を検証したが、実CIが同じ競合順序だったと断定はしない。
+
+`tests/live.spec.ts`の該当レスポンシブケースに`await expect(page.locator("h1")).toBeFocused()`を追加。元のすべての期待値・フォーカス確認・keyboard操作を残し、追加の前提確認を行う。待機のための固定sleep、retry設定、skip、製品Liveや他章仕様の変更はない。4幅×2engine×5反復＝40件成功。保存検証の製品修正は引き続きnano-storage.tsだけ。必要なE2E対処を含め今回の変更は計5ファイルとなる。新HEADで全体とCIを再確認する。
+
+追加の別工程では、既存アサーションが残り、初期focus前提の追加だけでtimeout延長/強制focus/skip/sleepがないことを確認。390pxのChromium/WebKit各1件＝2件を独立再実行して成功した。制御実験も別途同じ旧H1失敗/新H2成功となった。実CIのactiveElementは不明で、15回自然非再現のため原因確定とはせず、ソースと制御実験に裏付けられた競合仮説と記録する。レビュー範囲で残存P0〜P3なし。全体/最終CIの確認は作者側の結果と区別する。
+
+初期focus前提追加後の最終ローカル：型/lint/単体81/build/diff-check成功、Chromium281＋WebKit281＝562 E2Eが再度一括成功（失敗/skip/expected failureなし）。追加commit後の最終HEADについてCIを再確認し、初回失敗と新しい結果をPR/Issueへ両方記録する。実CIの正確な競合順序が未特定である点は残す。

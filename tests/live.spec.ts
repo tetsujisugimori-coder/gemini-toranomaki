@@ -582,6 +582,8 @@ for (const width of [320, 375, 390, 1280])
     await page.setViewportSize({ width, height: 900 });
     await page.emulateMedia({ colorScheme: "light" });
     await page.goto("#chapter-5");
+    // Let the route's initial focus finish before sending keyboard actions.
+    await expect(page.locator("h1")).toBeFocused();
     for (const theme of ["light", "dark"]) {
       if (theme === "dark")
         await page
