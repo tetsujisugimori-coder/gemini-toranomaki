@@ -838,3 +838,355 @@ test("prototype badge fits 320px even when fallback font metrics are wider", asy
     ),
   ).toBe(true);
 });
+
+test("verification freezes the pre-operation prediction at setup and cannot turn a known result into a matching prediction", async ({
+  page,
+}) => {
+  await page.goto("#chapter-6");
+  await step(page, 4);
+  await page
+    .getByRole("combobox", { name: "確かめる項目", exact: true })
+    .selectOption("score");
+  const predictions = page.getByRole("group", {
+    name: "この確認条件で起こることを予想する",
+    exact: true,
+  });
+  await predictions.getByLabel("0点", { exact: true }).check();
+  await page
+    .getByRole("button", { name: "確認条件を試作品にセット", exact: true })
+    .click();
+  await grade(page);
+  await expect(result(page)).toContainText("1 / 3点");
+  await expect(page.getByLabel("予想と実操作の比較")).toContainText(
+    "予想と観察が違いました",
+  );
+  await expect(predictions.getByLabel("1点", { exact: true })).toBeDisabled();
+  await expect(predictions.getByLabel("0点", { exact: true })).toBeChecked();
+  await expect(page.getByLabel("予想と実操作の比較")).not.toContainText(
+    "予想と観察が一致しました",
+  );
+});
+
+const verificationChoices = (p: Page) =>
+  p.getByRole("group", {
+    name: "この確認条件で起こることを予想する",
+    exact: true,
+  });
+const comparison = (p: Page) =>
+  p.getByLabel("予想と実操作の比較", { exact: true });
+async function prepareVerification(p: Page, id: string, prediction: string) {
+  await p
+    .getByRole("combobox", { name: "確かめる項目", exact: true })
+    .selectOption(id);
+  await verificationChoices(p).getByLabel(prediction, { exact: true }).check();
+  await p
+    .getByRole("button", { name: "確認条件を試作品にセット", exact: true })
+    .click();
+  await expect(prototype(p).getByRole("heading", { level: 3 })).toBeFocused();
+}
+async function retryVerification(p: Page) {
+  await p
+    .getByRole("button", { name: "予想を変更して再挑戦", exact: true })
+    .focus();
+  await p.keyboard.press("Enter");
+  await expect(verificationChoices(p).locator("legend")).toBeFocused();
+  await expect(comparison(p)).toHaveCount(0);
+  await expect(result(p)).toHaveCount(0);
+  await expect(verificationChoices(p).locator("input:checked")).toHaveCount(0);
+  await expect(verificationChoices(p).getByRole("radio").first()).toBeEnabled();
+}
+
+test("verification locks the prediction before any observation; keyboard retry clears evidence and requires setup and a new operation", async ({
+  page,
+}) => {
+  await page.goto("#chapter-6");
+  await step(page, 4);
+  await prepareVerification(page, "score", "0点");
+  await expect(
+    verificationChoices(page).getByLabel("1点", { exact: true }),
+  ).toBeDisabled();
+  await expect(page.locator("#canvas-prediction-state")).toContainText(
+    "確定した予想：0点",
+  );
+  await expect(
+    page.getByRole("button", { name: "確認条件を試作品にセット", exact: true }),
+  ).toBeDisabled();
+  await grade(page);
+  await expect(comparison(page)).toContainText("予想と観察が違いました");
+  await expect(comparison(page)).toContainText(
+    "条件セット時に確定した予想：0点",
+  );
+  await retryVerification(page);
+  await expect(page.getByLabel("同じ回答条件での版別結果")).toContainText(
+    "初期版：未採点",
+  );
+  await grade(page); // A result obtained before the new setup is not evidence.
+  await expect(comparison(page)).toHaveCount(0);
+  await verificationChoices(page).getByLabel("1点", { exact: true }).focus();
+  await page.keyboard.press("Space");
+  await page
+    .getByRole("button", { name: "確認条件を試作品にセット", exact: true })
+    .click();
+  await expect(result(page)).toHaveCount(0);
+  await expect(comparison(page)).toHaveCount(0);
+  await grade(page);
+  await expect(comparison(page)).toContainText("予想と観察が一致しました");
+  await expect(comparison(page)).toContainText(
+    "条件セット時に確定した予想：1点",
+  );
+});
+
+test("verification repeat counts belong to the new attempt and cannot reuse either version's previous grades", async ({
+  page,
+}) => {
+  await page.goto("#chapter-6");
+  await repair(page);
+  await step(page, 4);
+  await prepareVerification(page, "repeat", "6点に増える");
+  await grade(page);
+  await expect(comparison(page)).toHaveCount(0);
+  await grade(page);
+  await expect(comparison(page)).toContainText("予想と観察が違いました");
+  await retryVerification(page);
+  await expect(page.getByLabel("同じ回答条件での版別結果")).toContainText(
+    "修正版：未採点",
+  );
+  await grade(page);
+  await grade(page);
+  await prepareVerification(page, "repeat", "3点のまま");
+  await expect(result(page)).toHaveCount(0);
+  await grade(page);
+  await expect(comparison(page)).toHaveCount(0);
+  await grade(page);
+  await expect(comparison(page)).toContainText("予想と観察が一致しました");
+  await prototype(page)
+    .getByRole("button", { name: "修正前：初期版", exact: true })
+    .click();
+  await expect(comparison(page)).toHaveCount(0);
+  await expect(result(page)).toHaveCount(0);
+  await prototype(page)
+    .getByRole("button", { name: "修正後：修正版", exact: true })
+    .click();
+  await expect(result(page)).toContainText("3 / 3点");
+  await expect(comparison(page)).toHaveCount(0);
+  await prepareVerification(page, "repeat", "3点のまま");
+  await grade(page);
+  await expect(comparison(page)).toHaveCount(0);
+  await grade(page);
+  await expect(comparison(page)).toContainText("予想と観察が一致しました");
+});
+
+async function restartVerificationQuiz(p: Page) {
+  await prototype(p)
+    .getByRole("button", { name: "やり直す", exact: true })
+    .click();
+  await expect(prototype(p).locator("legend").first()).toBeFocused();
+}
+
+test("verification restart needs a grade in the current setup, resets both runs, and can be retried without reusing an old restart", async ({
+  page,
+}) => {
+  await page.goto("#chapter-6");
+  await repair(page);
+  await step(page, 4);
+  await prepareVerification(
+    page,
+    "restart",
+    "回答・点数・未回答案内がすべて消える",
+  );
+  await restartVerificationQuiz(page);
+  await expect(comparison(page)).toHaveCount(0);
+  await expect(
+    verificationChoices(page).getByRole("radio").first(),
+  ).toBeEnabled();
+  await grade(page);
+  await restartVerificationQuiz(page);
+  await expect(comparison(page)).toHaveCount(0);
+  await prepareVerification(page, "restart", "どれかが残る");
+  await grade(page);
+  await expect(comparison(page)).toHaveCount(0);
+  await restartVerificationQuiz(page);
+  await expect(comparison(page)).toContainText("予想と観察が違いました");
+  await retryVerification(page);
+  await prepareVerification(
+    page,
+    "restart",
+    "回答・点数・未回答案内がすべて消える",
+  );
+  await expect(comparison(page)).toHaveCount(0);
+  await grade(page);
+  await expect(comparison(page)).toHaveCount(0);
+  await restartVerificationQuiz(page);
+  await expect(comparison(page)).toContainText("予想と観察が一致しました");
+  await expect(prototype(page).locator("input:checked")).toHaveCount(0);
+  await expect(result(page)).toHaveCount(0);
+  await grade(page); // Empty answers after the completed restart are a different condition.
+  await expect(comparison(page)).toHaveCount(0);
+});
+
+for (const change of [
+  "task",
+  "topic",
+  "audience",
+  "feedback",
+  "version",
+  "apply",
+  "answer",
+] as const)
+  test(`verification invalidates its snapshot on actual ${change} change and never revives it when returning`, async ({
+    page,
+  }) => {
+    await page.goto("#chapter-6");
+    await repair(page);
+    await step(page, 4);
+    await prepareVerification(
+      page,
+      "missing",
+      "未回答の問題番号が表示され、点数は出ない",
+    );
+    await grade(page);
+    await expect(comparison(page)).toContainText("予想と観察が一致しました");
+    if (change === "task") {
+      const control = page.getByRole("combobox", {
+        name: "確かめる項目",
+        exact: true,
+      });
+      await control.selectOption("score");
+      await expect(page.locator("#canvas-prediction-state")).toContainText(
+        "予想を選び",
+      );
+      await expect(prototype(page)).toContainText(
+        "確認課題を変更したため、現在の検証を解除しました",
+      );
+      await expect(prototype(page)).not.toContainText(
+        "予想を確定し、確認条件をセットしました",
+      );
+      await control.selectOption("missing");
+    } else if (
+      change === "topic" ||
+      change === "audience" ||
+      change === "feedback"
+    ) {
+      const control = page.getByRole("combobox", {
+        name:
+          change === "topic"
+            ? "クイズのテーマ"
+            : change === "audience"
+              ? "対象者"
+              : "採点後の結果表示",
+        exact: true,
+      });
+      await control.selectOption(
+        change === "topic"
+          ? "evidence"
+          : change === "audience"
+            ? "review"
+            : "score",
+      );
+      await control.selectOption(
+        change === "topic"
+          ? "science"
+          : change === "audience"
+            ? "beginner"
+            : "reason",
+      );
+    } else if (change === "version") {
+      await prototype(page)
+        .getByRole("button", { name: "修正前：初期版", exact: true })
+        .click();
+      await grade(page);
+      await expect(result(page)).toContainText("1 / 3点");
+      await prototype(page)
+        .getByRole("button", { name: "修正後：修正版", exact: true })
+        .click();
+      await expect(result(page)).toContainText("未回答があります");
+    } else if (change === "apply") {
+      await repair(page, "appearance");
+      await repair(page, "unanswered");
+      await step(page, 4);
+    } else {
+      await answer(page, "science", 0, 0);
+      await answer(page, "science", 0, 1);
+    }
+    await expect(comparison(page)).toHaveCount(0);
+    await expect(
+      verificationChoices(page).locator("input:checked"),
+    ).toHaveCount(0);
+    await expect(
+      verificationChoices(page).getByRole("radio").first(),
+    ).toBeEnabled();
+    await prepareVerification(
+      page,
+      "missing",
+      "未回答の問題番号が表示され、点数は出ない",
+    );
+    await expect(result(page)).toHaveCount(0);
+    await expect(comparison(page)).toHaveCount(0);
+  });
+
+test("verification preserves the snapshot for identical settings, version, task and answers without accepting a new prediction", async ({
+  page,
+}) => {
+  await page.goto("#chapter-6");
+  await step(page, 4);
+  await prepareVerification(page, "score", "0点");
+  await grade(page);
+  await page
+    .getByRole("combobox", { name: "クイズのテーマ", exact: true })
+    .selectOption("science");
+  await page
+    .getByRole("combobox", { name: "対象者", exact: true })
+    .selectOption("beginner");
+  await page
+    .getByRole("combobox", { name: "採点後の結果表示", exact: true })
+    .selectOption("reason");
+  await page
+    .getByRole("combobox", { name: "確かめる項目", exact: true })
+    .selectOption("score");
+  await prototype(page)
+    .getByRole("button", { name: "修正前：初期版", exact: true })
+    .click();
+  await answer(page, "science", 0, 1);
+  await expect(comparison(page)).toContainText("予想と観察が違いました");
+  await expect(
+    verificationChoices(page).getByLabel("0点", { exact: true }),
+  ).toBeChecked();
+  await expect(
+    verificationChoices(page).getByLabel("1点", { exact: true }),
+  ).toBeDisabled();
+});
+
+for (const action of ["reload", "leave", "reset"] as const)
+  test(`verification is temporary and ${action} cannot restore its prediction, observation or execution counts`, async ({
+    page,
+  }) => {
+    await page.goto("#chapter-6");
+    await step(page, 4);
+    await prepareVerification(page, "repeat", "3点のまま");
+    await grade(page);
+    await grade(page);
+    await expect(comparison(page)).toContainText("予想と観察が一致しました");
+    const saved = await record(page);
+    for (const key of ["prediction", "prepared", "observed", "quiz", "runs"])
+      expect(saved).not.toHaveProperty(key);
+    if (action === "reload") await page.reload();
+    if (action === "leave") {
+      await page.goto("#chapter-1");
+      await expect(page.locator("h1")).not.toHaveText("Canvas");
+      await page.goto("#chapter-6");
+    }
+    if (action === "reset") await reset(page);
+    await step(page, 4);
+    await expect(comparison(page)).toHaveCount(0);
+    await expect(result(page)).toHaveCount(0);
+    await expect(
+      verificationChoices(page).locator("input:checked"),
+    ).toHaveCount(0);
+    if (action !== "reset")
+      expect((await record(page)).history).toEqual(saved.history);
+    await prepareVerification(page, "repeat", "3点のまま");
+    await grade(page);
+    await expect(comparison(page)).toHaveCount(0);
+    await grade(page);
+    await expect(comparison(page)).toContainText("予想と観察が一致しました");
+  });

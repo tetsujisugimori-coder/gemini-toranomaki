@@ -53,6 +53,8 @@ export function Canvas({
   const [prepared, setPreparedState] = useState<{
       id: CanvasTest;
       context: string;
+      prediction: number;
+      answers: QuizSession["answers"];
       submitted: boolean;
     } | null>(null),
     preparedRef = useRef(prepared);
@@ -62,6 +64,7 @@ export function Canvas({
   const heading = useRef<HTMLHeadingElement>(null),
     prototypeHeading = useRef<HTMLHeadingElement>(null),
     gradeHeading = useRef<HTMLHeadingElement>(null),
+    predictionHeading = useRef<HTMLLegendElement>(null),
     resetButton = useRef<HTMLButtonElement>(null),
     questionHeads = useRef<(HTMLLegendElement | null)[]>([]);
   const topic = quizFor(r.topic),
@@ -157,8 +160,14 @@ export function Canvas({
     );
     session(next);
     setQuizMessage("");
-    if (preparedRef.current)
-      preparedState({ ...preparedRef.current, submitted: true });
+    if (preparedRef.current) {
+      if (
+        preparedRef.current.context === context &&
+        preparedRef.current.answers.every((a, i) => a === next.answers[i])
+      )
+        preparedState({ ...preparedRef.current, submitted: true });
+      else forgetTest();
+    }
     const outcome = next.runs[current.version];
     history(
       outcome.submissions > 1
@@ -175,7 +184,8 @@ export function Canvas({
     session({ ...emptyQuiz(), event: "restart" });
     setQuizMessage("やり直しました。回答・点数・未回答案内を消しました。");
     history("restart");
-    if (preparedRef.current?.id !== "restart") forgetTest();
+    if (preparedRef.current?.id !== "restart" || !preparedRef.current.submitted)
+      forgetTest();
     requestAnimationFrame(() => questionHeads.current[0]?.focus());
   }
   function apply() {
@@ -197,6 +207,8 @@ export function Canvas({
     requestAnimationFrame(() => prototypeHeading.current?.focus());
   }
   function prepare() {
+    // A prepared verification owns its prediction and evidence until invalidated.
+    if (preparedRef.current || prediction === null) return;
     const preset =
       test === "missing" || test === "restart"
         ? "partial"
@@ -204,19 +216,27 @@ export function Canvas({
           ? "mixed"
           : "correct";
     const values = presetAnswers(r.topic, preset);
-    if (
-      !prepared ||
-      prepared.context !== context ||
-      prepared.id !== test ||
-      !values.every((a, i) => a === latestQuiz.current.answers[i])
-    ) {
-      session({ ...emptyQuiz(), answers: values });
-      preparedState({ id: test, context, submitted: false });
-      setQuizMessage(
-        "選んだ確認条件をセットしました。採点ややり直しを自分で操作してください。",
-      );
-    }
+    session({ ...emptyQuiz(), answers: values });
+    preparedState({
+      id: test,
+      context,
+      prediction,
+      answers: values,
+      submitted: false,
+    });
+    setQuizMessage(
+      "予想を確定し、確認条件をセットしました。採点ややり直しを自分で操作してください。",
+    );
     requestAnimationFrame(() => prototypeHeading.current?.focus());
+  }
+  function retryVerification() {
+    // Clear both versions' results/counts; preserved answers are not evidence.
+    session({ ...emptyQuiz(), answers: latestQuiz.current.answers });
+    forgetTest();
+    setQuizMessage(
+      "再挑戦を始めます。以前の検証結果・両版の採点結果・実行回数を解除しました。予想を選び、確認条件をセットしてから実操作してください。",
+    );
+    requestAnimationFrame(() => predictionHeading.current?.focus());
   }
   function reset() {
     copy.invalidate();
@@ -453,7 +473,9 @@ export function Canvas({
   if (
     prepared?.context === context &&
     prepared.id === test &&
-    prediction !== null
+    prepared.submitted &&
+    (prepared.answers.every((a, i) => a === quiz.answers[i]) ||
+      (test === "restart" && quiz.event === "restart"))
   ) {
     if (test === "missing" && run.grade)
       observed = run.grade.kind === "blocked" ? 1 : 0;
@@ -695,6 +717,9 @@ export function Canvas({
                   if (e.target.value !== test) {
                     setTest(e.target.value as CanvasTest);
                     forgetTest();
+                    setQuizMessage(
+                      "確認課題を変更したため、現在の検証を解除しました。予想を選び、確認条件をセットし直してください。",
+                    );
                   }
                 }}
               >
@@ -706,23 +731,41 @@ export function Canvas({
               </select>
             </label>
             <p>{caseData.task}</p>
-            <fieldset>
-              <legend>この確認条件で起こることを予想する</legend>
+            <fieldset
+              disabled={prepared !== null}
+              aria-describedby="canvas-prediction-state"
+            >
+              <legend ref={predictionHeading} tabIndex={-1}>
+                この確認条件で起こることを予想する
+              </legend>
               {caseData.options.map((v, i) => (
                 <label className="option" key={v}>
                   <input
                     name="verification-prediction"
                     type="radio"
                     checked={prediction === i}
-                    onChange={() => setPrediction(i)}
+                    onChange={() => {
+                      if (!preparedRef.current) setPrediction(i);
+                    }}
                   />
                   {v}
                 </label>
               ))}
             </fieldset>
-            <button disabled={prediction === null} onClick={prepare}>
+            <p id="canvas-prediction-state" role="status">
+              {prepared
+                ? `確定した予想：${caseData.options[prepared.prediction]}。この検証中は変更できません。変更するには「予想を変更して再挑戦」を選び、条件セットと実操作をやり直してください。`
+                : "予想を選び、確認条件をセットすると予想が確定します。"}
+            </p>
+            <button
+              disabled={prediction === null || prepared !== null}
+              onClick={prepare}
+            >
               確認条件を試作品にセット
             </button>
+            {prepared && (
+              <button onClick={retryVerification}>予想を変更して再挑戦</button>
+            )}
             {prototype()}
             {observed !== null && (
               <div
@@ -731,10 +774,14 @@ export function Canvas({
                 aria-label="予想と実操作の比較"
               >
                 <h3>
-                  {observed === prediction
+                  {observed === prepared?.prediction
                     ? "予想と観察が一致しました"
                     : "予想と観察が違いました"}
                 </h3>
+                <p>
+                  条件セット時に確定した予想：
+                  {caseData.options[prepared!.prediction]}。
+                </p>
                 <p>操作で観察した結果：{caseData.options[observed]}。</p>
                 <p>
                   {test === "missing"

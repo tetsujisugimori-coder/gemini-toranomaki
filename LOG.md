@@ -290,3 +290,17 @@
 - ローカルWebKitで等幅フォントに変えると、試作品の長い教材表示バッジが286.45px、親の内容幅248pxに対して超過し、document幅322pxになることを再現。共通badgeのwhite-space:nowrapが第6章の長い表示に不適合だった。新しい回帰もCSS修正前にWebKitで失敗した。
 - `.canvas-prototype .badge` のみmax-width:100%/white-space:normalを指定し、全テキストを残して折り返す。切り取り/非表示/フォント縮小や横幅判定の緩和はしない。共通バッジや他章は変更しない。広いフォントの320pxで枠内収容と文言保持を確認する回帰1ケース×両engineを追加。最終定義は既存294＋新72＝366 E2E。
 - 修正後の最終ローカルは型/lint/単体57件/build/diff-check成功、Chromium183＋WebKit183＝366 E2Eが一括成功（既存294＋新72、skip/expected failureなし）。広いフォントの320px WebKitも枠内に全文が折り返されることを数値と一時画像1枚の目視で確認。コミット画像は代表2枚のまま。修正を追加commit/pushし、新しい最終HEADのchecksを再確認する。
+
+## PR #13 P2：Canvas体験4の予想固定と再挑戦（2026-10-25 UTC）
+
+- repo/remote/branchと未コミット変更を確認。開始時はクリーンで、fetch後のPR/remote/local HEADはレビュー対象 `fc2a4f5729aaa8fe17a69a2417a56765cbbd5312` に一致、先行変更なし。AGENTS.mdは親/リポジトリに見つからず、README/仕様/実装/保存/既存検証記録を確認。既存Draft PR #13、同じ `feat/chapter-6-canvas` で修正し、新規PRは作らない。
+- P2原因は、preparedが予想を保持せず比較が可変predictionを参照していたこと。「全問回答の採点」で0点を予想→セット→1点を観察→予想変更で一致へ変わり得た。まず回帰を追加し、修正前のChromium/WebKitの2件が採点後も1点を選べるため失敗することを確認した。
+- 第一希望を採用。条件セット時の一時snapshotへ確定予想/課題ID/context（テーマ・対象者・結果表示・版・反映済み修正）/回答/採点操作済みを保持。予想欄と再セットは無効化し、変更には「予想を変更して再挑戦」が必要とstatusで説明。比較はsnapshotの確定予想、同じ課題/context/回答と実採点だけを使う。
+- 再挑戦は両版の結果/回数/比較/確定予想を消し、legendへフォーカス。回答配列は残せても証拠とはせず、新たなセットが再び両版の結果/回数を初期化し、実操作を必要とする。連続は新しい検証で2回、やり直しは同じ条件で採点済みの場合のみ成立。採点前にやり直す/完了後の空回答を採点する場合は旧snapshotを解除する。
+- 課題/テーマ/対象者/結果表示/版/反映済み修正/回答の実変更では確定予想を解除し、元に戻しても旧比較を復活させない。同じ条件は保持。章離脱/再読込/第6章個別初期化で一時検証は消える。採点エンジン・正答・保存キー/形式・既存の4体験・他章・コピーhook・依存/lockfile・CI/Pages条件は変更しない。
+- 新規E2Eは15ケース×両engine＝30件。後出し不可/セット時固定、Enter再挑戦/旧証拠消去/新セット要求、連続回数起点/両版比較、7条件の実変更と同条件保持、やり直し、章離脱/再読込/章初期化/非保存を確認。既存366件は削除/緩和せず、skip/expected failureも追加しない。UI状態の実操作検証が主で、採点単体ロジックは変更不要。
+- 最初の対象36 E2Eは35成功/Chromium 1件失敗。やり直し後のrequestAnimationFrameフォーカス完了前に再挑戦ボタンのfocus/Enterを送っていたため、各やり直し後に設問legendのfocusを待つhelperを追加。アサーションは維持し、修正後36件は成功。独立指摘の追加修正後も全体回帰で再確認する。
+- 作者が別Chromiumで320/375/390/1280px・両テーマの8条件を操作し、予想固定/不一致/Enter再挑戦/旧結果消去/新セット後の採点を確認。代表の1280pxライトと375pxダークの一時画像2枚だけを開き目視。横超過なし。画像/traceのリポジトリ追加なし。
+- 自己レビューと別エージェント `review_canvas_prediction` の独立レビューを分けて実施。独立工程はソース/回帰テストを確認し、最新distをChromium/WebKit各1件・375pxで操作した。P3「課題変更で旧『予想確定』statusが残る」を追加発見し、変更時の解除/再セット通知と両statusの整合回帰を追加。別エージェントが両engineで再確認して解消し、レビュー範囲の残存P0/P1/P2/P3はなし。独立工程で全体テストを別実行したわけではない。[状態遷移とレビュー記録](docs/verification/canvas/README.md#pr-13-p2確定予想と観察証拠の固定2026-10-25-utc)。
+- 変更は `src/Canvas.tsx`、`tests/canvas.spec.ts`、`docs/specification.md`、`docs/verification/canvas/README.md`、`LOG.md` の5ファイル。未検証は実機iPhone Safari/Android、スクリーンリーダー、実Google Canvas、OS実クリップボード、個別提供/上限、教育効果・長期利用。再挑戦前の結果を記憶すること自体は制限しないが、古い結果を新しい証拠にはしない。Draft/未マージ/auto-mergeなしで人間レビューへ引継ぎ、最終HEADと実CIはPR/Issueコメントに記録する。
+- 修正後の最終ローカル検証：`npm run typecheck`、`npm run lint`、`npm test`（57件）、`npm run build`、`git diff --check` が成功。`PLAYWRIGHT_BROWSERS_PATH=/workspace/.cache/ms-playwright PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS=1 npm run test:e2e -- --workers=2` はChromium198＋WebKit198＝396件が一括成功（既存366＋新30、skip/expected failureなし）。保存失敗/破損/章別初期化/旧記録保護、コピー競合、狭幅/両テーマ/focus、外部送信なしの既存回帰も維持。ローカルのみ既存共有ライブラリ用のホスト判定例外を再利用し、CIの標準ブラウザ/OS依存導入・ホスト検証は維持する。push後の最終HEAD checksを確認するまではCI成功とは記録しない。
