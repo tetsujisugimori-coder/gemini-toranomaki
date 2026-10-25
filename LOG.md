@@ -255,3 +255,15 @@
 - 作者が別Chromiumセッションで主要4体験を操作。PCライトの遮蔽パッケージと375pxダークの共有判断の2画像だけを開いて目視、横あふれなし。画像は `docs/verification/live/`。作者の自己レビューとして指摘と修正を同ディレクトリREADMEへ記録し、独立レビューとは呼ばない。マイク/カメラ/共有権限・録音/認識・APIを追加せず、デバイスAPI呼出と外部送信なしのE2Eを追加。依存/lockfile/Pages公開条件は変更しない。
 - 最終ローカル結果：`npm run typecheck`、`npm run lint`、`npm test`（47件＝旧40＋新7）、`npm run build`、`git diff --check`成功。`PLAYWRIGHT_BROWSERS_PATH=/workspace/.cache/ms-playwright PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS=1 npm run test:e2e -- --workers=2` はChromium142＋WebKit142＝284件が一括成功（既存230＋新規54、skip/expected failureなし）。320/375/390/1280px・両テーマ・キーボード/focus・デバイスAPI/外部送信なしを検証。最終HEAD CIはDraft PR作成後に実結果を記録する。
 - 未検証：実機iPhone Safari/Android、スクリーンリーダー、実GoogleのLive/カメラ/画面共有/アプリ起動、OS実クリップボード、アカウント別提供/上限、教育効果。独立レビューは今回未実施。保存拒否時の永続化制約は残るが、成功扱いせず通知する。自己レビュー範囲に残る既知の重大な不具合はなく、Draftで人間のレビューを待つ。マージ・auto-merge・main直接push・本番公開はしない。
+
+## PR #11 レビュー修正：OS別資料・同一条件の保持（2026-10-25 UTC）
+
+- 開始時のrepo/remote/branchを確認し、作業ツリーはクリーン。originのfetchと対象ブランチの明示fetch後、リモート/ローカル/PR HEADは指定 `b494372825d1b84ed86e7d91a8f96da1cb204765` と一致した。PRはDraft/Open、GitHub上の通常/レビュー/インラインコメントはなく、今回の依頼に基づき修正。新規PRは作成せず、既存PR #11へpush・結果更新する。
+- P2原因：OfficialLiveの添字条件 `i > 1` がiOSアプリ資料も共通として扱った。各資料にplatform（ios/android/all）を明示し、選択OSまたは共通だけを抽出。iOS公式案内はLive/iOSアプリ/プライバシーの3件、Android公式案内はLive/プライバシーの2件。URL・OS名の文字列判定は使わず、既存URL/公式確認日/未確認範囲は維持した。
+- P3原因：会話・映像・共有目的のイベントで実条件の変化を見ずに回答を解除した。latest.currentと比較し、同じ題材/追加発言・frame・共有目的では回答と履歴/保存を変えない。正誤を問わず保持し、同じframeでは正本も保持。違う条件だけ対象回答（映像は正本も）を解除する。同じ会話題材のselectも現在の追加発言を保持し、別題材は未選択へ戻る。結果見出しへのフォーカスは再選択でも維持。他体験とコピーの状態・保存形式/キーは変更しない。
+- 修正前に最新production buildで新規5 E2EをChromium実行し、全5件が期待どおり失敗。体験1/4の公式案内のAndroidリンク混入、会話回答消去、正本閉鎖、共有/停止回答消去を確認した。修正後は追加ケースが通過した。
+- 両テーマ表示テストは、各テーマで条件変更の準備として「全体」を選ぶ操作を追加。初回は準備操作のrequestAnimationFrameフォーカス完了を待たず、3件が失敗したため、準備結果の見出しフォーカスを待つよう修正。元の表示/選択/キーボード/フォーカス/横あふれアサーションは削除/緩和しない。修正後の該当18 E2E（9ケース×両engine）は成功。
+- 追加は単体1件（資料の明示分類とURL不変）、E2E5ケース×2＝10件。両公式案内のOS往復/共通資料/AndroidにiOS専用なし、会話の正答・誤答保持と別条件解除、同一映像の回答/正本・文字代替保持、異なる映像の解除、同一共有目的の二回答保持・異なる目的で解除、履歴重複防止/別体験保持/再読み込みを検証。既存の他章/保存失敗/コピー遅延・条件変更/reset/章離脱/同一ターン競合は全体回帰で再実行する。
+- 作者が別Chromiumセッションで375pxライト/390pxダークのOS往復リンク、キーボード再選択、正本の保持/条件変更で閉鎖、再読込による回答復元を操作。各代表画像1枚（計2枚）だけを一時保存して開き目視、横あふれなし。画像/traceの追加commitはしない。これは作者の自己レビューであり、修正後の独立再レビューは未実施。Draftのまま人間へ引き継ぐ。
+- 変更はsrc/Live.tsx、src/live-data.ts、src/live.test.ts、tests/live.spec.ts、docs/specification.md、docs/verification/live/README.md、LOG.mdの7件のみ。4体験・正本・第1〜4章・第6〜10章・保存キー/形式・権限/送信なし・依存/lockfile・Pages公開条件を維持。既存の未検証（実機Safari/Android、スクリーンリーダー、実Google操作、OS実クリップボード、個別提供/教育効果）を成功扱いしない。保存拒否で旧記録が戻る制約も維持。最終HEAD/CIはPR本文と結果コメントに記録する。
+- 最終ローカル検証：`npm run typecheck`、`npm run lint`、`npm test`（48件＝既存47＋追加1）、`npm run build`、`git diff --check`成功。`PLAYWRIGHT_BROWSERS_PATH=/workspace/.cache/ms-playwright PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS=1 npm run test:e2e -- --workers=2` はChromium147件＋WebKit147件＝294件が一括成功（既存284＋追加10）。skip/expected failureなし。ローカル既存共有ライブラリのためのホスト判定例外だけ再利用し、CIは標準ブラウザ/OS依存導入・ホスト検証を維持する。CIはpush後の最終HEADを確認し、PRへ実結果を記録する。

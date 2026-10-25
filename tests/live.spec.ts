@@ -4,6 +4,7 @@ import {
   followups,
   frames,
   livePrompt,
+  liveReferences,
   shareChoices,
   sharingCases,
 } from "../src/live-data";
@@ -606,6 +607,13 @@ for (const width of [320, 375, 390, 1280])
           ).toBeFocused();
         }
         if (n === 2) {
+          await page.getByRole("button", { name: "全体", exact: true }).click();
+          await expect(
+            page.getByRole("heading", {
+              name: "現在の条件：全体（ライブ映像ではありません）",
+              exact: true,
+            }),
+          ).toBeFocused();
           const frame = page.getByRole("button", {
             name: "一部が隠れている",
             exact: true,
@@ -671,4 +679,192 @@ test("failed writes and deletion keep temporary learning usable, cancel restores
     page.getByRole("button", { name: followups[0], exact: true }),
   ).toHaveAttribute("aria-pressed", "true");
   expect(await record(page)).toEqual(old);
+});
+
+for (const n of [1, 4])
+  test(`official references follow the selected OS in experience ${n}`, async ({
+    page,
+  }) => {
+    await page.goto("#chapter-5");
+    await step(page, n);
+    const summary = page.getByText(
+      n === 4
+        ? "選んだ端末の公式操作・利用条件"
+        : "実Liveの操作と、この教材の違いを確認",
+      { exact: true },
+    );
+    await summary.click();
+    const links = summary.locator("..").locator(".service-content a");
+    const select = page.getByRole("combobox", {
+      name: n === 4 ? "案内する端末" : "公式案内の端末",
+      exact: true,
+    });
+    for (const os of ["ios", "android", "ios"] as const) {
+      await select.selectOption(os);
+      const expected =
+        os === "ios"
+          ? [liveReferences[0], liveReferences[2], liveReferences[3]]
+          : [liveReferences[1], liveReferences[3]];
+      await expect(links).toHaveText(
+        expected.map((r) => `${r.title} ↗（別タブ）`),
+      );
+      expect(
+        await links.evaluateAll((nodes) =>
+          nodes.map((n) => n.getAttribute("href")),
+        ),
+      ).toEqual(expected.map((r) => r.url));
+      await expect(
+        links.filter({ hasText: "Liveのデータの取り扱い" }),
+      ).toHaveCount(1);
+      if (os === "android")
+        await expect(links.filter({ hasText: "iOS" })).toHaveCount(0);
+    }
+  });
+
+test("same conversation and followup preserve the answer, history and other experiences; changed conditions clear only that answer", async ({
+  page,
+}) => {
+  await page.goto("#chapter-5");
+  await step(page, 2);
+  await page.getByLabel(frames[0].options[0], { exact: true }).check();
+  await step(page, 1);
+  await page.getByRole("button", { name: followups[0], exact: true }).click();
+  await page.getByLabel("短くなれば必ず正しい", { exact: true }).check();
+  const wrong = await record(page);
+  await page.getByRole("button", { name: followups[0], exact: true }).click();
+  expect(await record(page)).toEqual(wrong);
+  await page
+    .getByLabel("変わった点と元の意味を比べ、不明な部分を聞き直す", {
+      exact: true,
+    })
+    .check();
+  const before = await record(page);
+  const button = page.getByRole("button", { name: followups[0], exact: true });
+  await button.focus();
+  await page.keyboard.press("Enter");
+  await expect(
+    page.getByRole("heading", { name: "追加発言後の回答例", exact: true }),
+  ).toBeFocused();
+  expect(await record(page)).toEqual(before);
+  await page
+    .getByRole("combobox", { name: "会話の題材", exact: true })
+    .selectOption("ice");
+  expect(await record(page)).toEqual(before);
+  await page.reload();
+  expect(await record(page)).toEqual(before);
+  await expect(
+    page.getByLabel("変わった点と元の意味を比べ、不明な部分を聞き直す", {
+      exact: true,
+    }),
+  ).toBeChecked();
+  await page.getByRole("button", { name: followups[1], exact: true }).click();
+  expect((await record(page)).conversationAnswer).toBeNull();
+  expect((await record(page)).packageAnswer).toBe(before.packageAnswer);
+  expect((await record(page)).history).toEqual([
+    ...before.history,
+    "conversation:ice:1",
+  ]);
+  await page
+    .getByLabel("変わった点と元の意味を比べ、不明な部分を聞き直す", {
+      exact: true,
+    })
+    .check();
+  await page
+    .getByRole("combobox", { name: "会話の題材", exact: true })
+    .selectOption("rainbow");
+  expect((await record(page)).conversationAnswer).toBeNull();
+  expect((await record(page)).followup).toBeNull();
+  expect((await record(page)).packageAnswer).toBe(before.packageAnswer);
+  await expect(
+    page.getByText("追加する発言を選んでください。まだ説明を変えていません。", {
+      exact: true,
+    }),
+  ).toBeVisible();
+});
+
+test("same frame preserves answer and open answer key; text alternative preserves both and a changed frame clears them", async ({
+  page,
+}) => {
+  await page.goto("#chapter-5");
+  await step(page, 2);
+  await page.getByLabel(frames[0].options[0], { exact: true }).check();
+  await page
+    .getByRole("button", { name: "答え合わせの正本を開く", exact: true })
+    .click();
+  const before = await record(page);
+  await page.getByRole("button", { name: "全体", exact: true }).focus();
+  await page.keyboard.press("Enter");
+  await expect(
+    page.getByRole("heading", {
+      name: "現在の条件：全体（ライブ映像ではありません）",
+      exact: true,
+    }),
+  ).toBeFocused();
+  await expect(page.locator("#live-truth")).toBeVisible();
+  expect(await record(page)).toEqual(before);
+  for (const checked of [true, false]) {
+    await page
+      .getByLabel("図の代わりに文字で判断する", { exact: true })
+      .setChecked(checked);
+    expect(await record(page)).toEqual(before);
+    await expect(page.locator("#live-truth")).toBeVisible();
+  }
+  await page.reload();
+  expect(await record(page)).toEqual(before);
+  await expect(
+    page.getByLabel(frames[0].options[0], { exact: true }),
+  ).toBeChecked();
+  await expect(page.locator("#live-truth")).toHaveCount(0);
+  await page
+    .getByRole("button", { name: "答え合わせの正本を開く", exact: true })
+    .click();
+  await page.getByRole("button", { name: "ぼけている", exact: true }).click();
+  expect((await record(page)).packageAnswer).toBeNull();
+  expect((await record(page)).history).toEqual(before.history);
+  await expect(page.locator("#live-truth")).toHaveCount(0);
+  await expect(
+    page.getByRole("button", { name: "答え合わせの正本を開く", exact: true }),
+  ).toBeDisabled();
+});
+
+test("same sharing purpose preserves both answers and a changed purpose leaves unrelated checks and history intact", async ({
+  page,
+}) => {
+  await page.goto("#chapter-5");
+  await page.getByRole("button", { name: followups[2], exact: true }).click();
+  await page
+    .getByLabel("変わった点と元の意味を比べ、不明な部分を聞き直す", {
+      exact: true,
+    })
+    .check();
+  await step(page, 3);
+  await page.getByLabel(shareChoices[1], { exact: true }).check();
+  await page
+    .getByLabel(
+      "開始時の共有範囲を確認し、カメラ・画面共有・会話終了を別々に確認する",
+      { exact: true },
+    )
+    .check();
+  const before = await record(page);
+  const select = page.getByRole("combobox", {
+    name: "画面を見せたい目的",
+    exact: true,
+  });
+  await select.selectOption("calendar");
+  expect(await record(page)).toEqual(before);
+  await page.reload();
+  expect(await record(page)).toEqual(before);
+  await expect(page.getByLabel(shareChoices[1], { exact: true })).toBeChecked();
+  await expect(
+    page.getByLabel(
+      "開始時の共有範囲を確認し、カメラ・画面共有・会話終了を別々に確認する",
+      { exact: true },
+    ),
+  ).toBeChecked();
+  await select.selectOption("settings");
+  const after = await record(page);
+  expect(after.sharingAnswer).toBeNull();
+  expect(after.stopAnswer).toBeNull();
+  expect(after.conversationAnswer).toBe(before.conversationAnswer);
+  expect(after.history).toEqual(before.history);
 });

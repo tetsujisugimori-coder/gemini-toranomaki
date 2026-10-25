@@ -1,18 +1,26 @@
-export const liveReferences = [
+export const liveReferences: {
+  title: string;
+  url: string;
+  platform: "ios" | "android" | "all";
+}[] = [
   {
     title: "Gemini Live：iPhoneとiPad（公式）",
+    platform: "ios",
     url: "https://support.google.com/gemini/answer/15274899?co=GENIE.Platform%3DiOS&hl=ja",
   },
   {
     title: "Gemini Live：Android（公式）",
+    platform: "android",
     url: "https://support.google.com/gemini/answer/15274899?co=GENIE.Platform%3DAndroid&hl=ja",
   },
   {
     title: "Geminiモバイルアプリ：iOS（公式）",
+    platform: "ios",
     url: "https://support.google.com/gemini/answer/14554984?co=GENIE.Platform%3DiOS&hl=ja",
   },
   {
     title: "Liveのデータの取り扱い（公式）",
+    platform: "all",
     url: "https://support.google.com/gemini/answer/13594961?hl=ja#live_data",
   },
 ];

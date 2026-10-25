@@ -3,6 +3,7 @@ import {
   conversations,
   frames,
   livePrompt,
+  liveReferences,
   practiceObjects,
   packageTruth,
   sharingCases,
@@ -163,4 +164,19 @@ it("reports corrupt, denied and quota-limited storage without blocking in-memory
   });
   expect(loadLive().available).toBe(false);
   expect(liveKey).toBe("gemini-toranomaki:live:v1");
+});
+
+it("classifies official references explicitly by platform without changing URLs", () => {
+  expect(liveReferences.map((r) => r.platform)).toEqual([
+    "ios",
+    "android",
+    "ios",
+    "all",
+  ]);
+  expect(liveReferences.map((r) => r.url)).toEqual([
+    "https://support.google.com/gemini/answer/15274899?co=GENIE.Platform%3DiOS&hl=ja",
+    "https://support.google.com/gemini/answer/15274899?co=GENIE.Platform%3DAndroid&hl=ja",
+    "https://support.google.com/gemini/answer/14554984?co=GENIE.Platform%3DiOS&hl=ja",
+    "https://support.google.com/gemini/answer/13594961?hl=ja#live_data",
+  ]);
 });

@@ -66,7 +66,7 @@ function OfficialLive({ platform }: { platform: LiveRecord["platform"] }) {
         </p>
       </details>
       {liveReferences
-        .filter((_, i) => i > 1 || i === (platform === "ios" ? 0 : 1))
+        .filter((ref) => ref.platform === "all" || ref.platform === platform)
         .map((ref) => (
           <p key={ref.url}>
             <a href={ref.url} target="_blank" rel="noreferrer">
@@ -116,19 +116,26 @@ export function Live({
     requestAnimationFrame(() => heading.current?.focus());
   }
   function conversation(id: ConversationId, followup: number | null) {
-    update({
-      conversation: id,
-      followup,
-      conversationAnswer: null,
-      ...(followup !== null
-        ? { history: history(`conversation:${id}:${followup}`) }
-        : {}),
-    });
+    if (
+      id !== latest.current.conversation ||
+      followup !== latest.current.followup
+    ) {
+      update({
+        conversation: id,
+        followup,
+        conversationAnswer: null,
+        ...(followup !== null
+          ? { history: history(`conversation:${id}:${followup}`) }
+          : {}),
+      });
+    }
     requestAnimationFrame(() => result.current?.focus());
   }
   function changeFrame(id: FrameId) {
-    setTruth(false);
-    update({ frame: id, packageAnswer: null });
+    if (id !== latest.current.frame) {
+      setTruth(false);
+      update({ frame: id, packageAnswer: null });
+    }
     requestAnimationFrame(() => result.current?.focus());
   }
   function practice(id: PracticeId) {
@@ -193,7 +200,12 @@ export function Live({
               <select
                 value={r.conversation}
                 onChange={(e) =>
-                  conversation(e.target.value as ConversationId, null)
+                  conversation(
+                    e.target.value as ConversationId,
+                    e.target.value === latest.current.conversation
+                      ? latest.current.followup
+                      : null,
+                  )
                 }
               >
                 {conversations.map((c) => (
@@ -385,13 +397,14 @@ export function Live({
               画面を見せたい目的
               <select
                 value={r.sharing}
-                onChange={(e) =>
-                  update({
-                    sharing: e.target.value as LiveRecord["sharing"],
-                    sharingAnswer: null,
-                    stopAnswer: null,
-                  })
-                }
+                onChange={(e) => {
+                  if (e.target.value !== latest.current.sharing)
+                    update({
+                      sharing: e.target.value as LiveRecord["sharing"],
+                      sharingAnswer: null,
+                      stopAnswer: null,
+                    });
+                }}
               >
                 {sharingCases.map((s) => (
                   <option key={s.id} value={s.id}>
