@@ -6,6 +6,7 @@ import "./style.css";
 import { Lab } from "./Lab";
 import { Exploration } from "./Exploration";
 import { Services } from "./Services";
+import { StudyChapters } from "./StudyChapters";
 function currentRoute() {
   return location.hash === "#main" ? "home" : location.hash.slice(1) || "home";
 }
@@ -47,7 +48,7 @@ function App() {
   const lesson = lessons.find((l) => l.id === route);
   const completed = progress.completed.includes(lesson?.id ?? "");
   const update = (value: boolean) => {
-    if (!lesson || lesson.status !== "ready") return;
+    if (!lesson || lesson.status !== "ready") return false;
     const other = progress.completed.filter((id) => id !== lesson.id);
     const next = { completed: value ? [...other, lesson.id] : other };
     setProgress(next);
@@ -58,6 +59,7 @@ function App() {
         ? "進捗を保存しました。"
         : "この画面内で進捗を更新しました。保存はできません。",
     );
+    return ok;
   };
   async function copy() {
     try {
@@ -124,6 +126,18 @@ function App() {
           aria-current={route === "chapter-2" ? "page" : undefined}
         >
           第2章を学ぶ
+        </a>
+        <a
+          href="#chapter-3"
+          aria-current={route === "chapter-3" ? "page" : undefined}
+        >
+          第3章を学ぶ
+        </a>
+        <a
+          href="#chapter-4"
+          aria-current={route === "chapter-4" ? "page" : undefined}
+        >
+          第4章を学ぶ
         </a>
       </nav>
       <main id="main" ref={main} tabIndex={-1}>
@@ -200,8 +214,8 @@ function App() {
             </h1>
             <p className="lead">第1章で入り口を知り、各機能の実践へ。</p>
             <p>
-              章番号・章題・実践課題はIssue
-              #1に準拠。第1・2章を学習できます。第3〜10章は準備中です。各章を開くと概要と参考情報を確認できます。
+              章番号・実践課題はIssue
+              #1に準拠。第1〜4章を学習できます。第5〜10章は準備中です。第3・4章の表示名は統合実装の依頼に基づきます。各章を開くと概要と参考情報を確認できます。
             </p>
             <div className="chapter-list">
               {lessons.map((l) => (
@@ -244,6 +258,12 @@ function App() {
               </section>
             ) : lesson.id === "chapter-2" ? (
               <Services completed={completed} onComplete={update} />
+            ) : lesson.id === "chapter-3" || lesson.id === "chapter-4" ? (
+              <StudyChapters
+                chapter={lesson.id === "chapter-3" ? 3 : 4}
+                completed={completed}
+                onComplete={update}
+              />
             ) : (
               <>
                 <a
@@ -363,8 +383,8 @@ function App() {
           <p>
             {completed
               ? "この章の学習完了を記録しています。"
-              : "第1・2章を自分のペースで学びましょう。"}{" "}
-            公開済み：2章
+              : "第1〜4章を自分のペースで学びましょう。"}{" "}
+            公開済み：4章
           </p>
           {!storageAvailable && (
             <p role="status">

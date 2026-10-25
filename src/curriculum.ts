@@ -1,3 +1,4 @@
+import { studyReferences } from "./study-data";
 import { serviceReferences } from "./services-data";
 export interface Reference {
   title: string;
@@ -118,7 +119,7 @@ export const lessons: Lesson[] = topics.map(
     references: [{ title: "Google公式情報（外部サイト）", url }],
     checkedAt:
       "2026-10-22：公式ページ取得がネットワーク制限で拒否されたため、現行仕様は未確認",
-    status: i < 2 ? "ready" : "planned",
+    status: i < 4 ? "ready" : "planned",
     steps: [],
   }),
 );
@@ -177,3 +178,26 @@ lessons[1].conditions =
   "Google公式ヘルプ本文を2026-10-23に確認。アカウント・管理者設定・プラン・地域・端末による実際の提供範囲は未確認です。模擬演習には接続や契約は不要です。";
 lessons[1].checkedAt =
   "2026-10-23：接続・予定管理・アプリ連携・Gemini in Gmailの公式ヘルプ本文を確認。実アカウントでの操作は未検証";
+
+lessons[2].title = "Deep Research：調査計画から出典検証まで";
+lessons[2].goal =
+  "調査条件と計画を具体化し、出典の方法・対象年・本文を照合してレポートを評価する。";
+lessons[2].description =
+  "3テーマの架空資料を使い、計画の改善、7種類の出典判断、レポートの5つの問題を検証します。";
+lessons[3].title = "Notebook：調査資料を学習教材に変える";
+lessons[3].goal =
+  "資料の参照範囲を管理し、引用を原文で確かめ、学習ガイド・解説台本・マップへ再利用する。";
+lessons[3].description =
+  "第3章の検証資料を引き継ぐか、単独で資料を選び、引用の照合と学習への変換を体験します。";
+for (const i of [2, 3]) {
+  lessons[i].references =
+    i === 2 ? studyReferences.slice(0, 1) : studyReferences.slice(1);
+  lessons[i].conditions =
+    "公式ヘルプ本文を本実装時に確認。年齢・地域・プラン・端末・段階提供と実アカウントでの利用可否は自分の画面でも確認してください。実操作は未確認で、模擬演習にはログイン・契約は不要です。";
+  lessons[i].cautions = [
+    "表示名は第3・4章の統合実装依頼（Issue #8）に基づきます。模擬画面は実製品の画面再現ではありません。",
+    "教材用の架空資料を実世界の統計や論文として引用しないでください。",
+  ];
+  lessons[i].checkedAt =
+    "Issue #8実装時：公式本文を確認。名称・関係と教材の簡略化、確認日・未検証事項は仕様書に記録";
+}

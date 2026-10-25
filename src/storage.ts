@@ -13,7 +13,10 @@ export function loadProgress(): { progress: Progress; available: boolean } {
       Array.isArray(data.completed)
         ? data.completed.filter(
             (id: unknown): id is string =>
-              id === "chapter-1" || id === "chapter-2",
+              id === "chapter-1" ||
+              id === "chapter-2" ||
+              id === "chapter-3" ||
+              id === "chapter-4",
           )
         : [];
     return {
