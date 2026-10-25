@@ -79,7 +79,7 @@ async function settle(p: Page, index: number, outcome: "success" | "failure") {
   );
 }
 
-test("chapter five is reachable from curriculum and chapter-one feature map while six remains planned", async ({
+test("chapter five is reachable from curriculum and chapter-one feature map while seven remains planned", async ({
   page,
 }) => {
   await page.goto("#curriculum");
@@ -97,7 +97,7 @@ test("chapter five is reachable from curriculum and chapter-one feature map whil
   await expect(link).toContainText("学習できます");
   await link.click();
   await expect(page.locator("h1")).toBeFocused();
-  await page.goto("#chapter-6");
+  await page.goto("#chapter-7");
   await expect(
     page.getByRole("heading", { name: "準備中", exact: true }),
   ).toBeVisible();

@@ -267,3 +267,19 @@
 - 作者が別Chromiumセッションで375pxライト/390pxダークのOS往復リンク、キーボード再選択、正本の保持/条件変更で閉鎖、再読込による回答復元を操作。各代表画像1枚（計2枚）だけを一時保存して開き目視、横あふれなし。画像/traceの追加commitはしない。これは作者の自己レビューであり、修正後の独立再レビューは未実施。Draftのまま人間へ引き継ぐ。
 - 変更はsrc/Live.tsx、src/live-data.ts、src/live.test.ts、tests/live.spec.ts、docs/specification.md、docs/verification/live/README.md、LOG.mdの7件のみ。4体験・正本・第1〜4章・第6〜10章・保存キー/形式・権限/送信なし・依存/lockfile・Pages公開条件を維持。既存の未検証（実機Safari/Android、スクリーンリーダー、実Google操作、OS実クリップボード、個別提供/教育効果）を成功扱いしない。保存拒否で旧記録が戻る制約も維持。最終HEAD/CIはPR本文と結果コメントに記録する。
 - 最終ローカル検証：`npm run typecheck`、`npm run lint`、`npm test`（48件＝既存47＋追加1）、`npm run build`、`git diff --check`成功。`PLAYWRIGHT_BROWSERS_PATH=/workspace/.cache/ms-playwright PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS=1 npm run test:e2e -- --workers=2` はChromium147件＋WebKit147件＝294件が一括成功（既存284＋追加10）。skip/expected failureなし。ローカル既存共有ライブラリのためのホスト判定例外だけ再利用し、CIは標準ブラウザ/OS依存導入・ホスト検証を維持する。CIはpush後の最終HEADを確認し、PRへ実結果を記録する。
+
+## Issue #12：第6章Canvasのクイズ試作・修正・検証（2026-10-25 UTC）
+
+- 開始時repo/remoteは指定どおり、作業ツリーはクリーン、旧章5ブランチHEADは `fbc57d99436a3861663a567b5f7b2ae02ae5f543`。AGENTS.mdは親/リポジトリ/指定設定ディレクトリで見つからなかった。README/仕様/教材/保存/旧テストとCI・Pagesを確認。
+- PR #11はmerge `a98c0a01581c94ab5f5e418a83dec050acb73ff9` で取込済み。前回後の追加HEAD `504dec5` は独立再レビュー記録のみで、コード差分なしと確認。pull-main手順のfetch→switch→ff-only pullで最新mainを取得し `feat/chapter-6-canvas` を作成。既存に同内容Issue/PRはなく[Issue #12](https://github.com/tetsujisugimori-coder/gemini-toranomaki/issues/12)へ範囲/受入条件を記録。初回本文は変更せず結果をコメントへ追記する。
+- 公式Canvas紹介（取得本文は英語）とPC/iOS/Androidヘルプの計4本文をHTTP200で取得。文書/コード/アプリの作成・編集・チャット修正・プレビュー/ログ・自動保存・共有を確認。共通/OSを明示し配列位置で分類しない。機能別18歳条件をCanvas全体へ広げず、プラン/端末/アカウント等の実提供と実Google操作は未確認とした。[URLと確認内容](docs/specification.md#第6章canvasissue-12)。
+- 4体験は、曖昧な依頼→条件/期待動作の具体化、実際に回答と採点ができる固定初期版、見た目/動作の修正依頼と明示反映/同条件比較、4課題の予想→実操作→観察比較。初期版の未回答採点は教材枠内の意図した改善課題。未回答検出の修正は採点せず全問題番号と移動ボタンを表示。3問・各3択・1問1点・正答・やり直しを維持する。
+- 2テーマはオリジナルの「身近な科学」「情報の確かめ方」。`canvas-engine.ts` が固定正答から毎回計算し、累積点にしない。回答は両版で共通、採点/回数は版別。回答実変更で両版結果解除、条件実変更で現在試作品/検証を初期化。同一条件/版/修正の再選択では保持。境界条件セットは選択肢を実際に設定し、点数の演出ではない。
+- 新規キー `gemini-toranomaki:canvas:v1` に固定条件・理解チェック・過去のテーマ/版別操作ID・本文版コピーID・任意実操作自己申告のみ保存。回答/点数/現在の検証は一時化し、再読込/章離脱では再回答を要する方針を明記。旧キー/形式と全体初期化（章完了だけ）は維持し、章6個別初期化は確認後に章6記録/一時状態/章6完了だけを削除。拒否/容量不足/破損は未永続化と旧記録復帰を通知。
+- コピーは既存useStudyCopyのmounted/version/hashと最新の本文IDを照合し、成功は最新状態へマージ。本文実変更/reset/離脱後の旧成功/失敗/finallyを除外。作成/修正/確認の全文を任意演習へ提供。OAuth/API/ログイン/バックエンド/eval/外部スクリプト/自由コード実行/外部送信は追加しない。
+- 単体9件追加：全64組合せ×2テーマの初期/修正版採点、未回答検出、連続採点、回答変更解除、プリセット、全文/コピーID、OS分類、非保存フィールド/旧キー/保存失敗。E2Eは35ケース×両engine＝70件追加。実UIの採点/比較/検証、同条件/実変更、章離脱/復元/個別と全体初期化、保存拒否/破損/旧記録、コピー成功/拒否/遅延/競合、外部送信なし、320/375/390/1280px・両テーマ・キーボード/focusを対象。
+- 既存294 E2Eは削除しない。準備中と未知完了IDのテスト対象を第7章へ移し、機能探検ではCanvas到達の検査を追加して旧準備中検査も第7章で維持。第1〜5章本体・保存・依存/lockfile・CI/Pagesゲートは変更しない。
+- 初回lintの未使用変数/importは除去してからbuild。初回新規E2Eはフォーカス完了前の次操作で4件失敗し、結果見出しのfocus待機を加えてアサーションを維持。境界条件セット後の操作欄消失も自己レビューで改善。修正後の新規70件は成功。さらに章初期化で確認課題選択も既定へ戻す処理/回帰を追加し、最終版を再検証する。
+- 作者が別Chromiumセッションで主要4体験を操作し、PCライトの同一部分回答前後比較、375pxダークの連続採点検証の2画像を開いて目視。横あふれなし。`docs/verification/canvas/` に2枚だけ保存し、全成功画像/長大画像/常時traceは追加しない。[自己レビュー](docs/verification/canvas/README.md)で説明/実動作/比較/状態解除/保存/コピーを確認。独立レビューではない。
+- 保存トレードオフは回答復元より現在結果と過去履歴の区別を優先したもので、再回答が必要と明示。第一希望を外部接続や疑似結果で代替した点はない。実Googleの生成/共有は当初から任意/範囲外。実機iPhone Safari/Android、スクリーンリーダー、実Google Canvas、個別提供/上限、OS実クリップボード、教育効果は未検証。Draft/未マージ/auto-mergeなしで人間レビューを待つ。
+- 最終ローカル検証：初期化の追加修正後にも `npm run typecheck`、`npm run lint`、`npm test`（57件＝既存48＋新9）、`npm run build`、`git diff --check` が成功。`PLAYWRIGHT_BROWSERS_PATH=/workspace/.cache/ms-playwright PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS=1 npm run test:e2e -- --workers=2` はChromium182＋WebKit182＝364件が一括成功（既存294維持＋新70、skip/expected failureなし）。既存共有ライブラリ用のホスト判定例外だけを再利用し、CIは標準ブラウザ/OS依存導入とホスト検証を維持。最終HEADの実checksはDraft PR作成後に確認し、PR/Issueへ実結果を記録する。

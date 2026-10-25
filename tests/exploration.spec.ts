@@ -50,6 +50,10 @@ test("purpose and reverse map show reasons, alternatives and real chapter overvi
   await page.locator(".map-results a").click();
   await expect(page).toHaveURL(/#chapter-6$/);
   await expect(
+    page.getByRole("heading", { name: "Canvas", exact: true }),
+  ).toBeVisible();
+  await page.goto("#chapter-7");
+  await expect(
     page.getByRole("heading", { name: "準備中", exact: true }),
   ).toBeVisible();
   await page.getByRole("link", { name: "第1章を学ぶ", exact: true }).click();

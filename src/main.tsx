@@ -6,6 +6,7 @@ import "./style.css";
 import { Lab } from "./Lab";
 import { Exploration } from "./Exploration";
 import { Services } from "./Services";
+import { Canvas } from "./Canvas";
 import { Live } from "./Live";
 import { StudyChapters } from "./StudyChapters";
 function currentRoute() {
@@ -146,6 +147,12 @@ function App() {
         >
           第5章を学ぶ
         </a>
+        <a
+          href="#chapter-6"
+          aria-current={route === "chapter-6" ? "page" : undefined}
+        >
+          第6章を学ぶ
+        </a>
       </nav>
       <main id="main" ref={main} tabIndex={-1}>
         <div className="eyebrow">非公式インタラクティブ教材 · v0.2</div>
@@ -222,7 +229,7 @@ function App() {
             <p className="lead">第1章で入り口を知り、各機能の実践へ。</p>
             <p>
               章番号・実践課題はIssue
-              #1に準拠。第1〜5章を学習できます。第6〜10章は準備中です。第3・4章の表示名は統合実装の依頼に基づきます。各章を開くと概要と参考情報を確認できます。
+              #1に準拠。第1〜6章を学習できます。第7〜10章は準備中です。第3・4章の表示名は統合実装の依頼に基づきます。各章を開くと概要と参考情報を確認できます。
             </p>
             <div className="chapter-list">
               {lessons.map((l) => (
@@ -263,6 +270,8 @@ function App() {
                 <p>この章の操作教材は、今後追加する予定です。</p>
                 <a href="#chapter-1">第1章で画面を確認する →</a>
               </section>
+            ) : lesson.id === "chapter-6" ? (
+              <Canvas completed={completed} onComplete={update} />
             ) : lesson.id === "chapter-5" ? (
               <Live completed={completed} onComplete={update} />
             ) : lesson.id === "chapter-2" ? (
@@ -392,8 +401,8 @@ function App() {
           <p>
             {completed
               ? "この章の学習完了を記録しています。"
-              : "第1〜5章を自分のペースで学びましょう。"}{" "}
-            公開済み：5章
+              : "第1〜6章を自分のペースで学びましょう。"}{" "}
+            公開済み：6章
           </p>
           {!storageAvailable && (
             <p role="status">
