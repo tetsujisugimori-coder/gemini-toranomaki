@@ -1,4 +1,12 @@
 import {
+  canvasJudgments,
+  defaultTimer,
+  sanitizeTimer,
+  timerCopyIds,
+  timerEvents,
+  type TimerSettings,
+} from "./canvas-workshop";
+import {
   canvasChecks,
   canvasCopyKey,
   defaultCanvasSettings,
@@ -21,6 +29,11 @@ export interface CanvasRecord extends CanvasSettings {
   history: string[];
   copied: string[];
   tried: boolean;
+  viewed: number[];
+  judgments: Record<string, number>;
+  timer: TimerSettings;
+  timerHistory: string[];
+  timerCopied: string[];
 }
 export const freshCanvas = (): CanvasRecord => ({
   ...defaultCanvasSettings,
@@ -34,6 +47,11 @@ export const freshCanvas = (): CanvasRecord => ({
   history: [],
   copied: [],
   tried: false,
+  viewed: [],
+  judgments: {},
+  timer: { ...defaultTimer },
+  timerHistory: [],
+  timerCopied: [],
 });
 const object = (raw: unknown): Record<string, unknown> =>
   raw && typeof raw === "object" && !Array.isArray(raw)
@@ -119,6 +137,29 @@ export function sanitizeCanvas(raw: unknown): CanvasRecord {
     copied: list(r.copied, canvasCopyIds),
     history: list(r.history, canvasHistoryIds),
     tried: r.tried === true,
+    viewed: Array.isArray(r.viewed)
+      ? [
+          ...new Set(
+            r.viewed.filter(
+              (n): n is number => Number.isInteger(n) && n >= 0 && n < 4,
+            ),
+          ),
+        ]
+      : [],
+    judgments: Object.fromEntries(
+      canvasJudgments.flatMap((c) => {
+        const n = object(r.judgments)[c.id];
+        return typeof n === "number" &&
+          Number.isInteger(n) &&
+          n >= 0 &&
+          n < c.options.length
+          ? [[c.id, n]]
+          : [];
+      }),
+    ),
+    timer: sanitizeTimer(r.timer),
+    timerHistory: list(r.timerHistory, timerEvents),
+    timerCopied: list(r.timerCopied, timerCopyIds),
   };
 }
 export function loadCanvas() {

@@ -27,6 +27,13 @@ const completion = (p: Page) =>
   p.getByLabel("第6章の学習を完了した（自己申告）", { exact: true });
 async function understand(p: Page, id: "requirements" | "repair" | "proof") {
   const c = canvasChecks.find((c) => c.id === id)!;
+  if (
+    id === "repair" &&
+    !(await p.getByRole("group", { name: c.question, exact: true }).isVisible())
+  )
+    await p
+      .getByText("ヒントを開いて修正を先に試す（任意）", { exact: true })
+      .click();
   await p
     .getByRole("group", { name: c.question, exact: true })
     .getByLabel(c.options[c.answer], { exact: true })
@@ -34,9 +41,28 @@ async function understand(p: Page, id: "requirements" | "repair" | "proof") {
 }
 async function trial(p: Page) {
   await step(p, 2);
+  if (
+    await p
+      .getByRole("button", { name: "初回実験をやり直す", exact: true })
+      .isVisible()
+  ) {
+    await p
+      .getByRole("button", { name: "初回実験をやり直す", exact: true })
+      .click();
+    await expect(
+      p
+        .getByRole("group", {
+          name: "初期版で全問未回答のまま採点したら？",
+          exact: true,
+        })
+        .locator("legend"),
+    ).toBeFocused();
+  }
+  await p.getByLabel("未回答を不正解として点数が出る", { exact: true }).check();
   await p
-    .getByLabel("点数が出るかもしれない。実際に試す", { exact: true })
-    .check();
+    .getByRole("button", { name: "予想を確定して試作品を開く", exact: true })
+    .click();
+  await expect(prototype(p).getByRole("heading", { level: 3 })).toBeFocused();
 }
 async function repair(p: Page, mode = "unanswered") {
   await step(p, 3);
@@ -706,9 +732,7 @@ for (const width of [320, 375, 390, 1280])
         await expect(page.locator("#canvas-step")).toBeFocused();
         if (n === 1) await understand(page, "requirements");
         if (n === 2) {
-          await page
-            .getByLabel("点数が出るかもしれない。実際に試す", { exact: true })
-            .check();
+          await trial(page);
           await prototype(page)
             .getByRole("button", { name: "採点する", exact: true })
             .focus();

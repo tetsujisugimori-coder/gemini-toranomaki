@@ -1,4 +1,6 @@
 import { useRef, useState } from "react";
+import { CanvasWorkshop } from "./CanvasWorkshop";
+import { canvasJudgments, canvasTrialOptions } from "./canvas-workshop";
 import { KnowledgeCheck } from "./Lab";
 import { StudySteps, useStudyCopy } from "./StudyShared";
 import {
@@ -44,11 +46,19 @@ export function Canvas({
     [r, setRecord] = useState(boot.record),
     [available, setAvailable] = useState(boot.available);
   const latest = useRef(r),
-    copy = useStudyCopy();
+    copy = useStudyCopy(),
+    workshopVersion = useRef(0);
   const [quiz, setQuiz] = useState(emptyQuiz),
     latestQuiz = useRef(quiz);
   const [prediction, setPrediction] = useState<number | null>(null),
     [trialPrediction, setTrialPrediction] = useState<number | null>(null);
+  const [trialSnapshot, setTrialSnapshot] = useState<{
+      prediction: number;
+      observed: number | null;
+    } | null>(null),
+    [finding, setFinding] = useState(false),
+    [hint, setHint] = useState(false),
+    [workshopKey, setWorkshopKey] = useState(0);
   const [test, setTest] = useState<CanvasTest>("missing");
   const [prepared, setPreparedState] = useState<{
       id: CanvasTest;
@@ -65,6 +75,7 @@ export function Canvas({
     prototypeHeading = useRef<HTMLHeadingElement>(null),
     gradeHeading = useRef<HTMLHeadingElement>(null),
     predictionHeading = useRef<HTMLLegendElement>(null),
+    trialHeading = useRef<HTMLLegendElement>(null),
     resetButton = useRef<HTMLButtonElement>(null),
     questionHeads = useRef<(HTMLLegendElement | null)[]>([]);
   const topic = quizFor(r.topic),
@@ -112,6 +123,9 @@ export function Canvas({
     session(emptyQuiz());
     forgetTest();
     setTrialPrediction(null);
+    setTrialSnapshot(null);
+    setFinding(false);
+    setHint(false);
     setQuizMessage(
       "条件が変わったため、試作品の回答・点数・現在の検証を初期化しました。過去の学習履歴は保持しています。",
     );
@@ -123,6 +137,7 @@ export function Canvas({
   function version(value: QuizVersion) {
     if (value !== latest.current.version) {
       update({ version: value });
+      setTrialSnapshot(null);
       forgetTest();
       setQuizMessage("");
     }
@@ -133,6 +148,7 @@ export function Canvas({
       next = setQuizAnswers(old, values);
     if (next === old) return;
     session(next);
+    setTrialSnapshot(null);
     forgetTest();
     setQuizMessage(
       Object.values(old.runs).some((v) => v.grade)
@@ -159,6 +175,18 @@ export function Canvas({
       guard,
     );
     session(next);
+    if (current.version === "initial" && next.answers.includes(null)) {
+      setFinding(true);
+      if (
+        next.answers.every((a) => a === null) &&
+        trialSnapshot &&
+        trialSnapshot.observed === null
+      )
+        setTrialSnapshot({
+          ...trialSnapshot,
+          observed: next.runs.initial.grade?.kind === "blocked" ? 0 : 1,
+        });
+    }
     setQuizMessage("");
     if (preparedRef.current) {
       if (
@@ -181,6 +209,7 @@ export function Canvas({
     requestAnimationFrame(() => gradeHeading.current?.focus());
   }
   function restart() {
+    setTrialSnapshot(null);
     session({ ...emptyQuiz(), event: "restart" });
     setQuizMessage("やり直しました。回答・点数・未回答案内を消しました。");
     history("restart");
@@ -199,6 +228,7 @@ export function Canvas({
     }
     if (old.applied !== old.repair || old.version !== "revised") {
       update({ applied: old.repair, version: "revised" });
+      setTrialSnapshot(null);
       forgetTest();
       setQuizMessage(
         "選んだ修正を固定試作品へ反映しました。回答条件は同じまま、修正版の結果は別に確かめます。AIへの送信・生成ではありません。",
@@ -216,6 +246,7 @@ export function Canvas({
           ? "mixed"
           : "correct";
     const values = presetAnswers(r.topic, preset);
+    setTrialSnapshot(null);
     session({ ...emptyQuiz(), answers: values });
     preparedState({
       id: test,
@@ -246,6 +277,11 @@ export function Canvas({
     session(emptyQuiz());
     forgetTest();
     setTrialPrediction(null);
+    setTrialSnapshot(null);
+    setFinding(false);
+    setHint(false);
+    workshopVersion.current++;
+    setWorkshopKey(workshopVersion.current);
     setTest("missing");
     setQuizMessage("");
     const removed = removeCanvas(),
@@ -302,15 +338,22 @@ export function Canvas({
         className={`canvas-prototype ${r.version === "revised" && r.applied === "appearance" ? "canvas-cosmetic" : ""}`}
         aria-label="教材用クイズ試作品"
       >
+        <p>
+          操作の練習用で、改善点を含む固定試作品です。結果は実際に操作して確かめます。実Googleの生成物や教材全体の不具合ではありません。
+        </p>
         <span className="badge">
           教材用に用意した試作品・AI生成ではありません
         </span>
         <h3 ref={prototypeHeading} tabIndex={-1}>
-          {r.version === "initial"
-            ? "初期版：未回答でも採点される改善課題あり"
-            : r.applied === "unanswered"
-              ? "修正版：未回答なら採点しない"
-              : "修正版：見た目だけ（未回答の動作は未修正）"}
+          {!(finding || hint)
+            ? r.version === "initial"
+              ? "初期版：まず動作を観察しよう"
+              : "修正版：同じ条件で動作を比べよう"
+            : r.version === "initial"
+              ? "初期版：未回答でも採点される改善課題あり"
+              : r.applied === "unanswered"
+                ? "修正版：未回答なら採点しない"
+                : "修正版：見た目だけ（未回答の動作は未修正）"}
         </h3>
         <p>
           {r.audience === "beginner"
@@ -318,7 +361,7 @@ export function Canvas({
             : "復習向け：どの根拠で選んだかも考えましょう。"}{" "}
           3問・各3択・1問1点。
         </p>
-        {r.version === "initial" && (
+        {r.version === "initial" && (finding || hint) && (
           <p className="notice">
             この枠内の初期版には、未回答でも点数を出す教材用の改善課題があります。教材本体の採点エラーではありません。
           </p>
@@ -569,11 +612,59 @@ export function Canvas({
             ][r.step]
           }
         </h2>
+        {canvasJudgments.some((c) => c.step === r.step) && (
+          <section className="panel" aria-label="具体的な失敗から判断する">
+            <h3>この場面なら、どう判断する？</h3>
+            <p>
+              まず自分で選んでみましょう。未回答のまま試作品へ進むこともできます。
+            </p>
+            {canvasJudgments
+              .filter((c) => c.step === r.step)
+              .map((c) => (
+                <KnowledgeCheck
+                  key={c.id}
+                  check={{ ...c, options: [...c.options] }}
+                  value={r.judgments[c.id] ?? null}
+                  onAnswer={(v) =>
+                    update({ judgments: { ...r.judgments, [c.id]: v } })
+                  }
+                />
+              ))}
+          </section>
+        )}
         {r.step === 0 && (
           <>
             <p>
               「学習クイズを作って」だけだと、どんな動作が足りないでしょう。まず予想し、上の条件を選んでから指示を比べましょう。
             </p>
+            <CanvasWorkshop
+              key={workshopKey}
+              isCurrent={() =>
+                workshopVersion.current === workshopKey &&
+                latest.current.step === 0
+              }
+              settings={r.timer}
+              copied={r.timerCopied}
+              onSettings={(timer) => update({ timer })}
+              onHistory={(id) => {
+                if (
+                  workshopVersion.current !== workshopKey ||
+                  latest.current.step !== 0
+                )
+                  return;
+                if (!latest.current.timerHistory.includes(id))
+                  update({
+                    timerHistory: [...latest.current.timerHistory, id],
+                  });
+              }}
+              onCopied={(id) =>
+                update({
+                  timerCopied: [
+                    ...new Set([...latest.current.timerCopied, id]),
+                  ],
+                })
+              }
+            />
             <KnowledgeCheck
               check={{
                 ...canvasChecks[0],
@@ -622,84 +713,169 @@ export function Canvas({
             <p>
               「プレビュー」は試作品を表示して操作することです。まず、初期版で未回答のまま採点するとどうなるか予想しましょう。修正版を表示中なら、枠内の「修正前」を選んで試せます。
             </p>
-            <fieldset>
-              <legend>初期版で全問未回答のまま採点したら？</legend>
-              {[
-                "未回答なので必ず止まる",
-                "点数が出るかもしれない。実際に試す",
-              ].map((v, i) => (
+            <fieldset disabled={trialSnapshot !== null}>
+              <legend ref={trialHeading} tabIndex={-1}>
+                初期版で全問未回答のまま採点したら？
+              </legend>
+              {canvasTrialOptions.map((v, i) => (
                 <label className="option" key={v}>
                   <input
                     type="radio"
                     name="trial-prediction"
                     checked={trialPrediction === i}
-                    onChange={() => setTrialPrediction(i)}
+                    onChange={() => {
+                      if (!trialSnapshot) setTrialPrediction(i);
+                    }}
                   />
                   {v}
                 </label>
               ))}
             </fieldset>
-            {trialPrediction !== null && (
+            <button
+              disabled={trialPrediction === null || trialSnapshot !== null}
+              onClick={() => {
+                if (trialPrediction === null || trialSnapshot) return;
+                session(emptyQuiz());
+                forgetTest();
+                update({ version: "initial" });
+                setFinding(false);
+                setTrialSnapshot({
+                  prediction: trialPrediction,
+                  observed: null,
+                });
+                requestAnimationFrame(() => prototypeHeading.current?.focus());
+              }}
+            >
+              予想を確定して試作品を開く
+            </button>
+            {trialSnapshot && (
+              <p role="status">
+                確定した事前予想：
+                {canvasTrialOptions[trialSnapshot.prediction]}
+                。変更するには初回実験をやり直してください。
+              </p>
+            )}
+            {(trialPrediction !== null || trialSnapshot !== null) && (
+              <details>
+                <summary>ヒント：どの条件を試す？（任意）</summary>
+                <p>
+                  まず何も選ばず採点し、点数や案内が出るか観察しましょう。一部だけ回答した場合や、すべて回答した場合とも比べられます。
+                </p>
+              </details>
+            )}
+            {(trialSnapshot !== null || quiz.event !== "none") && (
               <>
                 {prototype()}
-                <details>
-                  <summary>試した動作を依頼と比べる</summary>
-                  <p>
-                    未回答でも点数が出るのは、初期版に未回答を検出する処理がないためです。「使いやすく」だけで直ったとは判断せず、採点してよい条件を指定しましょう。回答変更では旧結果を消し、やり直しでもう一度試せます。
-                  </p>
-                </details>
+                {trialSnapshot?.observed !== null &&
+                  trialSnapshot?.observed !== undefined && (
+                    <div role="status" aria-label="初回の予想と観察">
+                      <h3>
+                        {trialSnapshot.prediction === trialSnapshot.observed
+                          ? "予想と観察が一致しました"
+                          : "予想と観察が違いました"}
+                      </h3>
+                      <p>
+                        全問未回答で0点が表示されました。予想外でも発見です。これは確定した事前予想との比較で、今の回答条件での検証結果とは別です。
+                      </p>
+                    </div>
+                  )}
+                <button
+                  onClick={() => {
+                    session(emptyQuiz());
+                    forgetTest();
+                    setTrialSnapshot(null);
+                    setTrialPrediction(null);
+                    setFinding(false);
+                    requestAnimationFrame(() => trialHeading.current?.focus());
+                  }}
+                >
+                  初回実験をやり直す
+                </button>
+                {finding && (
+                  <details>
+                    <summary>試した動作を依頼と比べる</summary>
+                    <p>
+                      未回答でも点数が出るのは、初期版に未回答を検出する処理がないためです。「使いやすく」だけで直ったとは判断せず、採点してよい条件を指定しましょう。回答変更では旧結果を消し、やり直しでもう一度試せます。
+                    </p>
+                  </details>
+                )}
               </>
             )}
           </>
         )}
         {r.step === 2 && (
           <>
-            <p>
-              未回答で採点された事実を踏まえ、「使いづらいから直して」をどう具体化しますか。先に修正方針を考えましょう。
-            </p>
-            <KnowledgeCheck
-              check={{
-                ...canvasChecks[1],
-                options: [...canvasChecks[1].options],
-              }}
-              value={r.understanding.repair ?? null}
-              onAnswer={(v) =>
-                update({ understanding: { ...r.understanding, repair: v } })
-              }
-            />
-            {r.understanding.repair !== undefined && (
+            {!(finding || hint || r.applied) && (
+              <p>
+                初期版を操作し、予想と異なった点を探しましょう。先に進みたい場合は任意のヒントから修正を試せます。
+              </p>
+            )}
+            <details onToggle={(e) => setHint(e.currentTarget.open)}>
+              <summary>ヒントを開いて修正を先に試す（任意）</summary>
+              <p>
+                教材用の例：未回答なのに点数が出たら、採点してよい条件と維持する機能を分けて依頼します。これはヒントであり、自分が観察した証拠ではありません。
+              </p>
+            </details>
+            {!(finding || hint || r.applied) && (
+              <button onClick={() => go(1)}>初回の実験へ戻る</button>
+            )}
+            {(finding || hint || r.applied) && (
               <>
-                <label className="lab-field">
-                  修正の依頼内容
-                  <select
-                    value={r.repair}
-                    onChange={(e) => {
-                      if (e.target.value !== r.repair)
-                        update({
-                          repair: e.target.value as CanvasRecord["repair"],
-                        });
-                    }}
-                  >
-                    {Object.entries(repairLabels).map(([id, label]) => (
-                      <option key={id} value={id}>
-                        {label}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-                {promptView("repair")}
-                <button className="primary" onClick={apply}>
-                  この修正案を固定試作品に反映
-                </button>
                 <p>
-                  選択中の修正案：{repairLabels[r.repair]}。反映済み：
-                  {r.applied ? repairLabels[r.applied] : "まだ反映していません"}
-                  。選択だけでは試作品を変えません。
+                  {finding
+                    ? "自分で観察した動作"
+                    : hint
+                      ? "ヒントの架空の観察例"
+                      : "復元した修正設定（今回の動作は再操作して確認）"}
+                  を踏まえ、「使いづらいから直して」をどう具体化しますか。実際に見た事実と例を区別し、先に修正方針を考えましょう。
                 </p>
-                {prototype()}
-                <p>
-                  見た目だけの修正では未回答の採点は止まりません。動作の修正では未回答を検出し、問題番号を案内します。3問・正答・採点基準・やり直しを維持する指示も必要です。
-                </p>
+                <KnowledgeCheck
+                  check={{
+                    ...canvasChecks[1],
+                    options: [...canvasChecks[1].options],
+                  }}
+                  value={r.understanding.repair ?? null}
+                  onAnswer={(v) =>
+                    update({ understanding: { ...r.understanding, repair: v } })
+                  }
+                />
+                {r.understanding.repair !== undefined && (
+                  <>
+                    <label className="lab-field">
+                      修正の依頼内容
+                      <select
+                        value={r.repair}
+                        onChange={(e) => {
+                          if (e.target.value !== r.repair)
+                            update({
+                              repair: e.target.value as CanvasRecord["repair"],
+                            });
+                        }}
+                      >
+                        {Object.entries(repairLabels).map(([id, label]) => (
+                          <option key={id} value={id}>
+                            {label}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                    {promptView("repair")}
+                    <button className="primary" onClick={apply}>
+                      この修正案を固定試作品に反映
+                    </button>
+                    <p>
+                      選択中の修正案：{repairLabels[r.repair]}。反映済み：
+                      {r.applied
+                        ? repairLabels[r.applied]
+                        : "まだ反映していません"}
+                      。選択だけでは試作品を変えません。
+                    </p>
+                    {prototype()}
+                    <p>
+                      見た目だけの修正では未回答の採点は止まりません。動作の修正では未回答を検出し、問題番号を案内します。3問・正答・採点基準・やり直しを維持する指示も必要です。
+                    </p>
+                  </>
+                )}
               </>
             )}
           </>
@@ -904,14 +1080,62 @@ export function Canvas({
             </p>
           ))}
       </details>
+      <section className="panel" aria-label="閲覧の自己記録">
+        <h2>この体験の閲覧記録</h2>
+        {r.step === 1 && (
+          <p>
+            まず自分の予想と観察を比べましょう。判断問題は体験1・3・4にあります。
+          </p>
+        )}
+        <label className="option">
+          <input
+            type="checkbox"
+            checked={r.viewed.includes(r.step)}
+            onChange={(e) =>
+              update({
+                viewed: e.target.checked
+                  ? [...r.viewed, r.step]
+                  : r.viewed.filter((n) => n !== r.step),
+              })
+            }
+          />
+          体験{r.step + 1}を閲覧した（自己記録）
+        </label>
+      </section>
       <section className="panel" aria-label="第6章の学習記録">
         <h2>第6章の学習記録</h2>
+        <ul aria-label="種類別の学習進捗">
+          <li>閲覧の自己記録：{r.viewed.length} / 4体験</li>
+          <li>
+            模擬実践の過去履歴：クイズ採点{" "}
+            {r.history.some((id) => !id.endsWith(":restart")) ? "あり" : "なし"}{" "}
+            ／ タイマー開始 {r.timerHistory.includes("start") ? "あり" : "なし"}
+          </li>
+          <li>
+            判断チェックの達成：
+            {
+              canvasJudgments.filter((c) => r.judgments[c.id] === c.answer)
+                .length
+            }{" "}
+            / {canvasJudgments.length}問（現在版への最終回答）
+          </li>
+          <li>
+            実Gemini演習：{r.tried ? "試した（自己申告）" : "未申告・任意"}
+          </li>
+          <li>
+            章完了：{completed ? "完了の自己申告あり" : "未申告"}
+            。理解度の認定ではありません。
+          </li>
+        </ul>
+        <p>
+          閲覧・実践・判断・コピー・実操作・章完了は別々です。すべてを埋める必要はなく、有料機能や実アプリは完了条件ではありません。
+        </p>
         <p>
           過去の模擬操作履歴：{r.history.length}
           種類。テーマ/版を含む過去の履歴であり、現在の回答の採点結果や修正完了の証拠ではありません。現在の検証は再読み込み・条件変更後にやり直します。
         </p>
         <p>
-          理解チェック：
+          従来の基本チェック（旧記録を保持）：
           {canvasChecks
             .map(
               (c) =>
