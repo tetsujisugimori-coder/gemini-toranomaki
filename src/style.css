@@ -760,3 +760,42 @@ fieldset + fieldset {
     padding: 14px;
   }
 }
+
+.canvas-chapter {
+  overflow-wrap: anywhere;
+}
+.canvas-prototype {
+  border: 2px solid var(--accent);
+  border-radius: 12px;
+  padding: 22px;
+  margin-block: 20px;
+  background: var(--surface);
+}
+.canvas-prototype fieldset {
+  margin-block: 18px;
+}
+.canvas-cosmetic > .lab-actions > .primary {
+  border-width: 3px;
+  font-weight: 800;
+}
+.canvas-chapter button[aria-pressed="true"] {
+  border: 2px solid var(--accent);
+  font-weight: 700;
+  background: var(--soft);
+}
+#canvas-step:focus,
+.canvas-prototype :is(h3, h4, legend):focus {
+  outline: 3px solid #c07123;
+  outline-offset: 4px;
+}
+@media (max-width: 640px) {
+  .canvas-prototype {
+    padding: 14px;
+  }
+}
+
+/* Long fixed labels must wrap with wider platform/font fallback metrics too. */
+.canvas-prototype .badge {
+  max-width: 100%;
+  white-space: normal;
+}

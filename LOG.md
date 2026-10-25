@@ -267,3 +267,64 @@
 - 作者が別Chromiumセッションで375pxライト/390pxダークのOS往復リンク、キーボード再選択、正本の保持/条件変更で閉鎖、再読込による回答復元を操作。各代表画像1枚（計2枚）だけを一時保存して開き目視、横あふれなし。画像/traceの追加commitはしない。これは作者の自己レビューであり、修正後の独立再レビューは未実施。Draftのまま人間へ引き継ぐ。
 - 変更はsrc/Live.tsx、src/live-data.ts、src/live.test.ts、tests/live.spec.ts、docs/specification.md、docs/verification/live/README.md、LOG.mdの7件のみ。4体験・正本・第1〜4章・第6〜10章・保存キー/形式・権限/送信なし・依存/lockfile・Pages公開条件を維持。既存の未検証（実機Safari/Android、スクリーンリーダー、実Google操作、OS実クリップボード、個別提供/教育効果）を成功扱いしない。保存拒否で旧記録が戻る制約も維持。最終HEAD/CIはPR本文と結果コメントに記録する。
 - 最終ローカル検証：`npm run typecheck`、`npm run lint`、`npm test`（48件＝既存47＋追加1）、`npm run build`、`git diff --check`成功。`PLAYWRIGHT_BROWSERS_PATH=/workspace/.cache/ms-playwright PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS=1 npm run test:e2e -- --workers=2` はChromium147件＋WebKit147件＝294件が一括成功（既存284＋追加10）。skip/expected failureなし。ローカル既存共有ライブラリのためのホスト判定例外だけ再利用し、CIは標準ブラウザ/OS依存導入・ホスト検証を維持する。CIはpush後の最終HEADを確認し、PRへ実結果を記録する。
+
+## Issue #12：第6章Canvasのクイズ試作・修正・検証（2026-10-25 UTC）
+
+- 開始時repo/remoteは指定どおり、作業ツリーはクリーン、旧章5ブランチHEADは `fbc57d99436a3861663a567b5f7b2ae02ae5f543`。AGENTS.mdは親/リポジトリ/指定設定ディレクトリで見つからなかった。README/仕様/教材/保存/旧テストとCI・Pagesを確認。
+- PR #11はmerge `a98c0a01581c94ab5f5e418a83dec050acb73ff9` で取込済み。前回後の追加HEAD `504dec5` は独立再レビュー記録のみで、コード差分なしと確認。pull-main手順のfetch→switch→ff-only pullで最新mainを取得し `feat/chapter-6-canvas` を作成。既存に同内容Issue/PRはなく[Issue #12](https://github.com/tetsujisugimori-coder/gemini-toranomaki/issues/12)へ範囲/受入条件を記録。初回本文は変更せず結果をコメントへ追記する。
+- 公式Canvas紹介（取得本文は英語）とPC/iOS/Androidヘルプの計4本文をHTTP200で取得。文書/コード/アプリの作成・編集・チャット修正・プレビュー/ログ・自動保存・共有を確認。共通/OSを明示し配列位置で分類しない。機能別18歳条件をCanvas全体へ広げず、プラン/端末/アカウント等の実提供と実Google操作は未確認とした。[URLと確認内容](docs/specification.md#第6章canvasissue-12)。
+- 4体験は、曖昧な依頼→条件/期待動作の具体化、実際に回答と採点ができる固定初期版、見た目/動作の修正依頼と明示反映/同条件比較、4課題の予想→実操作→観察比較。初期版の未回答採点は教材枠内の意図した改善課題。未回答検出の修正は採点せず全問題番号と移動ボタンを表示。3問・各3択・1問1点・正答・やり直しを維持する。
+- 2テーマはオリジナルの「身近な科学」「情報の確かめ方」。`canvas-engine.ts` が固定正答から毎回計算し、累積点にしない。回答は両版で共通、採点/回数は版別。回答実変更で両版結果解除、条件実変更で現在試作品/検証を初期化。同一条件/版/修正の再選択では保持。境界条件セットは選択肢を実際に設定し、点数の演出ではない。
+- 新規キー `gemini-toranomaki:canvas:v1` に固定条件・理解チェック・過去のテーマ/版別操作ID・本文版コピーID・任意実操作自己申告のみ保存。回答/点数/現在の検証は一時化し、再読込/章離脱では再回答を要する方針を明記。旧キー/形式と全体初期化（章完了だけ）は維持し、章6個別初期化は確認後に章6記録/一時状態/章6完了だけを削除。拒否/容量不足/破損は未永続化と旧記録復帰を通知。
+- コピーは既存useStudyCopyのmounted/version/hashと最新の本文IDを照合し、成功は最新状態へマージ。本文実変更/reset/離脱後の旧成功/失敗/finallyを除外。作成/修正/確認の全文を任意演習へ提供。OAuth/API/ログイン/バックエンド/eval/外部スクリプト/自由コード実行/外部送信は追加しない。
+- 単体9件追加：全64組合せ×2テーマの初期/修正版採点、未回答検出、連続採点、回答変更解除、プリセット、全文/コピーID、OS分類、非保存フィールド/旧キー/保存失敗。E2Eは35ケース×両engine＝70件追加。実UIの採点/比較/検証、同条件/実変更、章離脱/復元/個別と全体初期化、保存拒否/破損/旧記録、コピー成功/拒否/遅延/競合、外部送信なし、320/375/390/1280px・両テーマ・キーボード/focusを対象。
+- 既存294 E2Eは削除しない。準備中と未知完了IDのテスト対象を第7章へ移し、機能探検ではCanvas到達の検査を追加して旧準備中検査も第7章で維持。第1〜5章本体・保存・依存/lockfile・CI/Pagesゲートは変更しない。
+- 初回lintの未使用変数/importは除去してからbuild。初回新規E2Eはフォーカス完了前の次操作で4件失敗し、結果見出しのfocus待機を加えてアサーションを維持。境界条件セット後の操作欄消失も自己レビューで改善。修正後の新規70件は成功。さらに章初期化で確認課題選択も既定へ戻す処理/回帰を追加し、最終版を再検証する。
+- 作者が別Chromiumセッションで主要4体験を操作し、PCライトの同一部分回答前後比較、375pxダークの連続採点検証の2画像を開いて目視。横あふれなし。`docs/verification/canvas/` に2枚だけ保存し、全成功画像/長大画像/常時traceは追加しない。[自己レビュー](docs/verification/canvas/README.md)で説明/実動作/比較/状態解除/保存/コピーを確認。独立レビューではない。
+- 保存トレードオフは回答復元より現在結果と過去履歴の区別を優先したもので、再回答が必要と明示。第一希望を外部接続や疑似結果で代替した点はない。実Googleの生成/共有は当初から任意/範囲外。実機iPhone Safari/Android、スクリーンリーダー、実Google Canvas、個別提供/上限、OS実クリップボード、教育効果は未検証。Draft/未マージ/auto-mergeなしで人間レビューを待つ。
+- 初回CI前のローカル検証：初期化の追加修正後にも `npm run typecheck`、`npm run lint`、`npm test`（57件＝既存48＋新9）、`npm run build`、`git diff --check` が成功。`PLAYWRIGHT_BROWSERS_PATH=/workspace/.cache/ms-playwright PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS=1 npm run test:e2e -- --workers=2` はChromium182＋WebKit182＝364件が一括成功（既存294維持＋新70、skip/expected failureなし）。既存共有ライブラリ用のホスト判定例外だけを再利用し、CIは標準ブラウザ/OS依存導入とホスト検証を維持。最終HEADの実checksはDraft PR作成後に確認し、PR/Issueへ実結果を記録する。
+
+### Canvas初回CIの横幅不具合と追加修正
+
+- 初回commit `88ba03a2b8d9d0f404d4a7569ec37b2e1d9c864d` のCI run `40188649254` はWebKit/320pxの横超過1件で失敗（363件成功）。ローカル成功とは別に失敗を報告し、アサーションを削除/緩和せず調査した。
+- ローカルWebKitで等幅フォントに変えると、試作品の長い教材表示バッジが286.45px、親の内容幅248pxに対して超過し、document幅322pxになることを再現。共通badgeのwhite-space:nowrapが第6章の長い表示に不適合だった。新しい回帰もCSS修正前にWebKitで失敗した。
+- `.canvas-prototype .badge` のみmax-width:100%/white-space:normalを指定し、全テキストを残して折り返す。切り取り/非表示/フォント縮小や横幅判定の緩和はしない。共通バッジや他章は変更しない。広いフォントの320pxで枠内収容と文言保持を確認する回帰1ケース×両engineを追加。最終定義は既存294＋新72＝366 E2E。
+- 修正後の最終ローカルは型/lint/単体57件/build/diff-check成功、Chromium183＋WebKit183＝366 E2Eが一括成功（既存294＋新72、skip/expected failureなし）。広いフォントの320px WebKitも枠内に全文が折り返されることを数値と一時画像1枚の目視で確認。コミット画像は代表2枚のまま。修正を追加commit/pushし、新しい最終HEADのchecksを再確認する。
+
+## PR #13 P2：Canvas体験4の予想固定と再挑戦（2026-10-25 UTC）
+
+- repo/remote/branchと未コミット変更を確認。開始時はクリーンで、fetch後のPR/remote/local HEADはレビュー対象 `fc2a4f5729aaa8fe17a69a2417a56765cbbd5312` に一致、先行変更なし。AGENTS.mdは親/リポジトリに見つからず、README/仕様/実装/保存/既存検証記録を確認。既存Draft PR #13、同じ `feat/chapter-6-canvas` で修正し、新規PRは作らない。
+- P2原因は、preparedが予想を保持せず比較が可変predictionを参照していたこと。「全問回答の採点」で0点を予想→セット→1点を観察→予想変更で一致へ変わり得た。まず回帰を追加し、修正前のChromium/WebKitの2件が採点後も1点を選べるため失敗することを確認した。
+- 第一希望を採用。条件セット時の一時snapshotへ確定予想/課題ID/context（テーマ・対象者・結果表示・版・反映済み修正）/回答/採点操作済みを保持。予想欄と再セットは無効化し、変更には「予想を変更して再挑戦」が必要とstatusで説明。比較はsnapshotの確定予想、同じ課題/context/回答と実採点だけを使う。
+- 再挑戦は両版の結果/回数/比較/確定予想を消し、legendへフォーカス。回答配列は残せても証拠とはせず、新たなセットが再び両版の結果/回数を初期化し、実操作を必要とする。連続は新しい検証で2回、やり直しは同じ条件で採点済みの場合のみ成立。採点前にやり直す/完了後の空回答を採点する場合は旧snapshotを解除する。
+- 課題/テーマ/対象者/結果表示/版/反映済み修正/回答の実変更では確定予想を解除し、元に戻しても旧比較を復活させない。同じ条件は保持。章離脱/再読込/第6章個別初期化で一時検証は消える。採点エンジン・正答・保存キー/形式・既存の4体験・他章・コピーhook・依存/lockfile・CI/Pages条件は変更しない。
+- 新規E2Eは15ケース×両engine＝30件。後出し不可/セット時固定、Enter再挑戦/旧証拠消去/新セット要求、連続回数起点/両版比較、7条件の実変更と同条件保持、やり直し、章離脱/再読込/章初期化/非保存を確認。既存366件は削除/緩和せず、skip/expected failureも追加しない。UI状態の実操作検証が主で、採点単体ロジックは変更不要。
+- 最初の対象36 E2Eは35成功/Chromium 1件失敗。やり直し後のrequestAnimationFrameフォーカス完了前に再挑戦ボタンのfocus/Enterを送っていたため、各やり直し後に設問legendのfocusを待つhelperを追加。アサーションは維持し、修正後36件は成功。独立指摘の追加修正後も全体回帰で再確認する。
+- 作者が別Chromiumで320/375/390/1280px・両テーマの8条件を操作し、予想固定/不一致/Enter再挑戦/旧結果消去/新セット後の採点を確認。代表の1280pxライトと375pxダークの一時画像2枚だけを開き目視。横超過なし。画像/traceのリポジトリ追加なし。
+- 自己レビューと別エージェント `review_canvas_prediction` の独立レビューを分けて実施。独立工程はソース/回帰テストを確認し、最新distをChromium/WebKit各1件・375pxで操作した。P3「課題変更で旧『予想確定』statusが残る」を追加発見し、変更時の解除/再セット通知と両statusの整合回帰を追加。別エージェントが両engineで再確認して解消し、レビュー範囲の残存P0/P1/P2/P3はなし。独立工程で全体テストを別実行したわけではない。[状態遷移とレビュー記録](docs/verification/canvas/README.md#pr-13-p2確定予想と観察証拠の固定2026-10-25-utc)。
+- 変更は `src/Canvas.tsx`、`tests/canvas.spec.ts`、`docs/specification.md`、`docs/verification/canvas/README.md`、`LOG.md` の5ファイル。未検証は実機iPhone Safari/Android、スクリーンリーダー、実Google Canvas、OS実クリップボード、個別提供/上限、教育効果・長期利用。再挑戦前の結果を記憶すること自体は制限しないが、古い結果を新しい証拠にはしない。Draft/未マージ/auto-mergeなしで人間レビューへ引継ぎ、最終HEADと実CIはPR/Issueコメントに記録する。
+- 修正後の最終ローカル検証：`npm run typecheck`、`npm run lint`、`npm test`（57件）、`npm run build`、`git diff --check` が成功。`PLAYWRIGHT_BROWSERS_PATH=/workspace/.cache/ms-playwright PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS=1 npm run test:e2e -- --workers=2` はChromium198＋WebKit198＝396件が一括成功（既存366＋新30、skip/expected failureなし）。保存失敗/破損/章別初期化/旧記録保護、コピー競合、狭幅/両テーマ/focus、外部送信なしの既存回帰も維持。ローカルのみ既存共有ライブラリ用のホスト判定例外を再利用し、CIの標準ブラウザ/OS依存導入・ホスト検証は維持する。push後の最終HEAD checksを確認するまではCI成功とは記録しない。
+
+## 第6章Canvasの教材品質改善・独立再レビュー（2026-10-25 JST）
+
+- 対象は既存Issue #12 / Draft PR #13 / feat/chapter-6-canvas。ローカルは先行修正 `9423ba5bf0b7766c151d2edde6f82aea685fb830`、作業ツリーはクリーン。最初のfetch/PR取得は401で失敗し、未確認を報告。ユーザー再認証後の再実行は成功し、最新PR/remote/localが同HEAD、Draft/未マージ/auto-mergeなしを確認した。先行修正と未コミット変更の破棄なし。
+- 初回は具体的不具合を見出し/告知で明かさず、安全性/操作方法を維持。対称な2仮説を確定→固定試作品を実操作→予想外も含め実gradeから比較→理由/修正へ段階公開。任意ヒントと自分の観察、復元した修正設定と今回の証拠を区別。初回比較は回答/構成/版/やり直し/新検証で解除し、体験4の確定snapshot/再挑戦も保護。
+- 追加の集中タイマー工房は10/20秒・数字の大小・停止/loopという有限条件を指示として明示反映。前後は別runで操作でき、版切替時は両方停止。開始連打でintervalを増やさず、pause/reset/離脱で停止/解除。同条件の再選択/反映では保持。作成/修正/検証の全文コピーは本文IDとmounted/version/hashに親のstep/reset世代も照合し、古い成功/失敗/finallyが現在の記録へ干渉しない。OS書込みは取り消せない。
+- 新3判断問題は具体的失敗から依頼/維持機能/再検証を選ぶ。各体験h2直後、解説/旧基本チェックより前に配置し、未回答でも先へ進める。旧understandingは保持し、judgmentsの版付き新IDへ流用しない。閲覧自己記録・過去模擬実践・現行判断達成・実Gemini自己申告・章完了自己申告を区別する。
+- 保存キーcanvas:v1は維持し、viewed/judgments/timer/timerHistory/timerCopiedを任意フィールド追加。旧データは既定値で補完し、ホワイトリスト以外の個人文/動的状態を保存しない。クイズ正答/採点エンジン/他章/旧キー/全体初期化/依存/lockfile/CI・Pagesゲートは変更しない。第6章初期化は追加記録も対象。保存拒否/容量不足/破損でも操作し、旧記録復帰を警告する。
+- 回帰は先に初回ネタバレの2件失敗を確認。移行中の旧修正設定reload後のアクセス/初回実験再実施の不整合を修正。未完了runは停止したものもあり成功としない。テストhelperは新しい明示操作を加えただけで元アサーションを削除/緩和しない。追加40件、関連160件、独立指摘を一部修正後の全456件が順に成功。さらに通知/順序/初回比較解除を修正し最終全460件を再実行する。
+- 作者は別Chromiumで4体験とタイマーの前後を操作。1280pxライトと375pxダークの代表2枚を目視し追加。全成功画像/trace/動画は追加しない。320/375/390/1280px・両テーマ・CSS文字200%・キーボード/focusは追加E2Eで確認。
+- 独立エージェント `canvas_quality_review` がベース9423ba5と変更後を同一基準で比較。追加P2「新判断問題より先に同義解説」をDOM順回帰で両engineの修正前失敗を確認し、h2直後へ移して再確認。P3「0秒後の開始成功通知」は両engineで再現/修正前回帰失敗を確認し、disabled/リセット案内/handler防御で修正。予想文言の非対称性も排他的2択へ修正し、outputはrole=timer/live=off、別状態通知をstatusにして毎秒自動読み上げリスクを低減。実SR確認とは区別する。独立の最新両engine通し操作と再確認では残存P0/P1/P2/P3なし。評価の根拠/改善余地/確実性は検証記録へ分離する。
+- 第一希望はクイズの発見→修正→検証と別アプリへの応用を両立すること。採用は固定ルールの実動タイマー。自由生成/自由コード/APIは安全境界で保留、複数の追加アプリ/ゲームは認知負荷と範囲拡大のため見送り。固定模擬であることを明示し、実Google生成/保存/共有は自動実行しない。実Google Canvas/実機/SR/OS clipboard/教育効果/個別提供/長期精度は未検証。Draftのまま人間判断を待ち、最終SHA/CIはPR/Issueへ実結果を記録する。
+- 最終全460件の初回は459成功/追加WebKit1失敗。新しい比較解除回帰が連続hash移動後の描画を待たず第1章で体験2ボタンを待ったため、両章h1/フォーカスの待機を追加した。アサーション/ルーティング本体は変更せず、該当を両engine各5回＝10件成功後、全460件を再実行する。最終チェックの成功前に完了扱いにしない。
+- 最終ローカルは `npm run typecheck`、`npm run lint`、`npm test`（61＝既存57＋新4）、`npm run build`、`git diff --check` が成功。`PLAYWRIGHT_BROWSERS_PATH=/workspace/.cache/ms-playwright PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS=1 npm run test:e2e -- --workers=2` はChromium230＋WebKit230＝460件が一括成功（旧396維持＋新64、skip/expected failureなし）。独立6軸は4.5→4.5/4.5→4.5/4.0→4.0/3.5→4.0/2.5→3.5/2.5→4.0。これは専門暫定評価で教育効果の実測ではない。最終15ファイルに限定しcommit/push、既存Draft PR #13を更新後に最終HEADの実CIを確認する。ローカルだけ既存共有ライブラリ用ホスト判定例外を再利用し、CIの標準依存導入/ホスト検証は維持。
+
+## Canvasタイマー履歴通知のP3最小修正（2026-10-25 JST）
+
+- fetch後のPR/remote/localはレビュー対象1188d631c25bf73cb88db64916c3ee33523139f8に一致し、先行変更なし/作業ツリーはクリーン。既存Issue #12 / Draft PR #13 / feat/chapter-6-canvasを使用。
+- 修正前に実componentのraw onHistoryを測定。初回0秒到達で1通知、親だけの描画とcallback参照変更後に、laps1のままzero通知2（revision0/1）を確認。Chromium/WebKit×通常/StrictModeの4回帰が期待1/実測2で失敗した。親dedupによる保存件数からの推測ではない。development ReactとProbeのEffect setup2回で実StrictModeを検証した。
+- 原因はEffect依存onHistoryの参照が変わるたびに、増分ではなくlaps>0を条件にしていたこと。製品コードの変更はCanvasWorkshop.tsxの通知Effectと一時refのみ。両版のcommitted lapsを通知前にrefへ保存し、正の増分だけ回数分通知。減少は新しい基準にし、版/callback/Effect replayで再利用しない。state updaterやhandlerの副作用、interval/cleanup/親dedup/保存/コピー/教材内容の変更はない。
+- 依存追加や本番計測導線を避け、既存Viteで実componentをメモリbundleするテスト用fixtureとPlaywright raw spyを追加。本番entry/route/config/依存は不変、distにもharness識別子なし。新8ケース×2＝16 E2Eでstop/loop/親callback変更/StrictMode/pause/resume/reset/版/反映/複数周回/unmount-reopenを確認し、最初の16件は成功。最終全476件（旧460+新16）と単体61件は全体で再実行する。
+- 独立エージェントcanvas_quality_reviewは新16件をChromium8/WebKit8で別途再実行して成功。原因/再現/増分通知/本番分離/保護範囲を確認し、新P0〜P3なし、既知P3解消と判断。6軸は4.5/4.5/4.0/4.0/3.5/4.0を維持。教材内容は不変なので加点せず、専門暫定評価と教育効果の未測定を区別する。
+- 作者も375pxの実教材を別Chromiumでloop→親描画→pause/reset→前版stopまで操作し横超過なし。新画像/traceは保存しない。保存拒否/容量不足/旧データ/コピーの全既存回帰を維持し、実機Safari/SR/実Google Canvas/OS実clipboard/教育効果は未検証。commit/push後に既存Draft PRへ結果を反映し、最終HEADの実CIを確認する。Issue初回本文変更、merge/auto-merge/本番公開は行わない。
+- 最終ローカル：型検査/ESLint/単体全61件/production build/diff-check成功。既存Playwrightブラウザ/共有ライブラリ用のローカルホスト判定例外だけを再利用した全E2EはChromium238＋WebKit238＝476件一括成功（旧460＋新16、skip/expected failureなし）。CIの標準ブラウザ/OS依存導入・ホスト検証は維持する。最終7ファイルをcommit/pushし、最終HEADの実CIはPR/Issueへ記録する。

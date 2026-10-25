@@ -1,3 +1,4 @@
+import { canvasReferences } from "./canvas-data";
 import { liveReferences } from "./live-data";
 import { studyReferences } from "./study-data";
 import { serviceReferences } from "./services-data";
@@ -120,7 +121,7 @@ export const lessons: Lesson[] = topics.map(
     references: [{ title: "Google公式情報（外部サイト）", url }],
     checkedAt:
       "2026-10-22：公式ページ取得がネットワーク制限で拒否されたため、現行仕様は未確認",
-    status: i < 5 ? "ready" : "planned",
+    status: i < 6 ? "ready" : "planned",
     steps: [],
   }),
 );
@@ -212,3 +213,13 @@ lessons[4].conditions =
   "公式本文を2026-10-25に確認。Liveは対応モバイルアプリ向けでログイン等が必要です。年齢・端末・地域・言語・アカウント・段階提供の実際の利用可否は未確認で、自分の画面でも確認してください。模擬体験には接続も権限も不要です。";
 lessons[4].checkedAt =
   "2026-10-25：iOS/AndroidのLive、iOSアプリ、Liveデータ取扱説明の本文を確認。実端末・実Google操作は未検証";
+
+lessons[5].goal =
+  "クイズの期待する動作を言葉にし、試作・修正・操作による検証を繰り返す。";
+lessons[5].description =
+  "3問・各3択の固定試作品で、未回答の採点を改善し、同じ回答条件で修正前後を比べます。コードの知識は不要です。";
+lessons[5].references = canvasReferences;
+lessons[5].conditions =
+  "公式紹介とPC/iOS/Androidのヘルプ本文を2026-10-25に確認。機能ごとの年齢・プラン・地域・アカウント・端末・提供変更と実際の利用可否は未確認です。自分の画面でも確認してください。固定体験にログインは不要です。";
+lessons[5].checkedAt =
+  "2026-10-25：公式紹介とOS別ヘルプ本文を確認。実Google Canvas・個別アカウントでの操作は未検証";

@@ -40,13 +40,13 @@ describe("progress", () => {
     vi.stubGlobal("localStorage", {
       getItem: () =>
         JSON.stringify({
-          completed: ["chapter-6", 1, "chapter-1", "chapter-1"],
+          completed: ["chapter-7", 1, "chapter-1", "chapter-1"],
         }),
     });
     expect(loadProgress().progress.completed).toEqual(["chapter-1"]);
   });
 });
-it("keeps Issue #1 curriculum order and chapters 1 through 5 available", () => {
+it("keeps Issue #1 curriculum order and chapters 1 through 6 available", () => {
   expect(lessons).toHaveLength(10);
   expect(lessons.map((l) => l.number)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
   expect(lessons[2].title).toBe("Deep Research：調査計画から出典検証まで");
@@ -56,6 +56,7 @@ it("keeps Issue #1 curriculum order and chapters 1 through 5 available", () => {
     "chapter-3",
     "chapter-4",
     "chapter-5",
+    "chapter-6",
   ]);
   expect(lessons[0].steps).toHaveLength(6);
   for (const l of lessons) {
