@@ -40,10 +40,13 @@ export function CanvasWorkshop({
     [message, setMessage] = useState("");
   const copy = useStudyCopy(),
     latest = useRef({ settings, kind });
+  const notifiedLaps = useRef({ before: 0, after: 0 });
   latest.current = { settings, kind };
   const head = useRef<HTMLHeadingElement>(null),
     active = version === "before" ? before : applied,
     run = runs[version];
+  const beforeLaps = runs.before.laps,
+    afterLaps = runs.after.laps;
   useEffect(() => {
     if (!run.running) return;
     const timer = window.setInterval(
@@ -57,8 +60,14 @@ export function CanvasWorkshop({
     return () => window.clearInterval(timer);
   }, [run.running, version, active]);
   useEffect(() => {
-    if (run.laps > 0) onHistory("zero");
-  }, [run.laps, onHistory]);
+    const previous = notifiedLaps.current;
+    // Consume committed counts (including resets) before any callback/Effect replay.
+    notifiedLaps.current = { before: beforeLaps, after: afterLaps };
+    const added =
+      Math.max(0, beforeLaps - previous.before) +
+      Math.max(0, afterLaps - previous.after);
+    for (let n = 0; n < added; n++) onHistory("zero");
+  }, [beforeLaps, afterLaps, onHistory]);
   function change(s: TimerSettings) {
     if (timerIdentity(s) === timerIdentity(settings)) return;
     copy.invalidate();

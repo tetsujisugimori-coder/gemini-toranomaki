@@ -318,3 +318,13 @@
 - 第一希望はクイズの発見→修正→検証と別アプリへの応用を両立すること。採用は固定ルールの実動タイマー。自由生成/自由コード/APIは安全境界で保留、複数の追加アプリ/ゲームは認知負荷と範囲拡大のため見送り。固定模擬であることを明示し、実Google生成/保存/共有は自動実行しない。実Google Canvas/実機/SR/OS clipboard/教育効果/個別提供/長期精度は未検証。Draftのまま人間判断を待ち、最終SHA/CIはPR/Issueへ実結果を記録する。
 - 最終全460件の初回は459成功/追加WebKit1失敗。新しい比較解除回帰が連続hash移動後の描画を待たず第1章で体験2ボタンを待ったため、両章h1/フォーカスの待機を追加した。アサーション/ルーティング本体は変更せず、該当を両engine各5回＝10件成功後、全460件を再実行する。最終チェックの成功前に完了扱いにしない。
 - 最終ローカルは `npm run typecheck`、`npm run lint`、`npm test`（61＝既存57＋新4）、`npm run build`、`git diff --check` が成功。`PLAYWRIGHT_BROWSERS_PATH=/workspace/.cache/ms-playwright PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS=1 npm run test:e2e -- --workers=2` はChromium230＋WebKit230＝460件が一括成功（旧396維持＋新64、skip/expected failureなし）。独立6軸は4.5→4.5/4.5→4.5/4.0→4.0/3.5→4.0/2.5→3.5/2.5→4.0。これは専門暫定評価で教育効果の実測ではない。最終15ファイルに限定しcommit/push、既存Draft PR #13を更新後に最終HEADの実CIを確認する。ローカルだけ既存共有ライブラリ用ホスト判定例外を再利用し、CIの標準依存導入/ホスト検証は維持。
+
+## Canvasタイマー履歴通知のP3最小修正（2026-10-25 JST）
+
+- fetch後のPR/remote/localはレビュー対象1188d631c25bf73cb88db64916c3ee33523139f8に一致し、先行変更なし/作業ツリーはクリーン。既存Issue #12 / Draft PR #13 / feat/chapter-6-canvasを使用。
+- 修正前に実componentのraw onHistoryを測定。初回0秒到達で1通知、親だけの描画とcallback参照変更後に、laps1のままzero通知2（revision0/1）を確認。Chromium/WebKit×通常/StrictModeの4回帰が期待1/実測2で失敗した。親dedupによる保存件数からの推測ではない。development ReactとProbeのEffect setup2回で実StrictModeを検証した。
+- 原因はEffect依存onHistoryの参照が変わるたびに、増分ではなくlaps>0を条件にしていたこと。製品コードの変更はCanvasWorkshop.tsxの通知Effectと一時refのみ。両版のcommitted lapsを通知前にrefへ保存し、正の増分だけ回数分通知。減少は新しい基準にし、版/callback/Effect replayで再利用しない。state updaterやhandlerの副作用、interval/cleanup/親dedup/保存/コピー/教材内容の変更はない。
+- 依存追加や本番計測導線を避け、既存Viteで実componentをメモリbundleするテスト用fixtureとPlaywright raw spyを追加。本番entry/route/config/依存は不変、distにもharness識別子なし。新8ケース×2＝16 E2Eでstop/loop/親callback変更/StrictMode/pause/resume/reset/版/反映/複数周回/unmount-reopenを確認し、最初の16件は成功。最終全476件（旧460+新16）と単体61件は全体で再実行する。
+- 独立エージェントcanvas_quality_reviewは新16件をChromium8/WebKit8で別途再実行して成功。原因/再現/増分通知/本番分離/保護範囲を確認し、新P0〜P3なし、既知P3解消と判断。6軸は4.5/4.5/4.0/4.0/3.5/4.0を維持。教材内容は不変なので加点せず、専門暫定評価と教育効果の未測定を区別する。
+- 作者も375pxの実教材を別Chromiumでloop→親描画→pause/reset→前版stopまで操作し横超過なし。新画像/traceは保存しない。保存拒否/容量不足/旧データ/コピーの全既存回帰を維持し、実機Safari/SR/実Google Canvas/OS実clipboard/教育効果は未検証。commit/push後に既存Draft PRへ結果を反映し、最終HEADの実CIを確認する。Issue初回本文変更、merge/auto-merge/本番公開は行わない。
+- 最終ローカル：型検査/ESLint/単体全61件/production build/diff-check成功。既存Playwrightブラウザ/共有ライブラリ用のローカルホスト判定例外だけを再利用した全E2EはChromium238＋WebKit238＝476件一括成功（旧460＋新16、skip/expected failureなし）。CIの標準ブラウザ/OS依存導入・ホスト検証は維持する。最終7ファイルをcommit/pushし、最終HEADの実CIはPR/Issueへ記録する。

@@ -110,3 +110,21 @@ P2修正後の最終ローカル結果：型検査/ESLint/単体57件/production
 最終460件の初回runは459成功/追加WebKit1件失敗。追加の初回比較解除テストが第1章→第6章のhashを描画待ちなしで連続変更し、第1章に留まったまま体験2を待っていた。両章のh1文言/フォーカスを待つ操作へ強化し、同じアサーションを維持。該当ケースは両engine各5回＝10件成功し、全460件を再実行する。アプリのルーティングコードは変更していない。
 
 品質改善の最終ローカル結果：型検査/lint/単体61件（旧57＋新4）/production build/diff-check成功、Chromium230＋WebKit230＝全460 E2E一括成功（旧396＋新64、skip/expected failureなし）。初回非ネタバレ/0秒開始/判断順の修正前失敗も修正後成功。失敗した追加hash移動のケースは待機を強化して両engine各5回成功し、その後の全460件も成功した。最終15ファイルに限定してcommit/pushし、実CIはPR/Issueで最終HEADに対して確認する。
+
+## P3：0秒到達の履歴通知（2026-10-25 JST）
+
+開始時は `1188d631c25bf73cb88db64916c3ee33523139f8`。fetch後のPR/remote/localは同じHEAD、作業ツリーはクリーンで先行変更なし。
+
+修正前の実componentをReact developmentで描画し、保存件数ではなくraw `onHistory`の呼び出しを測定した。初回0秒で1通知、親だけを再描画してcallback参照を変更すると、到達回数1のまま通知が2（revision 0/1）になった。Chromium/WebKit×通常/StrictModeの4件で、追加回帰が期待1/実測2として失敗。ProbeのEffect setupがStrictModeで2回になることも実測し、production ReactのラップだけをStrictMode試験と呼んでいない。
+
+修正は`CanvasWorkshop.tsx`の通知Effectと一時refだけ。両版のcommitted到達数をrefへ通知前に保存し、正の差分だけ`zero`を通知する。複数周回がまとめて反映されても増分の回数分通知する。reset/設定反映による減少は次の基準へ反映するだけで通知せず、版切替時も旧数値を再通知しない。callbackを固定するだけの修正や、state updater内での副作用は採用しない。interval/cleanup、親dedup、保存キー/形式/ID、コピー、教材UIは変更しない。
+
+新規回帰は8ケース×両engine＝16件。停止後/親描画/参照変更では通知1のまま、loopでは到達ごとに1回、pause中は増えず再開/reset後は新たな通知、版切替/同条件再反映では旧通知なし、実設定変更で両版の基準初期化、unmount後はinterval停止・再表示でも旧イベントなしをraw callbackで確認。StrictModeの再setupも検証する。保存拒否/容量不足/旧記録/実章移動は既存460件の回帰を維持。
+
+テスト専用harnessは既存ViteのAPIでメモリにbundleし、Playwrightのroute fulfillでだけ表示する。依存/production entry/公開route/CI構成は追加せず、distにharnessの識別子がないことも確認した。副作用をspyできるDOM環境を依存追加なしで用意するための方式で、公開教材に計測機能を入れていない。
+
+別エージェント`canvas_quality_review`は差分とharnessを確認し、新16件を独立にChromium8/WebKit8で再実行して成功。既知P3は解消し、今回の範囲に新P0/P1/P2/P3なし。[6軸の維持判断と独立確認範囲](quality-review.md#p3最小修正の独立再レビュー2026-10-25-jst)。全476件を独立工程で別実行したわけではない。
+
+作者も375pxの実教材を別Chromiumで操作し、loop/親の閲覧記録更新/pause/reset/前版stop/横超過なしを確認した。raw呼出数は専用harnessで確認したもので、この実教材操作の保存件数だけから推定していない。UI変更なしのため新たな画像/traceは保存しない。最終ローカルの全476件/単体61件の結果はLOG、最終HEADと実CIはPR/Issueに記録する。実機Safari、スクリーンリーダー、実Google Canvas、OS実クリップボード、教育効果は引き続き未検証。
+
+P3修正後の最終ローカル結果：型検査/lint/単体61件/build/diff-check、全476 E2E（Chromium238/WebKit238、旧460＋新16、skip/expected failureなし）が成功。修正前に失敗した4回帰も修正後はすべて成功。ローカルだけ既存共有ライブラリ用のホスト判定例外を再利用し、CIの標準導入/ホスト検証は維持。最終HEADの実CIはPR/Issueで確認する。
