@@ -27,4 +27,12 @@
 
 未検証：実機iPhone Safari/Android、スクリーンリーダー、実Google Canvasの生成/保存/共有/公開、個別アカウントの提供/上限、OS実クリップボード、教育効果。独立レビューは今回未実施。WebKit自動試験を実機確認とは呼ばず、技術テスト成功を教育効果の実証としない。
 
-最終ローカル結果（章初期化の追加修正を含む）：型/lint/単体57件/build/diff-check成功、Chromium182＋WebKit182＝全364 E2Eが一括成功。既存294を維持し新規70を追加、skip/expected failureなし。最終commit SHAとchecksの実結果はDraft PR/Issueに記録する。
+初回CI前のローカル結果（章初期化の追加修正を含む）：型/lint/単体57件/build/diff-check成功、Chromium182＋WebKit182＝全364 E2Eが一括成功。既存294を維持し新規70を追加、skip/expected failureなし。最終commit SHAとchecksの実結果はDraft PR/Issueに記録する。
+
+## 初回CIで見つかった320pxの横超過
+
+初回HEAD `88ba03a` のGitHub CIはWebKit/320pxが1件失敗し、363件成功だった。ローカルで通過した事実と区別する。WebKitで等幅フォントを使うと、長い教材バッジが286.45pxになり親の内容幅248pxを超える同種の不具合を再現した。新規回帰も修正前に失敗を確認。
+
+原因は共通badgeの折り返し禁止。第6章試作品のbadgeだけを幅100%以内で折り返し、全テキストを残す修正とした。文字を隠す/小さくする/横幅アサーションの緩和は行わない。両engineに1ケースずつ追加し、最終E2E定義は366件。初回CIを成功と記載せず、修正後の最終HEAD checksをPRで確認する。
+
+バッジ修正後の最終ローカルは型/lint/単体57件/build/diff-check、全366 E2E（Chromium183＋WebKit183）が成功。320px/広いフォントのWebKitを一時画像1枚で目視し、全文の折り返しと枠内表示を確認した。コミット画像は代表2枚のまま。新しい最終HEADの実checksはPR/Issueに記録し、初回CI失敗と区別する。

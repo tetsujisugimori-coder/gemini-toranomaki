@@ -793,3 +793,9 @@ fieldset + fieldset {
     padding: 14px;
   }
 }
+
+/* Long fixed labels must wrap with wider platform/font fallback metrics too. */
+.canvas-prototype .badge {
+  max-width: 100%;
+  white-space: normal;
+}

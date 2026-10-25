@@ -282,4 +282,11 @@
 - 初回lintの未使用変数/importは除去してからbuild。初回新規E2Eはフォーカス完了前の次操作で4件失敗し、結果見出しのfocus待機を加えてアサーションを維持。境界条件セット後の操作欄消失も自己レビューで改善。修正後の新規70件は成功。さらに章初期化で確認課題選択も既定へ戻す処理/回帰を追加し、最終版を再検証する。
 - 作者が別Chromiumセッションで主要4体験を操作し、PCライトの同一部分回答前後比較、375pxダークの連続採点検証の2画像を開いて目視。横あふれなし。`docs/verification/canvas/` に2枚だけ保存し、全成功画像/長大画像/常時traceは追加しない。[自己レビュー](docs/verification/canvas/README.md)で説明/実動作/比較/状態解除/保存/コピーを確認。独立レビューではない。
 - 保存トレードオフは回答復元より現在結果と過去履歴の区別を優先したもので、再回答が必要と明示。第一希望を外部接続や疑似結果で代替した点はない。実Googleの生成/共有は当初から任意/範囲外。実機iPhone Safari/Android、スクリーンリーダー、実Google Canvas、個別提供/上限、OS実クリップボード、教育効果は未検証。Draft/未マージ/auto-mergeなしで人間レビューを待つ。
-- 最終ローカル検証：初期化の追加修正後にも `npm run typecheck`、`npm run lint`、`npm test`（57件＝既存48＋新9）、`npm run build`、`git diff --check` が成功。`PLAYWRIGHT_BROWSERS_PATH=/workspace/.cache/ms-playwright PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS=1 npm run test:e2e -- --workers=2` はChromium182＋WebKit182＝364件が一括成功（既存294維持＋新70、skip/expected failureなし）。既存共有ライブラリ用のホスト判定例外だけを再利用し、CIは標準ブラウザ/OS依存導入とホスト検証を維持。最終HEADの実checksはDraft PR作成後に確認し、PR/Issueへ実結果を記録する。
+- 初回CI前のローカル検証：初期化の追加修正後にも `npm run typecheck`、`npm run lint`、`npm test`（57件＝既存48＋新9）、`npm run build`、`git diff --check` が成功。`PLAYWRIGHT_BROWSERS_PATH=/workspace/.cache/ms-playwright PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS=1 npm run test:e2e -- --workers=2` はChromium182＋WebKit182＝364件が一括成功（既存294維持＋新70、skip/expected failureなし）。既存共有ライブラリ用のホスト判定例外だけを再利用し、CIは標準ブラウザ/OS依存導入とホスト検証を維持。最終HEADの実checksはDraft PR作成後に確認し、PR/Issueへ実結果を記録する。
+
+### Canvas初回CIの横幅不具合と追加修正
+
+- 初回commit `88ba03a2b8d9d0f404d4a7569ec37b2e1d9c864d` のCI run `40188649254` はWebKit/320pxの横超過1件で失敗（363件成功）。ローカル成功とは別に失敗を報告し、アサーションを削除/緩和せず調査した。
+- ローカルWebKitで等幅フォントに変えると、試作品の長い教材表示バッジが286.45px、親の内容幅248pxに対して超過し、document幅322pxになることを再現。共通badgeのwhite-space:nowrapが第6章の長い表示に不適合だった。新しい回帰もCSS修正前にWebKitで失敗した。
+- `.canvas-prototype .badge` のみmax-width:100%/white-space:normalを指定し、全テキストを残して折り返す。切り取り/非表示/フォント縮小や横幅判定の緩和はしない。共通バッジや他章は変更しない。広いフォントの320pxで枠内収容と文言保持を確認する回帰1ケース×両engineを追加。最終定義は既存294＋新72＝366 E2E。
+- 修正後の最終ローカルは型/lint/単体57件/build/diff-check成功、Chromium183＋WebKit183＝366 E2Eが一括成功（既存294＋新72、skip/expected failureなし）。広いフォントの320px WebKitも枠内に全文が折り返されることを数値と一時画像1枚の目視で確認。コミット画像は代表2枚のまま。修正を追加commit/pushし、新しい最終HEADのchecksを再確認する。

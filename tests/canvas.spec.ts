@@ -807,3 +807,34 @@ for (const outcome of ["success", "failure"] as const)
     await expect(copy).toBeEnabled();
     expect((await record(page)).copied).toHaveLength(1);
   });
+
+test("prototype badge fits 320px even when fallback font metrics are wider", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 320, height: 950 });
+  await page.goto("#chapter-6");
+  await trial(page);
+  await page.addStyleTag({
+    content: ".canvas-prototype .badge { font-family: monospace; }",
+  });
+  const bounds = await prototype(page).evaluate((el) => {
+    const b = el.querySelector(".badge")!.getBoundingClientRect(),
+      style = getComputedStyle(el);
+    return {
+      badge: b.width,
+      available:
+        el.clientWidth -
+        parseFloat(style.paddingLeft) -
+        parseFloat(style.paddingRight),
+    };
+  });
+  await expect(prototype(page).locator(".badge")).toHaveText(
+    "教材用に用意した試作品・AI生成ではありません",
+  );
+  expect(bounds.badge).toBeLessThanOrEqual(bounds.available);
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+  ).toBe(true);
+});
