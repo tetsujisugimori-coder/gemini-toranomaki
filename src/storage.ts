@@ -16,7 +16,8 @@ export function loadProgress(): { progress: Progress; available: boolean } {
               id === "chapter-1" ||
               id === "chapter-2" ||
               id === "chapter-3" ||
-              id === "chapter-4",
+              id === "chapter-4" ||
+              id === "chapter-5",
           )
         : [];
     return {
