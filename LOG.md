@@ -340,3 +340,12 @@
 - 最新対象86 E2Eが成功。初回全542は540成功/2失敗で、旧Canvasの「章7準備中」の移行漏れ。章7の操作教材と章8〜10の準備中をそれぞれ検査し、アサーションを削除/緩和せず仕様変更へ整合させた。最新単体は74＝旧61＋新13が成功。旧476＋新86＝562 E2Eを最終版で再実行する。
 - 作者も最新修正版の4体験をChromiumで実操作し、PCライト/375pxダークの代表2画像を開いて目視。横超過/pageerrorなし。自由画像生成の代わりに共通座標の固定SVGを採用し、写実性は簡略化と明記。実Google・実機Safari/Android・スクリーンリーダー・OS実クリップボード・教育効果の実測は未検証。最終HEAD/CIはpush後の実結果で報告する。
 - 最終ローカル検証：typecheck/ESLint/単体74件/production build/diff-check成功。Chromium281＋WebKit281＝562 E2Eが一括成功（既存476＋新86、失敗/skip/expected failureなし）。独立28件の成功とは別の全体結果。最終24ファイルを限定stageしcommit/push、main向けDraft PRを作成する。CIと最終SHAはPR/Issueへ実結果を追記し、未確認を成功とは扱わない。AGENTS.mdはrepo/親に見つからず、既存未コミット変更の破棄なし。依存/lockfile/Pagesゲートは不変。
+
+## PR #15 P3：Nano Bananaの回答形式の排他検証（2026-10-26 JST）
+
+- 開始時のPR/local/明示fetch後remoteは基準16b123c3c3dae1a40c5d1b6adc905c767161d5e2と一致、作業ツリーはクリーン。通常fetchは削除済み旧第6章refで失敗したが、第7章ref明示fetchで最新HEAD/先行差分なしを確認。既存変更の破棄、remote設定変更、新Issue/PR作成なし。
+- 原因は回答IDによらずregionsを許すOR条件。character:v1ならキャラクター形式だけ、許可済みedit/findならregionsだけを許す三項分岐に最小修正。既存answerIds/list/正規表現を再利用し、正常値の順序・重複除去・旧正常recordとキー/形式を保持。製品コードはsrc/nano-storage.tsのみ、UI/画像/コピー/進捗/他章/依存/CI公開ゲートは変更しない。
+- 修正前に新7単体を追加し、2失敗/5成功を確認。キャラクターにhat/eyesが残るケースとload経由の混入除去が失敗。edit/findへの逆混入は旧処理でも除外され、既に成功していた。未知ID/型/改行等/正常旧データも成功。名前フィルタの未選択74件（表示skipped）は全体検証とせず、その後ファイル全20件を無フィルタで2失敗/18成功と確認。skip/期待値緩和は追加しない。
+- 修正後の型検査/lint/単体全81件（旧74+新7）/production build/diff-check成功。全562 E2E、独立再レビュー、最終HEADの実CIは確定後に結果を追記する。読込は返すrecordをサニタイズするだけで旧保存値を自動書換えせず、明示保存にも同じフィルタを適用する。新回帰で他章キーの非更新も検査。
+- 別工程のnano_independent_reviewが回答種別分岐/正常旧値・順序/型と未知ID/読込非書換え/保存専用キーを独立確認し、対象単体20件とdiff-check成功。当該P3解消、新規/残存P0〜P3なし。独立工程で全81単体/562 E2E/CIまで再実施したとは扱わない。GitHub上の既存review/commentはなく、返信対象なし。
+- 最終ローカルは型/lint/単体81件/build/diff-check成功、Chromium281＋WebKit281＝既存562 E2Eが一括成功（失敗/skip/expected failureなし）。E2Eの変更・削除・緩和なし。変更4ファイルを限定stageして既存ブランチへcommit/pushし、既存Draft PR #15へ最新状況を反映する。最終HEADのCIはpush後に確認し、対応SHAと実結果をPR/Issueに記録する。merge/auto-merge/本番公開なし、実機/SR/実Google/OS clipboard/教育効果の未検証は従来どおり残す。

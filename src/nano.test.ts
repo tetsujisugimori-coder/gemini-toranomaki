@@ -247,3 +247,161 @@ it("all finite prompt fingerprints map back to the exact same text without colli
     );
   expect(known.size).toBeGreaterThan(300);
 });
+
+it("character answers reject region IDs while preserving valid ordered values", () => {
+  const answers = sanitizeNano({
+    answers: {
+      "character:v1": [
+        "hat",
+        "4:different",
+        "0:same",
+        "eyes",
+        "0:same",
+        "unknown",
+      ],
+    },
+  }).answers;
+  expect(answers).toEqual({ "character:v1": ["4:different", "0:same"] });
+});
+
+it.each(["edit", "find"])(
+  "%s answers keep only region IDs for every versioned task",
+  (kind) => {
+    for (const task of tasks) {
+      const id = `${kind}:${task.id}`;
+      expect(
+        sanitizeNano({
+          answers: {
+            [id]: [
+              "eyes",
+              "0:same",
+              "hat",
+              "4:different",
+              "eyes",
+              "unknown",
+              1,
+              null,
+              {},
+            ],
+          },
+        }).answers,
+      ).toEqual({ [id]: ["eyes", "hat"] });
+    }
+  },
+);
+
+it("answer IDs and value arrays reject unknown revisions and invalid types", () => {
+  expect(
+    sanitizeNano({
+      answers: {
+        "character:v0": ["0:same"],
+        "character:v2": ["4:different"],
+        "edit:hat-v0": ["hat"],
+        "find:unknown-v1": ["eyes"],
+        "character:v1": [
+          0,
+          null,
+          false,
+          {},
+          [],
+          "5:same",
+          "-1:same",
+          "00:same",
+          "0:Same",
+        ],
+        "edit:hat-v1": "hat",
+        "find:hat-v1": { value: "eyes" },
+      },
+    }).answers,
+  ).toEqual({ "character:v1": [] });
+});
+
+it("character answer format is exact, including rejection of trailing line endings", () => {
+  expect(
+    sanitizeNano({
+      answers: {
+        "character:v1": [
+          "0:same\n",
+          "1:different\r",
+          "2:same\r\n",
+          "3:same\u2028",
+          "4:different\u2029",
+          " 0:same",
+          "0:same ",
+          "4:different",
+        ],
+      },
+    }).answers,
+  ).toEqual({ "character:v1": ["4:different"] });
+});
+
+it("normal legacy answer records preserve all formats, order and other chapter-seven fields", () => {
+  const valid = {
+    ...freshNano(),
+    step: 3,
+    image: { subject: 2, background: 1, style: 2, composition: 1 },
+    pins: [4, 0, 2],
+    history: ["workshop:v1", "find:apple-v1", "character:v1"],
+    copied: [copyId("character", characterPrompt([4, 0, 2]))],
+    tried: true,
+    answers: {
+      ...Object.fromEntries(
+        tasks.flatMap((t) => [
+          [`edit:${t.id}`, regions.map((r) => r.id).reverse()],
+          [`find:${t.id}`, regions.map((r) => r.id)],
+        ]),
+      ),
+      "character:v1": [4, 3, 2, 1, 0].flatMap((i) => [
+        `${i}:different`,
+        `${i}:same`,
+      ]),
+    },
+  };
+  expect(sanitizeNano(valid)).toEqual(valid);
+});
+
+it("load and save remove cross-kind contamination without writing other keys or mutating stored input on read", () => {
+  const raw = JSON.stringify({
+    ...freshNano(),
+    answers: {
+      "character:v1": ["hat", "4:different", "0:same", "4:different"],
+      "edit:hat-v1": ["eyes", "0:same", "hat", "eyes"],
+      "find:hat-v1": ["hat", "4:different", "eyes"],
+    },
+  });
+  const oldKeys = [
+    progressKey,
+    "gemini-toranomaki:canvas:v1",
+    "gemini-toranomaki:lab:v1",
+    "gemini-toranomaki:exploration:v1",
+  ];
+  const values = new Map<string, string>([
+    [nanoKey, raw],
+    ...oldKeys.map((k) => [k, `old:${k}`] as [string, string]),
+  ]);
+  const writes: string[] = [];
+  vi.stubGlobal("localStorage", {
+    getItem: (k: string) => values.get(k) ?? null,
+    setItem: (k: string, v: string) => {
+      writes.push(k);
+      values.set(k, v);
+    },
+  });
+  const expected = {
+    "edit:hat-v1": ["eyes", "hat"],
+    "find:hat-v1": ["hat", "eyes"],
+    "character:v1": ["4:different", "0:same"],
+  };
+  const loaded = loadNano();
+  expect(loaded.available).toBe(true);
+  expect(loaded.record.answers).toEqual(expected);
+  expect(values.get(nanoKey)).toBe(raw);
+  expect(writes).toEqual([]);
+  expect(saveNano({ ...freshNano(), answers: JSON.parse(raw).answers })).toBe(
+    true,
+  );
+  expect(JSON.parse(values.get(nanoKey)!).answers).toEqual(expected);
+  expect(loadNano().record.answers).toEqual(expected);
+  expect(writes).toEqual([nanoKey]);
+  for (const key of oldKeys) expect(values.get(key)).toBe(`old:${key}`);
+});

@@ -74,8 +74,9 @@ export function sanitizeNano(raw: unknown): NanoRecord {
           list(
             obj(r.answers)[id],
             (s) =>
-              regions.some((r) => r.id === s) ||
-              (id === "character:v1" && /^[0-4]:(same|different)$/.test(s)),
+              id === "character:v1"
+                ? /^[0-4]:(same|different)$/.test(s)
+                : regions.some((r) => r.id === s),
           ),
         ]),
     ),
