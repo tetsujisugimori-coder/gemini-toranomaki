@@ -34,12 +34,20 @@ export function Notebook({
     q = questionCases.find((q) => q.id === n.question) ?? questionCases[0];
   const view = all.find((s) => s.id === n.view),
     node = selected.find((s) => s.id === n.node);
+  const guideText = learningGuide(n.topic, n.sources, n.guide);
+  const latestGuide = useRef(guideText);
+  latestGuide.current = guideText;
   function mutate(patch: Partial<NotebookRecord>) {
-    copy.invalidate();
-    onUpdate({ ...patch, copied: false });
+    const changed =
+      learningGuide(
+        n.topic,
+        patch.sources ?? n.sources,
+        patch.guide ?? n.guide,
+      ) !== guideText;
+    if (changed) copy.invalidate();
+    onUpdate({ ...patch, ...(changed ? { copied: false } : {}) });
   }
   function go(step: number) {
-    copy.invalidate();
     onUpdate({ step });
     requestAnimationFrame(() => heading.current?.focus());
   }
@@ -57,12 +65,12 @@ export function Notebook({
     <div className="study-workspace">
       {n.invalidated && (
         <p role="status" className="notice">
-          連携元のテーマ・検証内容が変わったか初期化されたため、古い引継ぎ資料を無効にしました。再連携するか、ここで資料を選び直してください。
+          連携元のテーマ・検証内容が変わったか初期化されたため、古い引継ぎ資料を無効にしました。Notebookと同テーマで由来を記録できた独自追加資料と学習条件は保持し、旧形式で由来不明の資料は除外します。テーマを明示変更した場合は旧テーマの資料を保持しません。再連携するか、ここで資料を選び直してください。
         </p>
       )}
       <p className="notice">
         {n.origin
-          ? `第3章からの教材内引継ぎ：${t.title}。標本集計・観察資料・改善済みレポートの3件を受け取りました。後から追加した資料は引継ぎ検証の対象外です。`
+          ? `第3章からの教材内引継ぎ：${t.title}。標本集計・観察資料・改善済みレポートの3件を受け取りました。後から追加した資料は引継ぎ検証の対象外です。同じテーマの再検証では独自追加資料を保持します。`
           : "第4章は単独で利用できます。第3章の完了や実サービスへの接続は不要です。"}
       </p>
       <label className="lab-field">
@@ -125,8 +133,12 @@ export function Notebook({
                   </p>
                   <p>
                     {n.origin?.materials.includes(s.id)
-                      ? "教材内で理由を確認して引き継いだ資料"
-                      : "個別に追加する資料（引継ぎ検証の対象外）"}
+                      ? "教材内で理由を確認して引き継いだ資料（除外後に再選択しても引継ぎ由来）"
+                      : n.localSources.includes(s.id)
+                        ? "第4章で独自追加した資料（引継ぎ検証の対象外）"
+                        : n.sources.includes(s.id)
+                          ? "由来未確定の旧形式資料（連携元の変更時に除外）"
+                          : "個別に追加する資料（引継ぎ検証の対象外）"}
                   </p>
                   <label className="option">
                     <input
@@ -137,6 +149,11 @@ export function Notebook({
                           sources: n.sources.includes(s.id)
                             ? n.sources.filter((id) => id !== s.id)
                             : [...n.sources, s.id],
+                          localSources: n.sources.includes(s.id)
+                            ? n.localSources.filter((id) => id !== s.id)
+                            : n.origin?.materials.includes(s.id)
+                              ? n.localSources
+                              : [...n.localSources, s.id],
                           view: "",
                           node: "root",
                           asked: false,
@@ -188,7 +205,6 @@ export function Notebook({
             <button
               className="primary"
               onClick={() => {
-                copy.invalidate();
                 onUpdate({ asked: true, view: "" });
               }}
             >
@@ -285,14 +301,16 @@ export function Notebook({
               tabIndex={0}
               aria-label="学習ガイドの全文"
             >
-              {learningGuide(n.topic, n.sources, n.guide)}
+              {guideText}
             </pre>
             <button
               className="primary"
               disabled={copy.busy || !selected.length}
               onClick={() =>
-                void copy.copy(learningGuide(n.topic, n.sources, n.guide), () =>
-                  onUpdate({ copied: true }),
+                void copy.copy(
+                  guideText,
+                  () => onUpdate({ copied: true }),
+                  () => latestGuide.current === guideText,
                 )
               }
             >

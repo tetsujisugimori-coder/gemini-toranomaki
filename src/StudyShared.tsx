@@ -17,12 +17,19 @@ export function useStudyCopy() {
     setBusy(false);
     setMessage("");
   }
-  async function copy(text: string, onSuccess: () => void) {
+  async function copy(
+    text: string,
+    onSuccess: () => void,
+    matches: () => boolean = () => true,
+  ) {
     if (busy) return;
     const ticket = version.current;
     const route = location.hash;
     const current = () =>
-      mounted.current && version.current === ticket && location.hash === route;
+      mounted.current &&
+      version.current === ticket &&
+      location.hash === route &&
+      matches();
     setBusy(true);
     try {
       await navigator.clipboard.writeText(text);

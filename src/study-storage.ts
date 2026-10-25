@@ -30,6 +30,8 @@ export interface NotebookRecord {
   topic: TopicId;
   step: number;
   sources: string[];
+  // Explicitly added in chapter 4. Missing legacy metadata is never inferred for imports.
+  localSources: string[];
   view: string;
   question: string;
   asked: boolean;
@@ -143,6 +145,7 @@ export function freshNotebook(id: TopicId = "energy"): NotebookRecord {
     topic: id,
     step: 0,
     sources: [],
+    localSources: [],
     view: "",
     question: "correct",
     asked: false,
@@ -162,6 +165,8 @@ export function sanitizeNotebook(raw: unknown): NotebookRecord {
     g = object(r.guide),
     o = object(r.origin);
   const selected = unique(r.sources, allowed);
+  const hasOrigin =
+    r.origin !== null && (r.origin !== undefined || selected.length > 0);
   const originValid =
     o.topic === id &&
     typeof o.revision === "string" &&
@@ -170,6 +175,14 @@ export function sanitizeNotebook(raw: unknown): NotebookRecord {
     topic: id,
     step: step(r.step),
     sources: selected,
+    localSources: unique(
+      r.localSources === undefined && r.origin === null
+        ? selected
+        : r.localSources,
+      selected.filter(
+        (source) => !hasOrigin || !verifiedMaterialIds(id).includes(source),
+      ),
+    ),
     view: select(r.view, ["", ...allowed], ""),
     question: select(
       r.question,
@@ -197,7 +210,7 @@ export function sanitizeNotebook(raw: unknown): NotebookRecord {
           revision: o.revision as string,
           materials: unique(o.materials, allowed),
         }
-      : r.origin
+      : hasOrigin
         ? { topic: id, revision: "invalid", materials: [] }
         : null,
     invalidated: r.invalidated === true,
@@ -213,18 +226,25 @@ export function researchReady(r: ResearchRecord) {
     reportChecks(r.topic).every((c) => r.reportAnswers[c.id] === c.answer)
   );
 }
-export function transferNotebook(r: ResearchRecord): NotebookRecord | null {
+export function transferNotebook(
+  r: ResearchRecord,
+  previous?: NotebookRecord,
+): NotebookRecord | null {
   if (!researchReady(r)) return null;
   const materials = verifiedMaterialIds(r.topic);
+  const local = previous?.topic === r.topic ? previous.localSources : [];
   return {
     ...freshNotebook(r.topic),
-    sources: materials,
+    ...(previous ? { guide: previous.guide, audio: previous.audio } : {}),
+    sources: [...new Set([...materials, ...local])],
+    localSources: local.filter((id) => !materials.includes(id)),
     origin: { revision: r.revision, topic: r.topic, materials },
   };
 }
 export function reconcileNotebook(
   n: NotebookRecord,
   r: ResearchRecord,
+  researchMissing = false,
 ): NotebookRecord {
   if (!n.origin) return n;
   const expected = verifiedMaterialIds(r.topic);
@@ -237,8 +257,21 @@ export function reconcileNotebook(
     expected.every((id) => n.origin!.materials.includes(id))
   )
     return n;
+  // A removed research key means reset, not an explicit choice of a different topic.
+  const nextTopic = researchMissing ? n.topic : r.topic;
+  // Only explicit, same-topic additions survive. Legacy imported extras have unknown provenance.
+  const local =
+    n.topic === nextTopic
+      ? n.localSources.filter(
+          (id) =>
+            n.sources.includes(id) &&
+            studySources(nextTopic).some((s) => s.id === id),
+        )
+      : [];
   return {
-    ...freshNotebook(r.topic),
+    ...freshNotebook(nextTopic),
+    sources: local,
+    localSources: local,
     guide: n.guide,
     audio: n.audio,
     invalidated: true,
@@ -246,12 +279,14 @@ export function reconcileNotebook(
 }
 function load<T>(key: string, sanitize: (raw: unknown) => T) {
   try {
+    const stored = localStorage.getItem(key);
     return {
-      record: sanitize(JSON.parse(localStorage.getItem(key) || "null")),
+      record: sanitize(JSON.parse(stored ?? "null")),
       available: true,
+      missing: stored === null,
     };
   } catch {
-    return { record: sanitize(null), available: false };
+    return { record: sanitize(null), available: false, missing: false };
   }
 }
 export const loadResearch = () => load(researchKey, sanitizeResearch);

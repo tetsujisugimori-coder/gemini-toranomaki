@@ -29,7 +29,7 @@ export function StudyChapters({
   const [boot] = useState(() => {
     const r = loadResearch(),
       n = loadNotebook();
-    return { r, n, notebook: reconcileNotebook(n.record, r.record) };
+    return { r, n, notebook: reconcileNotebook(n.record, r.record, r.missing) };
   });
   const [research, setResearch] = useState(boot.r.record),
     [notebook, setNotebook] = useState(boot.notebook);
@@ -75,7 +75,10 @@ export function StudyChapters({
     commitNotebook(freshNotebook(id));
   }
   function transfer() {
-    const next = transferNotebook(latestResearch.current);
+    const next = transferNotebook(
+      latestResearch.current,
+      latestNotebook.current,
+    );
     if (!next) {
       setMessage(
         "まだ検証が済んでいません。計画・出典・レポートを見直してください。",
@@ -95,7 +98,7 @@ export function StudyChapters({
       setResearchReset((n) => n + 1);
       ok = removeStudy(researchKey);
       setResearchAvailable(ok);
-      const linked = reconcileNotebook(latestNotebook.current, next);
+      const linked = reconcileNotebook(latestNotebook.current, next, true);
       if (linked !== latestNotebook.current) ok = commitNotebook(linked) && ok;
     } else {
       const next = freshNotebook();
@@ -163,7 +166,7 @@ export function StudyChapters({
           第{chapter}章の学習を完了した（自己申告）
         </label>
         <p className="small">
-          この章の個別初期化は固定選択と章完了を消します。他章の完了やラボ・探索は消しません。第3章の初期化では、そこから引き継いだ第4章の古い資料と回答だけは無効化します。全体の「進捗を初期化」は従来どおり章完了だけが対象です。
+          この章の個別初期化は固定選択と章完了を消します。他章の完了やラボ・探索は消しません。第3章の初期化はテーマ・課題・条件・完了記録を初期化します。第4章のテーマは変えません。そこから引き継いだ第4章の古い資料と回答は無効化し、由来を記録した独自追加資料と学習条件は保持します。全体の「進捗を初期化」は従来どおり章完了だけが対象です。
         </p>
         {resetting ? (
           <>

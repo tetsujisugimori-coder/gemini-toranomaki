@@ -286,3 +286,140 @@ it("rejects an old public-style document for a current claim without denying its
   expect(old.reason).toContain("根拠には採用しません");
   expect(old.reason).toContain("歴史的背景を知る用途には有用");
 });
+
+it("keeps only explicit same-topic additions when imports expire, including on reset", () => {
+  const r = ready();
+  const n = {
+    ...transferNotebook(r)!,
+    sources: [...verifiedMaterialIds(r.topic), "education-company"],
+    localSources: ["education-company"],
+    view: "education-public",
+    node: "education-company",
+    asked: true,
+    citationAnswers: { correct: 0 },
+    copied: true,
+    guide: {
+      audience: "intermediate",
+      format: "qa",
+      detail: "detailed",
+    } as const,
+    audio: "dialogue" as const,
+  };
+  for (const changed of [
+    { ...r, revision: crypto.randomUUID() },
+    freshResearch("education"),
+  ]) {
+    const result = reconcileNotebook(n, changed);
+    expect(result.sources).toEqual(["education-company"]);
+    expect(result.localSources).toEqual(["education-company"]);
+    expect(result.origin).toBeNull();
+    expect(result.guide).toEqual(n.guide);
+    expect(result.audio).toBe("dialogue");
+    expect(result.asked).toBe(false);
+    expect(result.citationAnswers).toEqual({});
+    expect(result.view).toBe("");
+    expect(result.node).toBe("root");
+    expect(result.copied).toBe(false);
+  }
+  const different = reconcileNotebook(n, freshResearch("mobility"));
+  expect(different.topic).toBe("mobility");
+  expect(different.sources).toEqual([]);
+  expect(different.localSources).toEqual([]);
+  const again = transferNotebook(
+    r,
+    reconcileNotebook(n, freshResearch("education")),
+  )!;
+  expect(again.sources).toEqual([
+    ...verifiedMaterialIds(r.topic),
+    "education-company",
+  ]);
+  expect(again.guide).toEqual(n.guide);
+});
+
+it("restores provenance, migrates legacy imports conservatively and filters corrupt ownership", () => {
+  const r = ready();
+  const n = {
+    ...transferNotebook(r)!,
+    sources: [...verifiedMaterialIds(r.topic), "education-company"],
+    localSources: ["education-company"],
+  };
+  expect(sanitizeNotebook(JSON.parse(JSON.stringify(n)))).toEqual(n);
+  const legacy = { ...n, localSources: undefined };
+  const loaded = sanitizeNotebook(legacy);
+  expect(loaded.sources).toEqual(n.sources);
+  expect(loaded.localSources).toEqual([]);
+  expect(reconcileNotebook(loaded, r)).toBe(loaded);
+  expect(reconcileNotebook(loaded, freshResearch("education")).sources).toEqual(
+    [],
+  );
+  const corrupt = sanitizeNotebook({
+    ...n,
+    localSources: [
+      "education-public",
+      "mobility-company",
+      "education-company",
+      "private",
+    ],
+  });
+  expect(corrupt.localSources).toEqual(["education-company"]);
+  expect(sanitizeNotebook({ ...n, localSources: "bad" }).localSources).toEqual(
+    [],
+  );
+  const malformed = sanitizeNotebook({
+    ...n,
+    origin: { topic: "energy", revision: "bad" },
+  });
+  expect(reconcileNotebook(malformed, r).sources).toEqual([
+    "education-company",
+  ]);
+  // Legacy origin:null is the old format's explicit standalone state, not an imported extra.
+  for (const origin of [undefined, false, 0, "", { revision: "bad" }]) {
+    const damaged = sanitizeNotebook({ ...legacy, origin });
+    expect(damaged.localSources).toEqual([]);
+    expect(reconcileNotebook(damaged, r).sources).toEqual([]);
+  }
+  const standalone = sanitizeNotebook({
+    topic: "education",
+    sources: ["education-public"],
+    origin: null,
+  });
+  expect(standalone.localSources).toEqual(["education-public"]);
+  expect(reconcileNotebook(standalone, freshResearch())).toBe(standalone);
+});
+
+it("has three distinct evidence decisions and withholds transfer until the uncertain source is reconsidered", () => {
+  for (const t of studyTopics) {
+    const sources = studySources(t.id).slice(0, 7);
+    expect(new Set(sources.map((s) => s.judgment))).toEqual(new Set([0, 1, 2]));
+    const unknown = sources.find((s) => s.id.endsWith("-unknown"))!;
+    expect(unknown.judgment).toBe(1);
+    expect(unknown.reason).toContain("原資料を探し");
+    expect(unknown.reason).toContain("確認できるまで97%");
+    expect(unknown.reason).toContain("採用を見送ります");
+  }
+  const r = ready();
+  expect(
+    transferNotebook({
+      ...r,
+      sourceAnswers: { ...r.sourceAnswers, "education-unknown": 2 },
+    }),
+  ).toBeNull();
+  expect(transferNotebook(r)).not.toBeNull();
+});
+
+it("distinguishes deleted research from an explicit new topic during reset reconciliation", () => {
+  const r = ready();
+  const n = {
+    ...transferNotebook(r)!,
+    sources: [...verifiedMaterialIds(r.topic), "education-company"],
+    localSources: ["education-company"],
+  };
+  const reset = reconcileNotebook(n, freshResearch(), true);
+  expect(reset.topic).toBe("education");
+  expect(reset.sources).toEqual(["education-company"]);
+  expect(reconcileNotebook(n, freshResearch()).sources).toEqual([]);
+  vi.stubGlobal("localStorage", { getItem: () => null });
+  expect(loadResearch().missing).toBe(true);
+  vi.stubGlobal("localStorage", { getItem: () => "{bad" });
+  expect(loadResearch().missing).toBe(false);
+});

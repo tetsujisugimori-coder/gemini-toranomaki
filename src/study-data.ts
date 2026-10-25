@@ -31,9 +31,9 @@ export type TopicId = (typeof studyTopics)[number]["id"];
 export const topicFor = (id: string) =>
   studyTopics.find((t) => t.id === id) ?? studyTopics[0];
 export const sourceChoices = [
-  "主張の根拠として条件付きで採用",
-  "用途を限定し追加確認する",
-  "この主張の根拠には採用しない",
+  "採用：本文が主張を支える範囲で使う",
+  "判断保留：情報不足のため追加確認する",
+  "不採用：本文と主張が一致しない",
 ];
 export interface StudySource {
   id: string;
@@ -135,10 +135,10 @@ export function studySources(topic: TopicId): StudySource[] {
       summary: "数値だけで調査方法も出所もない。",
       section: "切り抜きの全文",
       body: "『成功率は97%』という文字だけがあります。誰がいつ、何件を、どう調べた数値かは書かれていません。",
-      claim: "97%を確かな調査結果として引用する。",
-      judgment: 2,
+      claim: "この切り抜きの97%が追跡可能な調査結果か、判断したい。",
+      judgment: 1,
       reason:
-        "分母、方法、発行者、年月を追えません。別の資料で確かめられるまでは、この数値を根拠に採用しません。",
+        "分母、方法、発行者、年月が不足し、真偽も主張との対応も判断できないため保留します。原資料を探し、調査方法と対象を追加確認してください。確認できるまで97%を確かな数値として引用しません。追跡できなければ採用を見送ります。",
       learning: "出所不明の数値は引用を保留する。原資料と調査方法を探す。",
     }),
     make("old", {

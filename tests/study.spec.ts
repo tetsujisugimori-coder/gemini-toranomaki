@@ -794,3 +794,305 @@ for (const failedKey of [researchKey, notebookKey])
     ).toBeVisible();
     await expect(material(page, "mobility", "public")).not.toBeChecked();
   });
+
+for (const action of ["revision", "reset", "topic"] as const)
+  test(`provenance survives reload and preserves independent additions after research ${action}`, async ({
+    page,
+  }) => {
+    await seedReady(page);
+    await page
+      .getByRole("button", { name: "この調査をNotebookで学ぶ →" })
+      .click();
+    await material(page, "energy", "company").check();
+    await completion(page, 4).check();
+    await step(page, 3);
+    await page
+      .getByRole("combobox", { name: "学習対象", exact: true })
+      .selectOption("intermediate");
+    await page.reload();
+    await nav(page, 3);
+    if (action === "revision") {
+      await step(page, 2);
+      await page.getByLabel(planLabels[0], { exact: true }).uncheck();
+    } else if (action === "reset") await reset(page, 3);
+    else
+      await page
+        .getByRole("combobox", { name: "調査テーマ", exact: true })
+        .selectOption("mobility");
+    await nav(page, 4);
+    await step(page, 1);
+    if (action === "topic") {
+      await expect(
+        page.getByRole("combobox", { name: "Notebookのテーマ", exact: true }),
+      ).toHaveValue("mobility");
+      await expect(material(page, "mobility", "company")).not.toBeChecked();
+    } else {
+      await expect(material(page, "energy", "company")).toBeChecked();
+      for (const source of ["public", "paper", "report"])
+        await expect(material(page, "energy", source)).not.toBeChecked();
+      await expect(
+        page
+          .locator(".study-materials")
+          .getByText("第4章で独自追加した資料（引継ぎ検証の対象外）", {
+            exact: true,
+          }),
+      ).toHaveCount(1);
+    }
+    await expect(completion(page, 4)).toBeChecked();
+    await page.reload();
+    await step(page, 3);
+    await expect(
+      page.getByRole("combobox", { name: "学習対象", exact: true }),
+    ).toHaveValue("intermediate");
+    const guide = page.getByLabel("学習ガイドの全文");
+    if (action === "topic")
+      await expect(guide).toContainText("参照資料がありません");
+    else {
+      await expect(guide).toContainText("企業発表は仕様");
+      await expect(guide).not.toContainText("24件の観察研究");
+    }
+  });
+
+for (const readd of [false, true])
+  test(`legacy imported extras remain unknown; explicit re-add: ${readd}`, async ({
+    page,
+  }) => {
+    await seedReady(page);
+    await page
+      .getByRole("button", { name: "この調査をNotebookで学ぶ →" })
+      .click();
+    await material(page, "energy", "company").check();
+    await page.evaluate((key) => {
+      const n = JSON.parse(localStorage.getItem(key)!);
+      delete n.localSources;
+      localStorage.setItem(key, JSON.stringify(n));
+    }, notebookKey);
+    await page.reload();
+    await expect(
+      page.getByText("由来未確定の旧形式資料（連携元の変更時に除外）", {
+        exact: true,
+      }),
+    ).toBeVisible();
+    if (readd) {
+      await material(page, "energy", "company").uncheck();
+      await material(page, "energy", "company").check();
+    }
+    await page.reload();
+    await nav(page, 3);
+    await step(page, 2);
+    await page.getByLabel(planLabels[0], { exact: true }).uncheck();
+    await nav(page, 4);
+    if (readd) await expect(material(page, "energy", "company")).toBeChecked();
+    else await expect(material(page, "energy", "company")).not.toBeChecked();
+    await expect(material(page, "energy", "public")).not.toBeChecked();
+  });
+
+for (const failures of [
+  [researchKey],
+  [notebookKey],
+  [researchKey, notebookKey],
+])
+  test(`same-topic provenance and safe in-memory invalidation with denied saves: ${failures.join(",")}`, async ({
+    page,
+  }) => {
+    await seedReady(page);
+    await page
+      .getByRole("button", { name: "この調査をNotebookで学ぶ →" })
+      .click();
+    await material(page, "energy", "company").check();
+    await page.evaluate((keys) => {
+      const set = Storage.prototype.setItem;
+      Storage.prototype.setItem = function (k, v) {
+        if (keys.includes(k)) throw Error("denied");
+        return set.call(this, k, v);
+      };
+    }, failures);
+    await nav(page, 3);
+    await step(page, 2);
+    await page.getByLabel(planLabels[0], { exact: true }).uncheck();
+    await nav(page, 4);
+    await expect(material(page, "energy", "company")).toBeChecked();
+    await expect(material(page, "energy", "public")).not.toBeChecked();
+    await expect(page.getByText(/記録を保存できません/).first()).toBeVisible();
+    if (failures.length === 1) {
+      await page.reload();
+      await expect(material(page, "energy", "company")).toBeChecked();
+      await expect(material(page, "energy", "public")).not.toBeChecked();
+    } else {
+      // With no durable writes, the old, mutually consistent disk snapshot is unchanged.
+      // This is explicitly a persistence failure; the current in-memory state remains safe.
+      const disk = await page.evaluate(
+        (key) => JSON.parse(localStorage.getItem(key)!),
+        notebookKey,
+      );
+      expect(disk.origin).not.toBeNull();
+      expect(disk.sources).toContain("energy-public");
+      await expect(page.getByText(/再読み込みで古い記録が復活/)).toBeVisible();
+      await page.reload();
+      await expect(material(page, "energy", "public")).toBeChecked();
+      await expect(material(page, "energy", "company")).toBeChecked();
+      await expect(page.getByText(/第3章からの教材内引継ぎ/)).toBeVisible();
+    }
+  });
+
+test("guide copy survives non-body actions and reload but expires for each body-changing setting or material", async ({
+  page,
+}) => {
+  await simpleClipboard(page);
+  await page.goto("#chapter-4");
+  await material(page, "energy", "public").check();
+  const copied = () =>
+    page.evaluate(
+      (key) => JSON.parse(localStorage.getItem(key)!).copied,
+      notebookKey,
+    );
+  await step(page, 3);
+  await page.getByRole("button", { name: "学習ガイドを全文コピー" }).click();
+  expect(await copied()).toBe(true);
+  await step(page, 4);
+  await page
+    .getByRole("combobox", { name: "音声解説の表示", exact: true })
+    .selectOption("dialogue");
+  await step(page, 2);
+  await page
+    .getByRole("button", { name: "選択資料で質問する（模擬）" })
+    .click();
+  await page
+    .getByRole("group", { name: "この回答と引用をどう判断する？" })
+    .getByLabel(citationChoices[0], { exact: true })
+    .check();
+  await page
+    .getByRole("combobox", { name: "模擬質問を選ぶ", exact: true })
+    .selectOption("outside");
+  expect(await copied()).toBe(true);
+  await page.reload();
+  expect(await copied()).toBe(true);
+  for (const [name, value] of [
+    ["学習対象", "intermediate"],
+    ["ガイドの形式", "qa"],
+    ["詳しさ", "detailed"],
+  ]) {
+    await step(page, 3);
+    await page.getByRole("combobox", { name, exact: true }).selectOption(value);
+    expect(await copied()).toBe(false);
+    await page.getByRole("button", { name: "学習ガイドを全文コピー" }).click();
+    expect(await copied()).toBe(true);
+  }
+  await step(page, 1);
+  await material(page, "energy", "company").check();
+  expect(await copied()).toBe(false);
+});
+
+for (const outcome of ["success", "failure"] as const)
+  test(`pending guide copy tracks body identity and ignores an older ${outcome} during a newer copy`, async ({
+    page,
+  }) => {
+    await deferredClipboard(page);
+    await page.goto("#chapter-4");
+    const copy = await prepareCopy(page, 4);
+    await copy.click();
+    await step(page, 4);
+    await page
+      .getByRole("combobox", { name: "音声解説の表示", exact: true })
+      .selectOption("dialogue");
+    await settle(page, 0, "success");
+    await expect(page.locator(".study-workspace .feedback")).toContainText(
+      "全文をコピーしました",
+    );
+    await step(page, 3);
+    await copy.click();
+    await page
+      .getByRole("combobox", { name: "学習対象", exact: true })
+      .selectOption("intermediate");
+    await copy.click();
+    await settle(page, 1, outcome);
+    await expect(copy).toBeDisabled();
+    await expect(page.locator(".study-workspace .feedback")).toHaveText("");
+    expect(
+      await page.evaluate(
+        (key) => JSON.parse(localStorage.getItem(key)!).copied,
+        notebookKey,
+      ),
+    ).toBe(false);
+    await settle(page, 2, "success");
+    await expect(copy).toBeEnabled();
+    await expect(page.locator(".study-workspace .feedback")).toContainText(
+      "全文をコピーしました",
+    );
+    expect(
+      await page.evaluate(
+        (key) => JSON.parse(localStorage.getItem(key)!).copied,
+        notebookKey,
+      ),
+    ).toBe(true);
+  });
+
+for (const topic of ["education", "mobility"] as const)
+  test(`research reset preserves notebook ${topic} and its independently added material`, async ({
+    page,
+  }) => {
+    await seedReady(page, topic);
+    await page
+      .getByRole("button", { name: "この調査をNotebookで学ぶ →" })
+      .click();
+    await material(page, topic, "company").check();
+    await nav(page, 3);
+    await reset(page, 3);
+    await expect(
+      page.getByRole("combobox", { name: "調査テーマ", exact: true }),
+    ).toHaveValue("energy");
+    await nav(page, 4);
+    await expect(
+      page.getByRole("combobox", { name: "Notebookのテーマ", exact: true }),
+    ).toHaveValue(topic);
+    await expect(material(page, topic, "company")).toBeChecked();
+    await expect(material(page, topic, "public")).not.toBeChecked();
+    await page.reload();
+    await expect(material(page, topic, "company")).toBeChecked();
+    await expect(material(page, topic, "public")).not.toBeChecked();
+  });
+
+test("research deletion with notebook save refused retains independently added non-default material on reload", async ({
+  page,
+}) => {
+  await seedReady(page, "education");
+  await page
+    .getByRole("button", { name: "この調査をNotebookで学ぶ →" })
+    .click();
+  await material(page, "education", "company").check();
+  await page.evaluate((key) => {
+    const set = Storage.prototype.setItem;
+    Storage.prototype.setItem = function (k, v) {
+      if (k === key) throw Error("denied");
+      return set.call(this, k, v);
+    };
+  }, notebookKey);
+  await nav(page, 3);
+  await reset(page, 3);
+  await nav(page, 4);
+  await expect(material(page, "education", "company")).toBeChecked();
+  await expect(material(page, "education", "public")).not.toBeChecked();
+  await page.reload();
+  await expect(material(page, "education", "company")).toBeChecked();
+  await expect(material(page, "education", "public")).not.toBeChecked();
+});
+
+test("missing provenance cannot promote imported sources to standalone additions", async ({
+  page,
+}) => {
+  await seedReady(page);
+  await page
+    .getByRole("button", { name: "この調査をNotebookで学ぶ →" })
+    .click();
+  await material(page, "energy", "company").check();
+  await page.evaluate((key) => {
+    const n = JSON.parse(localStorage.getItem(key)!);
+    delete n.origin;
+    delete n.localSources;
+    localStorage.setItem(key, JSON.stringify(n));
+  }, notebookKey);
+  await page.reload();
+  await expect(page.getByText(/古い引継ぎ資料を無効/)).toBeVisible();
+  for (const suffix of ["public", "paper", "report", "company"])
+    await expect(material(page, "energy", suffix)).not.toBeChecked();
+});
