@@ -119,7 +119,7 @@ async function clipboard(p: Page) {
   );
 }
 
-test("Canvas is reachable from curriculum, navigation and chapter-one map; chapters seven through ten remain planned", async ({
+test("Canvas is reachable from curriculum, navigation and chapter-one map; chapter seven is available and chapters eight through ten remain planned", async ({
   page,
 }) => {
   await page.goto("#curriculum");
@@ -136,9 +136,18 @@ test("Canvas is reachable from curriculum, navigation and chapter-one map; chapt
   await expect(page.locator("h1")).toHaveText("Canvas");
   for (const n of [7, 8, 9, 10]) {
     await page.goto(`#chapter-${n}`);
-    await expect(
-      page.getByRole("heading", { name: "準備中", exact: true }),
-    ).toBeVisible();
+    if (n === 7) {
+      await expect(
+        page.getByRole("heading", { name: "画像生成工房", exact: true }),
+      ).toBeVisible();
+      await expect(
+        page.getByRole("button", { name: "条件を固定して模擬画像を表示" }),
+      ).toBeDisabled();
+    } else {
+      await expect(
+        page.getByRole("heading", { name: "準備中", exact: true }),
+      ).toBeVisible();
+    }
   }
 });
 test("requirements selection changes the full creation prompt and does not expose the completed specification before a judgment", async ({
