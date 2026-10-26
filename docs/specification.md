@@ -241,3 +241,7 @@ Canvas紹介と3つのOS別ヘルプをHTTP200で取得し本文を確認した�
 - `gemini-toranomaki:video-music:v1`だけ新設。step・固定video/music/task/mix・閲覧/操作/版付き回答履歴・本文fingerprintコピー・実聴/実Gemini自己申告をホワイトリスト保存。再生状態/時間位置/タイマー/Context/現在の予想・比較・開いた解説は非保存。未知ID/型/範囲外は除外、順序/重複除去、破損/拒否は既定値と警告。既存progress:v1にはchapter-8だけを公開IDとして追加し、1〜7の記録を維持。個別初期化は確認後に専用記録と章8完了を対象とし、片側失敗も削除成功としない。全体初期化の意味（章完了だけ）は不変。
 - コピーは既存useStudyCopyのmounted/version/hashと表示本文一致を再利用。本文変更/step/unmount/初期化で旧成功・失敗・finallyを除外し、次のコピーを許可。OSへの書込自体は取消不能。全文textareaは失敗時の手動回復に使用。模擬操作で実Google生成や章完了を自動認定しない。
 - API/OAuth/ログイン/外部送信/アップロード/バックエンド/自由コード実行は追加しない。依存/lockfile/CI/Pagesゲートは変更しない。詳細な公式本文・採用/保留案・検証・未検証は[章8検証記録](verification/video-music/README.md)を参照。
+
+### 第8章CI環境対処の補足
+
+初回教材実装のCI/依存変更なしの方針に対し、CIでUbuntu Azureパッケージ取得の遅延が継続したため、公式Ubuntu archiveへのURI選択だけを1step追加した。Ubuntu署名・suite/component・Signed-By、型/lint/単体/build/標準ブラウザ導入/全E2Eと既存Pagesゲートは変更しない。依存/lockfile/Pagesワークフローは不変。証拠・初回cancel/再実行と採用理由は章8検証記録・Issue/PRへ記録する。

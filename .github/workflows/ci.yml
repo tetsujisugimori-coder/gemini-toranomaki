@@ -18,6 +18,14 @@ jobs:
       - run: npm run lint
       - run: npm test
       - run: npm run build
+      # Azure package downloads delayed browser setup; keep Ubuntu signing and all checks.
+      - name: Use official Ubuntu archive for browser dependencies
+        run: |
+          for source in /etc/apt/sources.list /etc/apt/sources.list.d/ubuntu.sources; do
+            if [ -f "$source" ]; then
+              sudo sed -i -E 's#https?://azure\.archive\.ubuntu\.com/ubuntu([/[:space:]]|$)#https://archive.ubuntu.com/ubuntu\1#g' "$source"
+            fi
+          done
       - run: npx playwright install --with-deps chromium webkit
       - run: npm run test:e2e
       # Only Pages callers receive the exact build that passed both E2E projects.

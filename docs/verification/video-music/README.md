@@ -79,3 +79,13 @@ Geminiアプリの制作と、関連するFlow Music等の入口を区別する�
 既存の「章8準備中」検査は残る準備中の章9へ対象を移し、章8利用可能/章9・10準備中を別に検証した。既存アサーションは削除/緩和しない。ローカルでは前章からのブラウザパスと共有ライブラリ用ホスト依存事前判定例外だけを再利用。CIでは標準のOS依存/ブラウザ導入・ホスト検証を維持し、テスト自体のskipはない。
 
 作者の最終別Chromium操作も4体験・native Web Audio開始/停止・無音・前後比較・pageerrorなしを再確認し、代表2画像を更新して目視した（/tmp/ch8-manual-final.log）。作者/独立確認用の専用previewは終了。独立工程と作者の全件検証、実機や実聴の未検証を混同しない。
+
+## CI環境対処の追加判断
+
+初回製品HEAD `8d9a755` のCI40314494809では、Ubuntu Azureミラーから119MB/181新規OSパッケージの取得が低速で、一部`Ign`再試行も発生。約15分後に作者がキャンセルしてログを取得した。完全停止ではなく取得継続中だった点、E2Eは未実行だった点を明記する。同じHEAD/同じ標準CIのattempt2でも導入が長時間継続した。
+
+このCloud環境から同じfonts-wqy-zenheiパッケージをHTTPSで範囲取得した結果、Azureは503、Ubuntu公式archiveは206/256KiB/0.91秒。CIランナー上の同条件測定ではないため、全地域のミラー障害やCI速度改善を実証したとはしない。推測だけでテストを省略せず、CIのUbuntu Azure URIだけを`https://archive.ubuntu.com/ubuntu`へ置換する1stepを追加した。legacy/deb822両形式に対応し、Ubuntu以外のURI・suite/component・Signed-By・APT署名検証は変えない。標準`playwright install --with-deps chromium webkit`と全検査・Pagesゲート・依存/lockfileはそのまま。これまでの「CI変更なし」は初回教材実装時点の記録であり、この環境対処が唯一の追加変更である。
+
+CIを単に繰り返す第一案では改善が確認できず、必須検査を緩めない公式ミラー選択を採用した。ブラウザ依存を省略する案、ホスト検証をCIで無効化する案は採用しない。変更はDraftで人間のレビュー対象とし、最終HEADのCIを別途確認する。
+
+同じ別エージェントがCI差分を独立追確認し、境界付きsedを5種類のfixture（legacy HTTP/HTTPS、deb822、末尾slash、ubuntu-custom、他host、Azure URIなし）で期待する全文と照合して成功。Signed-By/suite/component/他repoは保持。追加8行を除いたworkflowが8d9a755と完全一致し、Bash構文/diff-checkと依存/lockfile/Pages workflow不変を確認。新規P0〜P3なし。/tmp/ch8-independent-apt-review.json。実APT導入/速度改善/最終CI成功は独立工程の検証結果ではない。
