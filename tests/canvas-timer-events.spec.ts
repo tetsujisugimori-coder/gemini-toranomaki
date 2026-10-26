@@ -66,9 +66,11 @@ async function rerender(p: Page) {
     .toBe(true);
 }
 async function reachZero(p: Page, seconds = 10) {
+  const previousCalls = (await zeroCalls(p)).length;
   await timer(p).getByRole("button", { name: "開始", exact: true }).click();
   await p.clock.runFor(seconds * 1000);
   await expect(timer(p)).toContainText("0秒への到達：1回");
+  await expect.poll(() => zeroCalls(p)).toHaveLength(previousCalls + 1);
 }
 for (const strict of [false, true])
   test(`zero history is emitted once per stop event, never on parent/callback changes (StrictMode=${strict})`, async ({
@@ -105,7 +107,7 @@ for (const strict of [false, true])
     expect(await zeroCalls(page)).toHaveLength(1);
     await page.clock.runFor(10_000);
     await expect(timer(page)).toContainText("0秒への到達：2回");
-    expect(await zeroCalls(page)).toEqual([
+    await expect.poll(() => zeroCalls(page)).toEqual([
       { id: "zero", revision: 0 },
       { id: "zero", revision: 1 },
     ]);
@@ -119,7 +121,9 @@ for (const strict of [false, true])
       .getByRole("button", { name: "開始", exact: true })
       .click();
     await page.clock.runFor(10_000);
-    expect(await zeroCalls(page)).toHaveLength(3);
+    await expect(timer(page)).toContainText("0秒への到達：3回");
+    // History is emitted by an Effect after the timer state commits.
+    await expect.poll(() => zeroCalls(page)).toHaveLength(3);
     await timer(page)
       .getByRole("button", { name: "タイマーをリセット", exact: true })
       .click();
@@ -131,7 +135,7 @@ for (const strict of [false, true])
     expect(await zeroCalls(page)).toHaveLength(4);
     await page.clock.runFor(30_000);
     await expect(timer(page)).toContainText("0秒への到達：4回");
-    expect(await zeroCalls(page)).toHaveLength(7);
+    await expect.poll(() => zeroCalls(page)).toHaveLength(7);
   });
 
 test("version switch preserves each consumed event, stops both runs and does not replay old zero counts", async ({
