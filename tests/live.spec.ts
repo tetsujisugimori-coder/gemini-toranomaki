@@ -79,7 +79,7 @@ async function settle(p: Page, index: number, outcome: "success" | "failure") {
   );
 }
 
-test("chapter five is reachable from curriculum and chapter-one feature map while seven remains planned", async ({
+test("chapter five is reachable from curriculum and chapter-one feature map while eight remains planned", async ({
   page,
 }) => {
   await page.goto("#curriculum");
@@ -97,7 +97,7 @@ test("chapter five is reachable from curriculum and chapter-one feature map whil
   await expect(link).toContainText("学習できます");
   await link.click();
   await expect(page.locator("h1")).toBeFocused();
-  await page.goto("#chapter-7");
+  await page.goto("#chapter-8");
   await expect(
     page.getByRole("heading", { name: "準備中", exact: true }),
   ).toBeVisible();
@@ -582,6 +582,8 @@ for (const width of [320, 375, 390, 1280])
     await page.setViewportSize({ width, height: 900 });
     await page.emulateMedia({ colorScheme: "light" });
     await page.goto("#chapter-5");
+    // Let the route's initial focus finish before sending keyboard actions.
+    await expect(page.locator("h1")).toBeFocused();
     for (const theme of ["light", "dark"]) {
       if (theme === "dark")
         await page

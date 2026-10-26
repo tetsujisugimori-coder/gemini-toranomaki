@@ -799,3 +799,139 @@ fieldset + fieldset {
   max-width: 100%;
   white-space: normal;
 }
+
+/* Chapter 7: shared-coordinate original teaching illustrations. */
+.nano-chapter {
+  margin-top: 2rem;
+}
+.nano-chapter :is(button, select, textarea) {
+  max-width: 100%;
+}
+.nano-chapter label {
+  overflow-wrap: anywhere;
+}
+.nano-controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  gap: 1rem;
+  margin-block: 1.5rem;
+}
+.nano-select {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.nano-art {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 20px;
+}
+.nano-water {
+  filter: saturate(0.7) contrast(0.94);
+}
+.nano-stage {
+  position: relative;
+  margin-top: 1rem;
+  isolation: isolate;
+}
+.nano-stage .nano-art {
+  max-height: none;
+}
+.nano-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.nano-boundary {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: #fff4cd;
+  box-shadow: 0 0 0 1px #25374b;
+  pointer-events: none;
+}
+.nano-comparison input[type="range"] {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  accent-color: var(--accent);
+}
+.nano-hotspot {
+  cursor: pointer;
+}
+.nano-hotspot:focus {
+  outline: none;
+}
+.nano-hotspot:focus rect {
+  stroke: #ffe5a2;
+  stroke-dasharray: 6 3;
+}
+.nano-hotspot:hover rect {
+  stroke: #ffe5a2;
+}
+.nano-region-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.5rem;
+}
+.nano-pair {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: 1rem;
+}
+.nano-pair figure {
+  margin: 0;
+}
+.nano-pointing {
+  margin-top: 1.5rem;
+}
+.nano-prompt {
+  margin-block: 2rem;
+}
+.nano-prompt textarea {
+  width: 100%;
+  min-height: 160px;
+  font: inherit;
+}
+.nano-chapter button[aria-pressed="true"] {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.nano-chapter :is(h3, [tabindex="-1"]):focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 5px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .nano-chapter * {
+    scroll-behavior: auto;
+    transition: none;
+    animation: none;
+  }
+}
+
+.nano-chapter fieldset > label,
+.nano-region-options > label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  padding: 0.65rem 0.25rem;
+  min-height: 44px;
+}
+.nano-chapter input:is([type="radio"], [type="checkbox"]) {
+  flex: 0 0 auto;
+  margin-top: 0.3em;
+}
+.nano-art {
+  max-height: none;
+}
+.nano-stage,
+.nano-pointing {
+  max-width: 900px;
+  margin-inline: auto;
+}
+.nano-location {
+  font-size: 1rem;
+  color: var(--muted);
+}

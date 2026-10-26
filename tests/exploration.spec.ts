@@ -52,7 +52,7 @@ test("purpose and reverse map show reasons, alternatives and real chapter overvi
   await expect(
     page.getByRole("heading", { name: "Canvas", exact: true }),
   ).toBeVisible();
-  await page.goto("#chapter-7");
+  await page.goto("#chapter-8");
   await expect(
     page.getByRole("heading", { name: "準備中", exact: true }),
   ).toBeVisible();

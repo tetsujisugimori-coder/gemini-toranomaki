@@ -13,7 +13,7 @@ test("navigation, lesson, copy, quiz, progress and reset", async ({ page }) => {
   await page.goto("");
   await page.getByRole("link", { name: "全10章・機能一覧" }).click();
   await expect(page.locator(".chapter-row")).toHaveCount(10);
-  await page.locator(".chapter-row").nth(6).click();
+  await page.locator(".chapter-row").nth(7).click();
   await expect(
     page.getByRole("heading", { name: "準備中", exact: true }),
   ).toBeVisible();

@@ -1,3 +1,4 @@
+import { nanoReferences } from "./nano-data";
 import { canvasReferences } from "./canvas-data";
 import { liveReferences } from "./live-data";
 import { studyReferences } from "./study-data";
@@ -121,7 +122,7 @@ export const lessons: Lesson[] = topics.map(
     references: [{ title: "Google公式情報（外部サイト）", url }],
     checkedAt:
       "2026-10-22：公式ページ取得がネットワーク制限で拒否されたため、現行仕様は未確認",
-    status: i < 6 ? "ready" : "planned",
+    status: i < 7 ? "ready" : "planned",
     steps: [],
   }),
 );
@@ -223,3 +224,14 @@ lessons[5].conditions =
   "公式紹介とPC/iOS/Androidのヘルプ本文を2026-10-25に確認。機能ごとの年齢・プラン・地域・アカウント・端末・提供変更と実際の利用可否は未確認です。自分の画面でも確認してください。固定体験にログインは不要です。";
 lessons[5].checkedAt =
   "2026-10-25：公式紹介とOS別ヘルプ本文を確認。実Google Canvas・個別アカウントでの操作は未検証";
+
+lessons[6].title = "Nano Banana：画像生成と部分修正を試す";
+lessons[6].goal =
+  "変更する部分と維持する部分を分けて指示し、画像全体を観察して検証する。";
+lessons[6].description =
+  "オリジナルSVGの固定教材で画像条件、部分修正、間違い探し、3場面の一貫性を比較します。";
+lessons[6].references = [...nanoReferences];
+lessons[6].conditions =
+  "公式本文を2026-10-26 JSTに確認。OS・年齢・国・プラン・モデル・アカウントごとの実際の利用可否は未確認です。固定教材に接続や契約は不要です。";
+lessons[6].checkedAt =
+  "2026-10-26 JST：PC/iOS/Androidヘルプと紹介本文を確認。名称差と年齢表記の併存は仕様書へ記録。実Google操作は未検証";

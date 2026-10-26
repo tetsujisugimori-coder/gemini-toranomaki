@@ -328,3 +328,32 @@
 - 独立エージェントcanvas_quality_reviewは新16件をChromium8/WebKit8で別途再実行して成功。原因/再現/増分通知/本番分離/保護範囲を確認し、新P0〜P3なし、既知P3解消と判断。6軸は4.5/4.5/4.0/4.0/3.5/4.0を維持。教材内容は不変なので加点せず、専門暫定評価と教育効果の未測定を区別する。
 - 作者も375pxの実教材を別Chromiumでloop→親描画→pause/reset→前版stopまで操作し横超過なし。新画像/traceは保存しない。保存拒否/容量不足/旧データ/コピーの全既存回帰を維持し、実機Safari/SR/実Google Canvas/OS実clipboard/教育効果は未検証。commit/push後に既存Draft PRへ結果を反映し、最終HEADの実CIを確認する。Issue初回本文変更、merge/auto-merge/本番公開は行わない。
 - 最終ローカル：型検査/ESLint/単体全61件/production build/diff-check成功。既存Playwrightブラウザ/共有ライブラリ用のローカルホスト判定例外だけを再利用した全E2EはChromium238＋WebKit238＝476件一括成功（旧460＋新16、skip/expected failureなし）。CIの標準ブラウザ/OS依存導入・ホスト検証は維持する。最終7ファイルをcommit/pushし、最終HEADの実CIはPR/Issueへ記録する。
+
+## 第7章 Nano Banana（2026-10-26 JST / Issue #14）
+
+- 開始時の作業ツリーはクリーン。PR #13は最終レビューdfd24e8を含めマージ済み。最新mainをfast-forwardし、main `3fcbd9d` からfeat/chapter-7-nano-bananaを作成。Issue #1の10章を維持し、同内容の既存Issue/PRがないためIssue #14を作成。初回Issue本文の変更なし。
+- 公式PC/iOS/Androidと紹介の本文を2026-10-26 07:29 JSTにHTTP200で取得。ヘルプの2 Lite/2/Proと紹介の2.1、年齢文の併存を記録し、推測で統合しない。実アカウント・実端末・提供可否は未検証。
+- オリジナルSVGの81条件、3部分修正、3間違い探し、3キャラクター場面を実装。固定模擬と明記し、外部送信/アップロード/認証/依存を追加しない。共通viewBox比較、native range、部位ボタンと文字checkbox/観察メモを提供。正解は回答後、予想は比較前に確定。再挑戦は現在の証拠を解除し、過去履歴と分離。
+- nano-banana:v1に固定値だけ保存、progress:v1の許可IDにchapter-7を追加し旧記録を保持。拒否/容量/不正JSON/削除失敗は永続化失敗と旧記録復帰を警告。確認付き章7初期化は他章を消さない。旧全体初期化の完了だけという仕様を維持。既存copy hookのmounted/version/hashと本文照合で遅延結果を無効化。
+- 新単体12件が成功し、旧61を維持。新E2Eを実行中。移行した準備中テストは第8章で同じアサーションを維持し、第7章到達の追加検査を作成。初回失敗は探索ID誤指定/内包labelと新UI見出しのfocus時レイアウト変化を調査し、アサーションを緩めず修正。詳細と最終検証は専用記録へ追記する。
+- 独立レビューnano_independent_reviewがP3を5点発見（主役/構図と代替説明の不一致、代替タップ領域、誤答特徴の説明、服色維持判定、撮影場面の視覚差）。まず旧distで回帰10件すべてが失敗することを確認し、説明分岐・44px以上・誤答した特徴列挙・黄色い服維持・撮影背景/手振りへ修正。別エージェントは重点28件＝Chromium14/WebKit14を独立再実行して成功し、375px実操作でも再確認。レビュー範囲の残存P0〜P3なし。作者の自己レビューとは区別する。
+- 最新対象86 E2Eが成功。初回全542は540成功/2失敗で、旧Canvasの「章7準備中」の移行漏れ。章7の操作教材と章8〜10の準備中をそれぞれ検査し、アサーションを削除/緩和せず仕様変更へ整合させた。最新単体は74＝旧61＋新13が成功。旧476＋新86＝562 E2Eを最終版で再実行する。
+- 作者も最新修正版の4体験をChromiumで実操作し、PCライト/375pxダークの代表2画像を開いて目視。横超過/pageerrorなし。自由画像生成の代わりに共通座標の固定SVGを採用し、写実性は簡略化と明記。実Google・実機Safari/Android・スクリーンリーダー・OS実クリップボード・教育効果の実測は未検証。最終HEAD/CIはpush後の実結果で報告する。
+- 最終ローカル検証：typecheck/ESLint/単体74件/production build/diff-check成功。Chromium281＋WebKit281＝562 E2Eが一括成功（既存476＋新86、失敗/skip/expected failureなし）。独立28件の成功とは別の全体結果。最終24ファイルを限定stageしcommit/push、main向けDraft PRを作成する。CIと最終SHAはPR/Issueへ実結果を追記し、未確認を成功とは扱わない。AGENTS.mdはrepo/親に見つからず、既存未コミット変更の破棄なし。依存/lockfile/Pagesゲートは不変。
+
+## PR #15 P3：Nano Bananaの回答形式の排他検証（2026-10-26 JST）
+
+- 開始時のPR/local/明示fetch後remoteは基準16b123c3c3dae1a40c5d1b6adc905c767161d5e2と一致、作業ツリーはクリーン。通常fetchは削除済み旧第6章refで失敗したが、第7章ref明示fetchで最新HEAD/先行差分なしを確認。既存変更の破棄、remote設定変更、新Issue/PR作成なし。
+- 原因は回答IDによらずregionsを許すOR条件。character:v1ならキャラクター形式だけ、許可済みedit/findならregionsだけを許す三項分岐に最小修正。既存answerIds/list/正規表現を再利用し、正常値の順序・重複除去・旧正常recordとキー/形式を保持。製品コードはsrc/nano-storage.tsのみ、UI/画像/コピー/進捗/他章/依存/CI公開ゲートは変更しない。
+- 修正前に新7単体を追加し、2失敗/5成功を確認。キャラクターにhat/eyesが残るケースとload経由の混入除去が失敗。edit/findへの逆混入は旧処理でも除外され、既に成功していた。未知ID/型/改行等/正常旧データも成功。名前フィルタの未選択74件（表示skipped）は全体検証とせず、その後ファイル全20件を無フィルタで2失敗/18成功と確認。skip/期待値緩和は追加しない。
+- 修正後の型検査/lint/単体全81件（旧74+新7）/production build/diff-check成功。全562 E2E、独立再レビュー、最終HEADの実CIは確定後に結果を追記する。読込は返すrecordをサニタイズするだけで旧保存値を自動書換えせず、明示保存にも同じフィルタを適用する。新回帰で他章キーの非更新も検査。
+- 別工程のnano_independent_reviewが回答種別分岐/正常旧値・順序/型と未知ID/読込非書換え/保存専用キーを独立確認し、対象単体20件とdiff-check成功。当該P3解消、新規/残存P0〜P3なし。独立工程で全81単体/562 E2E/CIまで再実施したとは扱わない。GitHub上の既存review/commentはなく、返信対象なし。
+- 最終ローカルは型/lint/単体81件/build/diff-check成功、Chromium281＋WebKit281＝既存562 E2Eが一括成功（失敗/skip/expected failureなし）。E2Eの変更・削除・緩和なし。変更4ファイルを限定stageして既存ブランチへcommit/pushし、既存Draft PR #15へ最新状況を反映する。最終HEADのCIはpush後に確認し、対応SHAと実結果をPR/Issueに記録する。merge/auto-merge/本番公開なし、実機/SR/実Google/OS clipboard/教育効果の未検証は従来どおり残す。
+- 初回修正HEAD52a83ce2b7b208e14a5199cbcfd6339b063b20e7のCI run40244968821はE2E561成功/1失敗。既存Live/WebKit390pxの#live-stepフォーカス確認が失敗し、CI時の実際のactiveElementはログから不明。該当ケースの無変更15回再実行は全成功で、自然な再現は得られなかった。初期routeのh1 focus完了を待たずfocus→Enterを始める手順を調査した。
+- 制御実験で初期h1 focusを意図してbutton.focus後に挟むと旧手順はH1のまま失敗し、初期focus完了待機を入れるとH2へ成功。これは同型の順序競合の確認で、実CIの競合順序を特定した証拠ではない。tests/live.spec.tsに初期h1 focusのexpectを1つ追加し、元の全focus/表示/keyboardアサーションを維持。製品Liveや第1〜6章の仕様は変更しない。追加はCI失敗に対する必要なE2E前提の厳密化で、修正範囲は計5ファイル。skip/retry/sleepで隠さない。
+- 上記追加後のLiveレイアウト4幅×2engine×5反復＝40件は全成功。失敗した初回CIはPRにもfailureと記録済み。最終版の全体検証と追加独立確認後に再commit/pushし、新HEADのCIを再確認する。
+- 追加の独立確認でも初期focus expectは前提の追加で緩和なし、390px Chromium/WebKit各1＝2件成功。制御実験も別工程で旧H1失敗/新H2成功。実CI原因は確定とせず競合仮説とする。対象レビュー範囲で残存P0〜P3なし。担当はコード/文書を変更せず、全体と最終CIの成功を独立工程へ帰属させない。
+- 初期focus前提の追加後も型/lint/単体81/build/diff-check成功。全E2Eを再実行してChromium281＋WebKit281＝562件一括成功（失敗/skipなし）。初回CI失敗を消さず、追加3ファイル（E2Eと記録）をcommit/pushして新しい最終HEADの実CIを再確認する。全差分は初回P3修正と合わせ計5ファイル、製品コードはnano-storage.tsだけを維持。
+- 2回目HEAD95be9f32b28d477433ed8e9023ca8bcc580d8983のCI40246231554も561成功/1失敗。Liveは全成功し、既存CanvasタイマーのWebKit/StrictMode再開後の即時raw通知数が期待3/実測2だった。旧手順20回反復は全成功で自然再現なし。実CI時のtimer UI/Effect実行順序はログから不明。製品は変えず、timer stateを更新するintervalと履歴useEffectが別であることを踏まえ、UI到達3回の確認を追加してからraw通知数3をpollで待つ。元の厳密な回数・停止・重複・後続reset等の期待は維持し、timeout延長/retry/skip/時計追加進行で隠さない。CIを成立させる必要なE2E対処としてtests/canvas-timer-events.spec.tsを追加対象とし、全差分は計6ファイル。正確なCI競合の原因確定とは扱わない。
+- タイマー関連の最初の80反復は78成功/2失敗。別2箇所のreachZero直後でUIは0秒/到達1回なのにraw通知は0件という局所再現を得た。UI更新とEffect通知の完了が別である証拠で、元CIのresume時の順序まで確定するものではない。reachZero共通helperで開始前件数+1の通知を有限pollし、呼出側の従来の絶対件数assertは維持。第2周のid/revision完全配列一致と最終7件もEffect完了を待つ。全ての負の再通知/停止/親描画assertは変えない。
+- 補強後の最新タイマー16ケース×5＝80件は全成功（58.7秒）。別工程も最新Chromium8/WebKit8＝16件全成功（24.1秒）、diff-check成功、欠落/重複を隠さず残存P0〜P3なしと確認。製品コード/保存/他章仕様は変更しない。直前の全単体81/type/lint/buildは成功、最新testだけの差分もlint/diff-check成功。ローカル全562件の成功は前版であり、最新差分の全体成功は新HEADのCI562件で確認してから報告する。初回2つのCI失敗も記録に残す。
