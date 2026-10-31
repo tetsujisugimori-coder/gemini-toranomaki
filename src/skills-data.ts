@@ -192,3 +192,56 @@ export const references = [
     url: "https://blog.google/products-and-platforms/products/gemini/automate-tasks-with-skills/",
   },
 ];
+
+export function tutorExample(t: number[]) {
+  const question = [1, 2, 0][t[0]];
+  if (question !== undefined)
+    return {
+      question: questions[question],
+      answer: makeComparison(t, question).custom,
+    };
+  const hint =
+    "地図の縮尺が小さいとは、広い範囲を表示できることです。日本全体と街の地図を比べてみましょう。";
+  return {
+    question: "地図の縮尺を教えて",
+    answer:
+      t[2] === 0
+        ? "同じ紙に広い範囲を描くと、一つ一つの建物は大きく見えますか？"
+        : t[2] === 1
+          ? `一緒に考えましょう。${hint}`
+          : hint,
+  };
+}
+export const simulationQuestions = [
+  "Python初心者にfor文を教えて",
+  "初心者に英文を添削して",
+  "今日の天気を教えて",
+];
+export const simulatedSkills = [
+  {
+    name: "プログラミング家庭教師",
+    condition: "Pythonの学習相談",
+    matches: [true, false, false],
+  },
+  {
+    name: "やさしい日本語",
+    condition: "初心者向けの学習相談",
+    matches: [true, true, false],
+  },
+  {
+    name: "段階的ヒント",
+    condition: "初心者のPython学習相談",
+    matches: [true, false, false],
+  },
+  {
+    name: "すぐ答えを示す",
+    condition: "初心者の英文添削",
+    matches: [false, true, false],
+  },
+];
+export function simulateSkills(question: number) {
+  return simulatedSkills.map((skill) => ({
+    ...skill,
+    applies: skill.matches[question] === true,
+  }));
+}

@@ -18,6 +18,11 @@ test("four experiences, persistent independent records and simulated comparison"
     });
   });
   await page.goto("#chapter-9");
+  await expect(page.getByText(/回答例（英文を添削して）/)).toHaveCount(0);
+  await page.getByLabel("学習分野").selectOption("1");
+  await expect(page.getByText(/回答例（英文を添削して）/)).toBeVisible();
+  await page.getByLabel("間違いへの対応").selectOption("1");
+  await expect(page.getByText(/間違いの原因を一緒に確認/)).toBeVisible();
   await page.getByLabel("教え方").selectOption("2");
   await page.getByLabel("学習レベル").selectOption("2");
   await page.getByRole("button", { name: /3\. 回答を比較/ }).click();
@@ -41,6 +46,18 @@ test("four experiences, persistent independent records and simulated comparison"
     page.getByRole("status").filter({ hasText: "コピーしました" }),
   ).toBeVisible();
   await page.getByRole("button", { name: /4\. GemsからSkillsへ/ }).click();
+  await page.getByLabel("選び方").selectOption("1");
+  await page
+    .getByRole("combobox", { name: "質問", exact: true })
+    .selectOption("2");
+  await expect(page.getByText("適用候補: なし")).toBeVisible();
+  await page
+    .getByRole("combobox", { name: "質問", exact: true })
+    .selectOption("1");
+  await expect(
+    page.getByText(/適用候補: やさしい日本語、すぐ答えを示す/),
+  ).toBeVisible();
+  await page.getByLabel("選び方").selectOption("0");
   await page.getByLabel("すぐ答えを示す").check();
   await expect(page.getByText(/衝突: /)).toBeVisible();
   await page.getByLabel("対応形式と合計容量").check();

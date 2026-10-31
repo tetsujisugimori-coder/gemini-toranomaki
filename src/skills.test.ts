@@ -1,5 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { makeComparison, quality, templates } from "./skills-data";
+import {
+  makeComparison,
+  quality,
+  templates,
+  simulateSkills,
+  tutorExample,
+} from "./skills-data";
 import { sanitizeSkills } from "./skills-storage";
 describe("第9章", () => {
   it("条件ごとに模擬回答と説明が変わる", () => {
@@ -53,4 +59,24 @@ describe("決定的な比較と記録の保護", () => {
     expect(changed.completed).toEqual([1]);
     expect(changed.edited).toEqual(initial.edited);
   });
+});
+
+it("分野の回答例と自動適用条件は質問ごとに変わる", () => {
+  expect(tutorExample([0, 0, 0, 1, 0, 0]).question).toContain("二次方程式");
+  expect(tutorExample([1, 0, 0, 1, 0, 0]).question).toContain("英文");
+  expect(tutorExample([2, 0, 0, 1, 0, 0]).question).toContain("Python");
+  expect(tutorExample([3, 0, 0, 1, 0, 0]).question).toContain("地図");
+  expect(simulateSkills(0).map((s) => s.applies)).toEqual([
+    true,
+    true,
+    true,
+    false,
+  ]);
+  expect(simulateSkills(1).map((s) => s.applies)).toEqual([
+    false,
+    true,
+    false,
+    true,
+  ]);
+  expect(simulateSkills(2).some((s) => s.applies)).toBe(false);
 });

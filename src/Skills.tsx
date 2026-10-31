@@ -9,6 +9,10 @@ import {
   templates,
   tutorLabels,
   tutorOptions,
+  tutorExample,
+  simulationQuestions,
+  simulatedSkills,
+  simulateSkills,
 } from "./skills-data";
 import {
   freshSkills,
@@ -56,12 +60,7 @@ const migrationLabels = [
   "出力形式",
   "使用例",
 ];
-const skillNames = [
-  "プログラミング家庭教師",
-  "やさしい日本語",
-  "段階的ヒント",
-  "すぐ答えを示す",
-];
+const skillNames = simulatedSkills.map((skill) => skill.name);
 const comparisons = [
   [
     "基本用途",
@@ -115,7 +114,10 @@ export function Skills({
   const migrationText = migrationLabels
     .map((f, i) => `${f}: ${r.migration[i]}`)
     .join("\n");
-  const simulation = r.mode === 0 ? r.selected : [true, true, true, false];
+  const decisions = simulateSkills(r.simulationQuestion);
+  const simulation =
+    r.mode === 0 ? r.selected : decisions.map((decision) => decision.applies);
+  const example = tutorExample(tutor);
   return (
     <div className="skills-chapter">
       <p className="notice">
@@ -176,8 +178,13 @@ export function Skills({
                 <strong>役割と方針:</strong> {tutorText}
               </p>
               <p>
-                <strong>回答例（for文）:</strong>{" "}
-                {makeComparison(tutor, 0).custom}
+                <strong>回答例（{example.question}）:</strong> {example.answer}
+              </p>
+              <p>
+                <strong>誤答への返し例:</strong>{" "}
+                {tutor[4] === 0
+                  ? "もう一度、最初の手順から試してみましょう。どこまで分かりましたか？"
+                  : "間違いの原因を一緒に確認します。前の手順で使った条件を見直しましょう。"}
               </p>
               <Copy key={`tutor-${epoch}`} text={tutorText} />
             </div>
@@ -322,8 +329,31 @@ export function Skills({
           <Copy key={`migration-${epoch}`} text={migrationText} />
           <h3>Stage C：適用シミュレーション</h3>
           <p>
-            質問「Python初心者にfor文を教えて」。自動判定は教材の固定規則であり、Gemini内部の判定ではありません。
+            自動判定は質問と各スキルの条件を照合する教材の固定規則であり、Gemini内部の判定ではありません。
           </p>
+          <label>
+            質問
+            <select
+              value={r.simulationQuestion}
+              onChange={(e) =>
+                update({ simulationQuestion: Number(e.target.value) })
+              }
+            >
+              {simulationQuestions.map((q, i) => (
+                <option key={q} value={i}>
+                  {q}
+                </option>
+              ))}
+            </select>
+          </label>
+          <ul>
+            {decisions.map((d) => (
+              <li key={d.name}>
+                {d.name}：条件「{d.condition}」／
+                {d.applies ? "質問に合致" : "質問に不一致"}
+              </li>
+            ))}
+          </ul>
           <label>
             選び方
             <select

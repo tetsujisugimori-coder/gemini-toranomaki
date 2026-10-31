@@ -8,6 +8,7 @@ export interface SkillsRecord {
   edited: string[];
   migration: string[];
   question: number;
+  simulationQuestion: number;
   answers: Record<string, number>;
   completed: number[];
   mode: number;
@@ -30,6 +31,7 @@ export const freshSkills = (): SkillsRecord => ({
     "for文を教えて",
   ],
   question: 0,
+  simulationQuestion: 0,
   answers: {},
   completed: [],
   mode: 0,
@@ -84,6 +86,7 @@ export function sanitizeSkills(value: unknown): SkillsRecord {
     edited: strings(r.edited, d.edited),
     migration: strings(r.migration, d.migration),
     question: number(r.question, 4, 0),
+    simulationQuestion: number(r.simulationQuestion, 3, 0),
     answers,
     completed: Array.isArray(r.completed)
       ? [
