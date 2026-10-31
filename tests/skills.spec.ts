@@ -115,3 +115,33 @@ test("keyboard and doubled text preserve navigation and reset; failed copy is an
     page.getByRole("heading", { name: "カスタム指示工房" }),
   ).toBeVisible();
 });
+
+test("reset invalidates a pending copy even when the text is unchanged", async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, "clipboard", {
+      configurable: true,
+      value: {
+        writeText: () =>
+          new Promise<void>((resolve) => {
+            (window as unknown as { finishCopy: () => void }).finishCopy =
+              resolve;
+          }),
+      },
+    });
+  });
+  await page.goto("#chapter-9");
+  await page.getByRole("button", { name: "全文をコピー" }).click();
+  await page.getByRole("button", { name: "第9章の記録を初期化" }).click();
+  await page.getByRole("button", { name: "初期化する", exact: true }).click();
+  await page.evaluate(() =>
+    (window as unknown as { finishCopy: () => void }).finishCopy(),
+  );
+  await expect(
+    page.getByRole("status").filter({ hasText: "コピーしました" }),
+  ).toHaveCount(0);
+  await expect(
+    page.getByRole("button", { name: "全文をコピー" }),
+  ).toBeEnabled();
+});

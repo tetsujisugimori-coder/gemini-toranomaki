@@ -98,7 +98,8 @@ export function Skills({
   const [boot] = useState(loadSkills),
     [r, setR] = useState(boot.record),
     [available, setAvailable] = useState(boot.available),
-    [confirm, setConfirm] = useState(false);
+    [confirm, setConfirm] = useState(false),
+    [epoch, setEpoch] = useState(0);
   const latest = useRef(r);
   function update(p: Partial<SkillsRecord>) {
     const n = sanitizeSkills({ ...latest.current, ...p });
@@ -178,7 +179,7 @@ export function Skills({
                 <strong>回答例（for文）:</strong>{" "}
                 {makeComparison(tutor, 0).custom}
               </p>
-              <Copy text={tutorText} />
+              <Copy key={`tutor-${epoch}`} text={tutorText} />
             </div>
           </div>
         </section>
@@ -234,7 +235,7 @@ export function Skills({
                   <li key={x}>{x}</li>
                 ))}
               </ul>
-              <Copy text={editedText} />
+              <Copy key={`edited-${epoch}`} text={editedText} />
             </div>
           </div>
         </section>
@@ -318,7 +319,7 @@ export function Skills({
               />
             </label>
           ))}
-          <Copy text={migrationText} />
+          <Copy key={`migration-${epoch}`} text={migrationText} />
           <h3>Stage C：適用シミュレーション</h3>
           <p>
             質問「Python初心者にfor文を教えて」。自動判定は教材の固定規則であり、Gemini内部の判定ではありません。
@@ -427,6 +428,7 @@ export function Skills({
             <p>第9章の設定と回答を初期化します。</p>
             <button
               onClick={() => {
+                setEpoch((n) => n + 1);
                 update(freshSkills());
                 onComplete(false);
                 setConfirm(false);
