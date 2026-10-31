@@ -1094,3 +1094,12 @@ fieldset + fieldset {
     transition: none;
   }
 }
+
+.skills-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.skills-chapter label { display: block; margin: .75rem 0; }
+.skills-chapter select, .skills-chapter textarea { display: block; width: 100%; max-width: 100%; }
+.skills-chapter input[type="checkbox"], .skills-chapter input[type="radio"] { margin-right: .5rem; }
+.skills-chapter button, .skills-chapter select, .skills-chapter summary { min-height: 44px; }
+.skills-chapter details { padding: .5rem; border-bottom: 1px solid currentColor; }
+.skills-result { white-space: pre-wrap; overflow-wrap: anywhere; }
+@media (max-width: 700px) { .skills-grid { grid-template-columns: minmax(0, 1fr); } }

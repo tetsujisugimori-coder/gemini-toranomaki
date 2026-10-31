@@ -147,6 +147,8 @@ test("Canvas is reachable from curriculum, navigation and chapter-one map; chapt
       await expect(
         page.getByRole("button", { name: "予想を確定して動画を試す" }),
       ).toBeDisabled();
+    } else if (n === 9) {
+      await expect(page.getByRole("heading", { name: "AI家庭教師を設計する" })).toBeVisible();
     } else {
       await expect(
         page.getByRole("heading", { name: "準備中", exact: true }),

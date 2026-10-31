@@ -97,7 +97,7 @@ test("chapter five is reachable from curriculum and chapter-one feature map whil
   await expect(link).toContainText("学習できます");
   await link.click();
   await expect(page.locator("h1")).toBeFocused();
-  await page.goto("#chapter-9");
+  await page.goto("#chapter-10");
   await expect(
     page.getByRole("heading", { name: "準備中", exact: true }),
   ).toBeVisible();
