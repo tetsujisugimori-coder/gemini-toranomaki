@@ -1,3 +1,4 @@
+import { references as videoMusicReferences } from "./video-music-data";
 import { nanoReferences } from "./nano-data";
 import { canvasReferences } from "./canvas-data";
 import { liveReferences } from "./live-data";
@@ -122,7 +123,7 @@ export const lessons: Lesson[] = topics.map(
     references: [{ title: "Google公式情報（外部サイト）", url }],
     checkedAt:
       "2026-10-22：公式ページ取得がネットワーク制限で拒否されたため、現行仕様は未確認",
-    status: i < 7 ? "ready" : "planned",
+    status: i < 8 ? "ready" : "planned",
     steps: [],
   }),
 );
@@ -235,3 +236,13 @@ lessons[6].conditions =
   "公式本文を2026-10-26 JSTに確認。OS・年齢・国・プラン・モデル・アカウントごとの実際の利用可否は未確認です。固定教材に接続や契約は不要です。";
 lessons[6].checkedAt =
   "2026-10-26 JST：PC/iOS/Androidヘルプと紹介本文を確認。名称差と年齢表記の併存は仕様書へ記録。実Google操作は未検証";
+
+lessons[7].goal =
+  "動く対象・維持する対象・時間の順序と、音の演出を観察して検証する。";
+lessons[7].description =
+  "柴犬の料理を動かす固定SVG、途中の不整合、独自の電子音、映像と音の印象を4体験で比較します。";
+lessons[7].references = videoMusicReferences;
+lessons[7].conditions =
+  "2026-10-26 UTCにOS別動画・音楽ヘルプとLyria公式紹介を確認。動画と音楽は利用条件が異なります。個別アカウントの提供可否・動画の長さ・日次上限は未確認です。教材には契約やログインは不要です。";
+lessons[7].checkedAt =
+  "2026-10-26 UTC：PC/iOS/Androidの公式本文確認。実Google生成・端末音声出力は未検証";
