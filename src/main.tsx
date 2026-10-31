@@ -6,6 +6,7 @@ import "./style.css";
 import { Lab } from "./Lab";
 import { Exploration } from "./Exploration";
 import { Services } from "./Services";
+import { Skills } from "./Skills";
 import { VideoMusic } from "./VideoMusic";
 import { NanoBanana } from "./NanoBanana";
 import { Canvas } from "./Canvas";
@@ -167,6 +168,7 @@ function App() {
         >
           第8章を学ぶ
         </a>
+        <a href="#chapter-9" aria-current={route === "chapter-9" ? "page" : undefined}>第9章を学ぶ</a>
       </nav>
       <main id="main" ref={main} tabIndex={-1}>
         <div className="eyebrow">非公式インタラクティブ教材 · v0.2</div>
@@ -284,6 +286,8 @@ function App() {
                 <p>この章の操作教材は、今後追加する予定です。</p>
                 <a href="#chapter-1">第1章で画面を確認する →</a>
               </section>
+            ) : lesson.id === "chapter-9" ? (
+              <Skills completed={completed} onComplete={update} />
             ) : lesson.id === "chapter-8" ? (
               <VideoMusic completed={completed} onComplete={update} />
             ) : lesson.id === "chapter-7" ? (

@@ -1,0 +1,34 @@
+
+Running 1 test using 1 worker
+
+(node:12018) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 [chromium] › tests/skills-independent.spec.ts:3:1 › comparison discloses which tutor conditions affect its examples (5.7s)
+
+
+  1) [chromium] › tests/skills-independent.spec.ts:3:1 › comparison discloses which tutor conditions affect its examples
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText(/分野と間違いへの対応は比較本文に反映されません/)
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByText(/分野と間違いへの対応は比較本文に反映されません/) with timeout 5000ms
+      - waiting for getByText(/分野と間違いへの対応は比較本文に反映されません/)
+
+
+      4 |   await page.goto('#chapter-9');
+      5 |   await page.getByRole('button', { name: /3\. 回答を比較/ }).click();
+    > 6 |   await expect(page.getByText(/分野と間違いへの対応は比較本文に反映されません/)).toBeVisible();
+        |                                                           ^
+      7 | });
+      8 |
+        at /workspace/gemini-toranomaki/tests/skills-independent.spec.ts:6:59
+
+    Error Context: test-results/skills-independent-compari-68b44-ditions-affect-its-examples-chromium/error-context.md
+
+  1 failed
+    [chromium] › tests/skills-independent.spec.ts:3:1 › comparison discloses which tutor conditions affect its examples

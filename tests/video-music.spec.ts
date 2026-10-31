@@ -206,7 +206,7 @@ async function settleCopy(p: Page, index: number, success: boolean) {
   );
 }
 
-test("chapter eight is reachable from navigation, curriculum and chapter-one music map; nine and ten remain planned", async ({
+test("chapter eight is reachable from navigation, curriculum and chapter-one music map; ten remains planned", async ({
   page,
 }) => {
   await page.goto("#curriculum");
@@ -219,7 +219,7 @@ test("chapter eight is reachable from navigation, curriculum and chapter-one mus
   await page.getByLabel("やりたいこと").selectOption("music");
   await page.locator('.map-results a[href="#chapter-8"]').first().click();
   await expect(page.locator("h1")).toHaveText("動画・音楽生成");
-  for (const n of [9, 10]) {
+  for (const n of [10]) {
     await page.goto(`#chapter-${n}`);
     await expect(
       page.getByRole("heading", { name: "準備中", exact: true }),
