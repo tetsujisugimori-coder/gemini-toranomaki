@@ -1,3 +1,4 @@
+import { references as skillsReferences } from "./skills-data";
 import { references as videoMusicReferences } from "./video-music-data";
 import { nanoReferences } from "./nano-data";
 import { canvasReferences } from "./canvas-data";
@@ -123,7 +124,7 @@ export const lessons: Lesson[] = topics.map(
     references: [{ title: "Google公式情報（外部サイト）", url }],
     checkedAt:
       "2026-10-22：公式ページ取得がネットワーク制限で拒否されたため、現行仕様は未確認",
-    status: i < 8 ? "ready" : "planned",
+    status: i < 9 ? "ready" : "planned",
     steps: [],
   }),
 );
@@ -246,3 +247,10 @@ lessons[7].conditions =
   "2026-10-26 UTCにOS別動画・音楽ヘルプとLyria公式紹介を確認。動画と音楽は利用条件が異なります。個別アカウントの提供可否・動画の長さ・日次上限は未確認です。教材には契約やログインは不要です。";
 lessons[7].checkedAt =
   "2026-10-26 UTC：PC/iOS/Androidの公式本文確認。実Google生成・端末音声出力は未検証";
+
+lessons[8].title = "Gems・Skills・自分専用AI";
+lessons[8].goal = "役割と適用条件を設計し、指示による振る舞いの違いを比較する。";
+lessons[8].description = "家庭教師、指示工房、模擬回答の比較、GemsからSkillsへの移行を体験します。";
+lessons[8].references = skillsReferences;
+lessons[8].conditions = "Skillsは18歳以上、ログイン、アクティビティの保存が必要。個別の提供状況は未確認で、アカウントと提供時期によって異なります。教材は実Geminiに接続しません。";
+lessons[8].checkedAt = "2026-10-31 UTC：公式ヘルプとGoogleブログを確認。実アカウントでの操作は未検証。";

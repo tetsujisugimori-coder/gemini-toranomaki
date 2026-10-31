@@ -373,3 +373,17 @@
 - 最終ローカル：型検査/lint/単体111件（既存81＋新30）/production build/git diff --check成功。独立修正前の全666件成功後、修正/追加回帰を含めて全688 E2E（Chromium344＋WebKit344、既存562＋新126）が一括成功、失敗/skip0。独立の30単体/42＋8 E2Eとは別結果。作者の最終4体験の別操作も成功し、代表2画像を更新して目視。最終HEADの実CIはDraft PR/Issueに記録し、未確認の成功報告はしない。
 - CI環境対処（初回方針からの必要な変更）：初回HEAD `8d9a755` のCI run40314494809はUbuntu AzureミラーからのOS依存119MB取得が低速・一部再試行となり、導入約15分で作者がcancelしてログを取得。完全停止ではなく取得が継続していた点は区別する。同一HEAD/標準手順のattempt2も導入が長時間継続。別のCloud環境で同じパッケージの先頭256KiBを測ると、Azure HTTPSは503、公式archiveは206/0.91秒（CIランナーと同一測定ではない）。この証拠をもとにCIだけに公式Ubuntu archiveを選ぶ1stepを追加。OSのAzure URIだけを置換し、suite/component/Signed-By/署名検証と全型/lint/単体/build/標準browser導入/E2E/Pages依存ゲートを維持。依存/lockfile/Pagesワークフローは不変。Issue/PRにも判断を追記し、最新HEADの全CIを再確認する。
 - ミラー対処の独立追確認：同じ別エージェントが境界付き置換を5種類のfixtureで検証し、全文一致・Signed-By/suite/component/他repo維持・追加8行を除くworkflow完全一致・Bash構文/diff-check成功を確認。新規P0〜P3なし。証拠/tmp/ch8-independent-apt-review.json。実APT導入・速度改善・最終CIは独立工程で未検証であり、作者が最新HEADで確認する。
+
+## 2026-10-31 第9章 Gems・Skills・自分専用AI（Issue #18）
+
+main 177dca2を基準に、4体験の実装と章別記録を追加。2026-10-31 UTCにGoogle公式資料を確認し、日程・参照ファイル制限・利用条件と資料間の差を記録。比較・適用は決定的な模擬教材であり、実Geminiへの接続は行わない。実機・支援技術・実サービスの検証と独立レビューは未実施。設計、確認範囲と制約は `docs/verification/chapter-9/design.md`、試験の最終結果はDraft PRを参照。
+
+## 2026-10-31 第9章 独立レビュー指摘修正
+
+PR #19の独立静的レビューを受け、一般教養の回答例がレベル・長さ・形式へ追従しないP2をRED→GREENで修正。コピー競合と保存拒否・破損・部分失敗の回帰を追加し、章専用保存失敗時の再読込注意を明確化。詳細と検証範囲は `docs/verification/chapter-9/design.md`、全体E2EとCIの結果はPRに記録。独立担当の変更後ブラウザ再受入は未実施。
+
+### 2026-10-31 独立ブラウザ再受入
+
+別環境で PR #19 の `59ead567e08f868250033c0191e8fdce64fe02f2` を Chromium/WebKit で再操作し、比較画面が分野・誤答対応も反映するように読める説明の不一致を発見した。REDを保存し、反映4条件と非反映2条件を明記して自己修正、両ブラウザでGREEN。作成担当の自己検証と区別した実測・画像・未完範囲は [独立受入記録](docs/verification/chapter-9/independent/acceptance.md)。独立試験は全項目の網羅ではない。
+
+独立受入の残項目を同じ別担当が補完。工房7欄・移行6欄、品質分岐、比較4問各条件、保存の型／未知値／旧形式相当と片側quota、全幅・両テーマの4体験結果欄の目視を実施し、[補完記録](docs/verification/chapter-9/independent/acceptance.md)に追記。製品変更なし。実機等は未検証として範囲限定。

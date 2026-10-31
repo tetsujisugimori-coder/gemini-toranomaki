@@ -79,7 +79,7 @@ export const features: Feature[] = [
     name: "カスタマイズ",
     area: "side",
     description:
-      "用途に合わせた指示や設定を探す入口です。Gemsなどの案内を確認します。",
+      "用途に合わせた指示や設定を探す入口です。SkillsやGemの移行案内を確認します。",
     scene: "学習の相談で毎回同じ指示を使いたいとき。",
     task: "設定の入口で保存される内容を確認しよう。個人情報は入力しません。",
     chapter: 9,
