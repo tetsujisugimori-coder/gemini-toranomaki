@@ -108,6 +108,9 @@ describe("家庭教師の条件による具体的な違い", () => {
       expect(tutorExample([subject, 0, 2, 0, 0, 0]).answer).toContain(
         answers[subject],
       );
+      expect(tutorExample([subject, 0, 1, 0, 0, 0]).answer).toContain(
+        "返答を確認して次のヒント",
+      );
       expect(tutorExample([subject, 2, 2, 0, 0, 0]).answer).toContain(
         advanced[subject],
       );

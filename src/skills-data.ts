@@ -104,12 +104,18 @@ const examples = [
     detail: "参加人数、予算、実施場所を仮定し、小規模な試行で検証します。",
   },
 ];
-function renderExample(t: number[], e: (typeof examples)[number]) {
+function renderExample(
+  t: number[],
+  e: (typeof examples)[number],
+  tutor = false,
+) {
   const core =
     t[2] === 0
       ? e.hint
       : t[2] === 1
-        ? `一緒に考えましょう。${e.hint}`
+        ? tutor
+          ? `${e.hint} 考えたことを一つ教えてください。返答を確認して次のヒントを出します。`
+          : `一緒に考えましょう。${e.hint}`
         : e.explanation;
   const level =
     t[1] === 2
@@ -201,7 +207,7 @@ export function tutorExample(t: number[]) {
   if (question !== undefined)
     return {
       question: questions[question],
-      answer: makeComparison(t, question).custom,
+      answer: renderExample(t, examples[question], true),
     };
   const geography = {
     general: "地図の縮尺は地図上の長さと実際の長さの比です。",
@@ -213,7 +219,7 @@ export function tutorExample(t: number[]) {
   };
   return {
     question: "地図の縮尺を教えて",
-    answer: renderExample(t, geography),
+    answer: renderExample(t, geography, true),
   };
 }
 export const simulationQuestions = [
