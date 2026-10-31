@@ -125,7 +125,7 @@ export function Skills({
       </p>
       {!available && (
         <p role="alert">
-          保存できません。画面内の変更は再読み込み後に失われる場合があります。
+          保存できません。画面内の変更は再読み込み後に失われ、以前の記録が戻る場合があります。
         </p>
       )}
       <StudySteps

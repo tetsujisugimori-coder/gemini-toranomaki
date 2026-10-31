@@ -104,8 +104,7 @@ const examples = [
     detail: "参加人数、予算、実施場所を仮定し、小規模な試行で検証します。",
   },
 ];
-export function makeComparison(t: number[], question: number) {
-  const e = examples[question] ?? examples[0];
+function renderExample(t: number[], e: (typeof examples)[number]) {
   const core =
     t[2] === 0
       ? e.hint
@@ -130,9 +129,13 @@ export function makeComparison(t: number[], question: number) {
       : t[5] === 2
         ? `${level} ${core}\n練習: 同じ考え方で別の例を試しましょう。`
         : `${level} ${core}`;
+  return format + detail;
+}
+export function makeComparison(t: number[], question: number) {
+  const e = examples[question] ?? examples[0];
   return {
     general: e.general,
-    custom: format + detail,
+    custom: renderExample(t, e),
     reason: `教え方「${tutorOptions[2][t[2]]}」、レベル「${tutorOptions[1][t[1]]}」、長さ「${tutorOptions[3][t[3]]}」、形式「${tutorOptions[5][t[5]]}」に対応する教材文を組み合わせました。`,
   };
 }
@@ -200,16 +203,17 @@ export function tutorExample(t: number[]) {
       question: questions[question],
       answer: makeComparison(t, question).custom,
     };
-  const hint =
-    "地図の縮尺が小さいとは、広い範囲を表示できることです。日本全体と街の地図を比べてみましょう。";
+  const geography = {
+    general: "地図の縮尺は地図上の長さと実際の長さの比です。",
+    hint: "同じ紙に広い範囲を描くと、一つ一つの建物は大きく見えますか？",
+    explanation: "同じ紙なら縮尺が小さい地図ほど広い範囲を示します。",
+    advanced:
+      "縮尺の分母が大きいほど、実際の距離に対する地図上の長さは小さくなります。",
+    detail: "例えば1万分の1の地図で1cmは実際の100mです。",
+  };
   return {
     question: "地図の縮尺を教えて",
-    answer:
-      t[2] === 0
-        ? "同じ紙に広い範囲を描くと、一つ一つの建物は大きく見えますか？"
-        : t[2] === 1
-          ? `一緒に考えましょう。${hint}`
-          : hint,
+    answer: renderExample(t, geography),
   };
 }
 export const simulationQuestions = [

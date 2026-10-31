@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   makeComparison,
   quality,
@@ -6,7 +6,13 @@ import {
   simulateSkills,
   tutorExample,
 } from "./skills-data";
-import { sanitizeSkills } from "./skills-storage";
+import {
+  loadSkills,
+  saveSkills,
+  sanitizeSkills,
+  freshSkills,
+} from "./skills-storage";
+afterEach(() => vi.unstubAllGlobals());
 describe("第9章", () => {
   it("条件ごとに模擬回答と説明が変わる", () => {
     const hint = makeComparison([0, 0, 0, 0, 0, 0], 0);
@@ -79,4 +85,55 @@ it("分野の回答例と自動適用条件は質問ごとに変わる", () => {
     true,
   ]);
   expect(simulateSkills(2).some((s) => s.applies)).toBe(false);
+});
+
+describe("家庭教師の条件による具体的な違い", () => {
+  it("一般教養でもレベル・長さ・形式を回答に反映する", () => {
+    const base = [3, 0, 2, 0, 0, 0];
+    expect(tutorExample(base).answer).toContain("縮尺");
+    expect(tutorExample([3, 2, 2, 0, 0, 0]).answer).toContain("分母");
+    expect(tutorExample([3, 0, 2, 2, 0, 0]).answer).toContain("1万分の1");
+    expect(tutorExample([3, 0, 2, 0, 0, 1]).answer).toContain("1.");
+    expect(tutorExample([3, 0, 2, 0, 0, 2]).answer).toContain("練習:");
+  });
+  it("全分野でヒントと解説、上級の内容、詳しい補足、練習が得られる", () => {
+    const hints = ["積が6", "主語 He", "最初に取り出される", "建物"];
+    const answers = ["x=2", "He goes", "それぞれ表示", "広い範囲"];
+    const advanced = ["判別式", "定形動詞", "イテレータ", "分母"];
+    const details = ["因子", "語尾がo", "空のリスト", "1万分の1"];
+    for (let subject = 0; subject < 4; subject++) {
+      expect(tutorExample([subject, 0, 0, 0, 0, 0]).answer).toContain(
+        hints[subject],
+      );
+      expect(tutorExample([subject, 0, 2, 0, 0, 0]).answer).toContain(
+        answers[subject],
+      );
+      expect(tutorExample([subject, 2, 2, 0, 0, 0]).answer).toContain(
+        advanced[subject],
+      );
+      expect(tutorExample([subject, 0, 2, 2, 0, 0]).answer).toContain(
+        details[subject],
+      );
+      expect(tutorExample([subject, 0, 2, 0, 0, 2]).answer).toContain("練習:");
+    }
+  });
+});
+
+it("保存の拒否と不正な旧データを保守的に扱う", () => {
+  vi.stubGlobal("localStorage", {
+    getItem: () => {
+      throw Error("denied");
+    },
+    setItem: () => {
+      throw Error("quota");
+    },
+  });
+  expect(loadSkills().available).toBe(false);
+  expect(saveSkills(freshSkills())).toBe(false);
+  vi.stubGlobal("localStorage", { getItem: () => "{broken" });
+  expect(loadSkills().available).toBe(false);
+  expect(
+    sanitizeSkills({ tutor: "future-format", drafts: [], answers: { 0: "0" } })
+      .tutor,
+  ).toEqual(freshSkills().tutor);
 });
