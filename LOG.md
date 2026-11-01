@@ -387,3 +387,16 @@ PR #19の独立静的レビューを受け、一般教養の回答例がレベ�
 別環境で PR #19 の `59ead567e08f868250033c0191e8fdce64fe02f2` を Chromium/WebKit で再操作し、比較画面が分野・誤答対応も反映するように読める説明の不一致を発見した。REDを保存し、反映4条件と非反映2条件を明記して自己修正、両ブラウザでGREEN。作成担当の自己検証と区別した実測・画像・未完範囲は [独立受入記録](docs/verification/chapter-9/independent/acceptance.md)。独立試験は全項目の網羅ではない。
 
 独立受入の残項目を同じ別担当が補完。工房7欄・移行6欄、品質分岐、比較4問各条件、保存の型／未知値／旧形式相当と片側quota、全幅・両テーマの4体験結果欄の目視を実施し、[補完記録](docs/verification/chapter-9/independent/acceptance.md)に追記。製品変更なし。実機等は未検証として範囲限定。
+
+
+## 2026-11-01 JST 第2章 実Googleサービス操作教材（Issue #20）
+
+- 開始時クリーン、最新main `afc772a`をfetchして専用`feat/chapter-2-real-google-practice`を作成。README/仕様/カリキュラム/第2章/保存/テスト/LOG、Issue #6・PR #7と関連一覧を確認。AGENTS.md・適用対象ローカルskillなし。Issue #20を作成し、重複Issue/PRなし。
+- 新しい実践入口9工程、ブラウザ/端末5分岐、架空テストメール、検索・原文照合・確認提示と別承認・実登録確認・依頼改善を追加。既存模擬とコピー競合制御を保持し、実践は既存copy hookを再利用。実操作/実結果/利用不可/保留は新キー、模擬/章完了は旧キーで独立。外部結果は未検証の自己申告と明記し、旧記録を実成功にしない。
+- 公式Google/Chrome/Edge本文確認と別の未ログインiframe PoCを実施。X-Frame-Options DENY観測、認証済み・実端末はNOT_TESTED。本体は分割/別窓/別タブを採用。
+- 初回単体124成功/1失敗は原文照合指示の禁止範囲を補強して125成功。初回E2Eはselect locatorとWebKit依存不足で失敗・中断。第2回Chromium55成功/WebKit55は起動前失敗。第3回もWebKit同梱wrapperによるLD_LIBRARY_PATH上書きで55起動失敗、Chromium55成功。OS依存を公式Debianメタデータから作業領域へ展開し主要ライブラリload確認、ブラウザsys/libへ不足ライブラリのsymlinkを追加（バイナリ/wrapper変更なし）。ldconfigだけ見るホスト判定はローカルに限り例外使用、ブラウザのセキュリティ・CI標準導入は維持。
+- 詳細、最終検証・未検証、独立レビュー重点は `docs/verification/chapter-2/practice/README.md`。今回は作者の自己検証で、独立レビューとは称さない。最終HEADとCIはpush後の実結果をPRへ記録。Draft維持、merge/auto-merge/Draft解除/本番公開なし。
+
+- 第4回WebKit対象55は53成功/2タイムアウト（初回画面locator待ち、原因確定なし、build更新と重なっていた）。共有サーバーを利用していた初回全体試験は終了競合回避で作者が中断し48成功/2中断/754未実行。最終build後に全804件を単独で再実行する。代表9工程操作はpageerrorなし、375px横超過なし。1280pxライト/375pxダークの代表2画像を目視し、過大な説明領域を折り畳み、工程見出しへスクロールする調整を行った。
+
+- 2026-11-01 18:27 JST 最終ローカル：型/lint/単体125（旧120＋新5）/build/diff-check成功。最終build後の全E2E804（Chromium402＋WebKit402、旧750＋新54）が7.0分で一括成功、失敗/skipなし。20ファイルを限定stageしcommit/push、Draft PR提出へ。最終HEAD CIはPRへ実結果を記録する。

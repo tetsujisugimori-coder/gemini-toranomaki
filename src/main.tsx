@@ -5,7 +5,7 @@ import { loadProgress, resetProgress, saveProgress } from "./storage";
 import "./style.css";
 import { Lab } from "./Lab";
 import { Exploration } from "./Exploration";
-import { Services } from "./Services";
+import { Services } from "./ServicesPractice";
 import { Skills } from "./Skills";
 import { VideoMusic } from "./VideoMusic";
 import { NanoBanana } from "./NanoBanana";
