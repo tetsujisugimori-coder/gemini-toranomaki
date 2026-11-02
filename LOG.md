@@ -400,3 +400,16 @@ PR #19の独立静的レビューを受け、一般教養の回答例がレベ�
 - 第4回WebKit対象55は53成功/2タイムアウト（初回画面locator待ち、原因確定なし、build更新と重なっていた）。共有サーバーを利用していた初回全体試験は終了競合回避で作者が中断し48成功/2中断/754未実行。最終build後に全804件を単独で再実行する。代表9工程操作はpageerrorなし、375px横超過なし。1280pxライト/375pxダークの代表2画像を目視し、過大な説明領域を折り畳み、工程見出しへスクロールする調整を行った。
 
 - 2026-11-01 18:27 JST 最終ローカル：型/lint/単体125（旧120＋新5）/build/diff-check成功。最終build後の全E2E804（Chromium402＋WebKit402、旧750＋新54）が7.0分で一括成功、失敗/skipなし。20ファイルを限定stageしcommit/push、Draft PR提出へ。最終HEAD CIはPRへ実結果を記録する。
+
+
+## 2026-11-02 JST 第2章実践教材：PR #21のP2-A・P2-B・P3修正（Issue #22）
+
+- 最新main `3ab4478b275e6d31b81832bc9da11b21db4fd4e9`を明示fetch。開始時work/afc772a・クリーンで未コミット変更なし。適用AGENTS.md/checkout skillなし。README/仕様/関連実装・試験・記録、Issue/PR一覧、Issue #20・PR #21本文と独立レビュー5727522902を確認し、Issue #22と専用`fix/chapter-2-practice-review`を作成した。既存PR履歴を変更しない。
+- P2-A：件名/本文を独立データと個別コピーに変更。入力先・手動代替・コピーと送信の区別を明示し、件名/本文/改行/日時/時間帯を維持。共通copy hookと失効制御は不変。copied許可IDを2つ追加し、v1形式と旧step-1を保持。
+- P2-B：実登録前カードと最終承認を同じ12項目で生成し、対象メール1件と目的・予定の説明を必須化。未記入・矛盾・対象不明・重複の可能性で停止、内容変更で承認無効、別承認とCalendar直接確認を維持。目的の後付け欄を撤去、模擬登録指示はmainと同一。教材がGoogle側の遵守を強制できるとは説明しない。
+- P3：工程/一覧を過去の学習記録と現在の状態に区分し、両立理由を説明。再挑戦は現在状態だけを未記録に戻し、過去のperformed/verified/copiedを保持。本人のチェック訂正・確認付き実践初期化、旧模擬・他章・章完了の非破壊を維持。
+- 修正前は単体125成功＋新3失敗、Chromium新代表E2E3件全RED。修正後単体128件、重点Chromium63＋WebKit63＝126件成功。既存試験削除・skip/retry/timeout延長なし。件名は専用欄の全文一致へ厳密化、再挑戦の期待値は履歴保持の依頼に合わせ[4]とstatus=0へ変更。RED原ログを検証記録に同梱する。
+- 現環境Debian13.6/Node24.19.0/npm11.9.0/Playwright1.64.1を現物確認。Chromium標準起動成功、WebKit初回はOS依存検査失敗。署名検証済み公式Debianメタデータから9パッケージを作業領域へ展開し、6主要libのloadとwrapperのLD_LIBRARY_PATH上書きを確認してsys/libへsymlink。ldconfigだけ見る検査に限りローカルのホスト検査例外を使用しWebKit27.2起動/描画成功。バイナリ/wrapper/TLS/CSP/XFO/認証とCI標準導入・検査は変更しない。前作設定は無条件に再利用しない。
+- 最終の型/lint/単体128/build/diff-check成功。最終build後の全820 E2E（Chromium410＋WebKit410、既存804＋新16）が8.3分で一括成功、失敗/skipなし。前作804件成功の継承ではない。5幅/両テーマ/文字200%/キーボード44px操作域、タブstub復帰、保存拒否/破損/旧記録/他章、コピー競合と承認非保存を確認。作者が375pxダーク・1280pxライトの2代表画像を目視しpageerror/横超過なし。
+- 自己検証であり独立レビュー未実施、実Google/実機Safari・Android/OS clipboard/SR/組織設定/学習効果はNOT_TESTED。Vite500kB超警告は既存の残余。開始時のignored dist/test-resultsの別バックアップは未取得（通常build/testで再生成）、既存追跡済み証拠は維持。詳しい環境差・RED・試験・未検証・引継ぎは`docs/verification/chapter-2/practice/review-fixes.md`。
+- commit/pushと新規Draft PR提出後に最終HEADの実CI終端を確認し、URL/SHA/件数をPR本文へ反映して読戻す。独立再レビュー前のmerge/auto-merge/Draft解除/本番公開は行わない。

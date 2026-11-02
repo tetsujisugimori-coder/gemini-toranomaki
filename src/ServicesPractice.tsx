@@ -10,6 +10,7 @@ import {
   type PracticeRecord,
 } from "./services-practice-storage";
 import {
+  testMail,
   practiceSteps,
   environments,
   environmentGuides,
@@ -68,15 +69,16 @@ export function Services({
         : [...list, record.step],
     });
   }
-  function prompt(text: string, id: string) {
+  function prompt(text: string, id: string, label?: string) {
     return (
       <div className="practice-prompt">
         <pre
           tabIndex={0}
           aria-label={
-            id === "execution"
+            label ??
+            (id === "execution"
               ? "実践・最終実行指示の全文"
-              : "実践・依頼文の全文"
+              : "実践・依頼文の全文")
           }
         >
           {text}
@@ -96,7 +98,11 @@ export function Services({
             )
           }
         >
-          全文をコピー{id === "execution" ? "（最終実行）" : ""}
+          {id === "mail-subject"
+            ? "件名をコピー"
+            : id === "mail-body"
+              ? "本文をコピー"
+              : `全文をコピー${id === "execution" ? "（最終実行）" : ""}`}
         </button>
       </div>
     );
@@ -240,20 +246,44 @@ export function Services({
                 ハブでデータ利用・保持・解除の説明を読み、同意できなければ模擬へ進んで構いません。接続解除だけで過去の会話や作成済み予定が削除されるとは限りません。個人向けと仕事・学校向けの条件を混同せず、組織の情報を個人アカウントに移さないでください。
               </p>
             )}
+            {record.step === 1 && (
+              <>
+                <h3>架空テストメール</h3>
+                <p>
+                  宛先：Gmail側で自分のメールアドレスを入力します。教材には入力しません。
+                </p>
+                <h4>件名 → Gmailの件名欄</h4>
+                {prompt(
+                  testMail.subject,
+                  "mail-subject",
+                  "Gmailの件名欄に貼る文字列",
+                )}
+                <h4>本文 → Gmailの本文欄</h4>
+                {prompt(
+                  testMail.body,
+                  "mail-body",
+                  "Gmailの本文欄に貼る文字列",
+                )}
+                <p className="small">
+                  コピーはメール送信ではありません。失敗時は上の文字列を選択して手動でコピーできます。宛先・件名・本文をGmailで確認し、自分で送信します。
+                </p>
+              </>
+            )}
             {practicePrompts[record.step] && (
               <>
                 <h3>
-                  {record.step === 1
-                    ? "架空テストメール（件名と本文をGmailで分けて入力）"
-                    : record.step === 6
-                      ? "登録前確認の依頼文"
-                      : "コピーして外部で使う依頼文"}
+                  {record.step === 6
+                    ? "登録前確認の依頼文"
+                    : "コピーして外部で使う依頼文"}
                 </h3>
                 {prompt(practicePrompts[record.step], `step-${record.step}`)}
               </>
             )}
             {record.step === 6 && (
               <>
+                <p className="notice">
+                  確認カードは全12項目（目的・予定の説明も必須）を照合し、別メッセージで最終承認します。未記入・不明・矛盾・対象不明・重複の可能性があれば停止。これらはGeminiへの依頼条件で、教材がGoogle側の動作を強制するものではありません。
+                </p>
                 <label className="option">
                   <input
                     type="checkbox"
@@ -270,11 +300,7 @@ export function Services({
                     <p>
                       このチェックは実データの検証やGoogle側の承認ではありません。ひな形はGemini側で全項目と目的を記入し、未記入のまま送らないでください。
                     </p>
-                    {prompt(
-                      executionPractice +
-                        "\n説明に含める目的：【記入欄：原文と確認カードに一致する目的】。この項目も不一致・未記入なら停止してください。",
-                      "execution",
-                    )}
+                    {prompt(executionPractice, "execution")}
                   </>
                 )}
               </>
@@ -299,7 +325,9 @@ export function Services({
               </p>
             </details>
             <fieldset>
-              <legend>この工程の自己確認（外部結果は教材未検証）</legend>
+              <legend>
+                これまでの学習記録（自己申告・外部結果は教材未検証）
+              </legend>
               <label className="option">
                 <input
                   type="checkbox"
@@ -316,6 +344,9 @@ export function Services({
                 />
                 実結果を自分で確認した（自己申告）
               </label>
+            </fieldset>
+            <fieldset>
+              <legend>現在の学習状態</legend>
               <label className="lab-field">
                 未実施・保留の状態
                 <select
@@ -338,24 +369,21 @@ export function Services({
                 </select>
               </label>
               <p className="small">
-                操作・確認は過去に行った自己申告、未実施・保留は現在の状態です。確認できた場合は状態を「未記録」へ戻せます。利用不可でも章を学べます。
+                過去に実操作・結果確認をした後、現在は利用できない場合もあります。再挑戦しても過去の記録は残ります。
               </p>
               <button
                 onClick={() => {
                   invalidate();
                   update({
-                    performed: latest.current.performed.filter(
-                      (x) => x !== record.step,
-                    ),
-                    verified: latest.current.verified.filter(
-                      (x) => x !== record.step,
-                    ),
                     status: { ...latest.current.status, [record.step]: 0 },
                   });
                 }}
               >
                 この工程を再挑戦
               </button>
+              <p className="small">
+                再挑戦は現在の状態だけを「未記録」に戻します。過去の記録は上のチェックで自分で訂正できます。利用不可・保留のままでも次の工程や模擬教材へ進めます。
+              </p>
             </fieldset>
           </section>
           <div className="lab-actions">
@@ -378,16 +406,21 @@ export function Services({
           <details>
             <summary>実践・模擬の記録一覧</summary>
             <p>
-              実連携成功を自動判定する一覧ではありません。旧記録は実践の操作・確認へ変換しません。
+              実連携成功を自動判定する一覧ではありません。これまでの学習記録と現在の学習状態は別です。過去に操作した後で現在は利用できない場合も、履歴は残ります。旧記録は実践の操作・確認へ変換しません。
             </p>
             <ul>
               {practiceSteps.map((s, i) => (
                 <li key={s}>
-                  {s}：操作{" "}
-                  {record.performed.includes(i) ? "自己申告あり" : "未記録"}
-                  ／実結果確認{" "}
-                  {record.verified.includes(i) ? "自己申告あり" : "未記録"}／
-                  {statusLabels[record.status[i] ?? 0]}
+                  {s}：
+                  <div>
+                    これまでの学習記録：実操作{" "}
+                    {record.performed.includes(i) ? "自己申告あり" : "未記録"}
+                    ／結果確認{" "}
+                    {record.verified.includes(i) ? "自己申告あり" : "未記録"}
+                  </div>
+                  <div>
+                    現在の学習状態：{statusLabels[record.status[i] ?? 0]}
+                  </div>
                 </li>
               ))}
             </ul>

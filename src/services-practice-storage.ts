@@ -45,7 +45,8 @@ export function sanitizePractice(raw: unknown): PracticeRecord {
           ...new Set(
             r.copied.filter(
               (x): x is string =>
-                typeof x === "string" && /^(step-[1-8]|execution)$/.test(x),
+                typeof x === "string" &&
+                /^(step-[1-8]|execution|mail-subject|mail-body)$/.test(x),
             ),
           ),
         ]

@@ -1,0 +1,122 @@
+[WebServer] (node:1663) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 3 tests using 1 worker
+
+(node:1681) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 [chromium] › tests/services-practice.spec.ts:380:1 › review P2-A separate mail fields copy exact text, share busy state and allow manual fallback (5.4s)
+(node:1786) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 [chromium] › tests/services-practice.spec.ts:433:1 › review P2-B the visible real card and approval require purpose with the same twelve fields (5.3s)
+(node:1863) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  3 [chromium] › tests/services-practice.spec.ts:446:1 › review P3 past history and current status remain distinct through retry and reload (5.2s)
+
+
+  1) [chromium] › tests/services-practice.spec.ts:380:1 › review P2-A separate mail fields copy exact text, share busy state and allow manual fallback 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText('宛先：Gmail側で自分のメールアドレスを入力します。教材には入力しません。', { exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByText('宛先：Gmail側で自分のメールアドレスを入力します。教材には入力しません。', { exact: true }) with timeout 5000ms
+      - waiting for getByText('宛先：Gmail側で自分のメールアドレスを入力します。教材には入力しません。', { exact: true })
+
+
+      382 |   await page.goto(route);
+      383 |   await step(page, 1);
+    > 384 |   await expect(page.getByText("宛先：Gmail側で自分のメールアドレスを入力します。教材には入力しません。", {exact:true})).toBeVisible();
+          |                                                                                        ^
+      385 |   const subject = page.getByRole("button", {name:"件名をコピー",exact:true});
+      386 |   const body = page.getByRole("button", {name:"本文をコピー",exact:true});
+      387 |   await expect(subject).toBeVisible();
+        at /workspace/gemini-toranomaki/tests/services-practice.spec.ts:384:88
+
+    Error Context: test-results/services-practice-review-P-fa4a5-e-and-allow-manual-fallback-chromium/error-context.md
+
+  2) [chromium] › tests/services-practice.spec.ts:433:1 › review P2-B the visible real card and approval require purpose with the same twelve fields 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: getByLabel('実践・依頼文の全文', { exact: true })
+    Timeout: 5000ms
+    - Expected substring  -  1
+    + Received string     + 12
+
+    - 目的・予定の説明も必須
+    + 【任意の実アカウント演習】第2段階A：登録前確認の提示だけ。
+    +
+    + このメッセージでは予定の作成・変更・削除を一切実行しないでください。確認と作成を連続実行せず、全項目を提示して返答を止め、私の別メッセージによる最終承認を待ってください。
+    +
+    + 同じ会話の検索結果から、私が明示的に選んだ1件だけを特定してください。「直前の予定」「確認済み」という表現だけでは対象を特定したことになりません。複数候補、対象不明、情報不足、曖昧、未確認、未発見、矛盾、重複があれば登録せず質問してください。対象カレンダーが未指定なら先に聞いてください。
+    +
+    + 特定できた1件に同じ会話で重複しない確認用IDを付け、以下の全項目を1枚の確認カードとして提示してください：確認用ID、イベント名、開催日（年を含む）、開始時刻、終了時刻、タイムゾーン、場所、訂正情報（出典の件名・送信日時・変更箇所。訂正なしの場合も明記）、対象カレンダー（名前・所有者・利用アカウント）、重複確認の結果。
+    +
+    + 私が原文と照合した確認済み情報と、提示した全項目が一致しているか、私に明示的に確認を求めてください。教材の7項目チェックや以前のコピー、検索依頼は最終承認ではありません。私がこの提示を見た後、別の最終実行メッセージで確認用IDと全項目を示して一致を承認するまで、作成・変更・削除を行わないでください。対象や内容が変わったら再提示し、新たな最終承認を待ってください。
+    +
+    + 招待者の追加や通知は依頼しません。登録後は私がGoogleカレンダーを直接開き、対象カレンダーと予定の実在・内容・重複なしを確認します。
+    + 対象は件名「Gemini学習用・打ち合わせ案内」のテストメールから私が選択・原文照合した1件です。目的も説明に含める候補として提示し、私が照合するまで作成しないでください。
+
+    Call log:
+      - Expect "toContainText" getByLabel('実践・依頼文の全文', { exact: true }) with timeout 5000ms
+      - waiting for getByLabel('実践・依頼文の全文', { exact: true })
+        14 × locator resolved to <pre tabindex="0" aria-label="実践・依頼文の全文">【任意の実アカウント演習】第2段階A：登録前確認の提示だけ。↵↵このメッセージでは予定の作成・変更…</pre>
+           - unexpected value "【任意の実アカウント演習】第2段階A：登録前確認の提示だけ。
+    
+    このメッセージでは予定の作成・変更・削除を一切実行しないでください。確認と作成を連続実行せず、全項目を提示して返答を止め、私の別メッセージによる最終承認を待ってください。
+    
+    同じ会話の検索結果から、私が明示的に選んだ1件だけを特定してください。「直前の予定」「確認済み」という表現だけでは対象を特定したことになりません。複数候補、対象不明、情報不足、曖昧、未確認、未発見、矛盾、重複があれば登録せず質問してください。対象カレンダーが未指定なら先に聞いてください。
+    
+    特定できた1件に同じ会話で重複しない確認用IDを付け、以下の全項目を1枚の確認カードとして提示してください：確認用ID、イベント名、開催日（年を含む）、開始時刻、終了時刻、タイムゾーン、場所、訂正情報（出典の件名・送信日時・変更箇所。訂正なしの場合も明記）、対象カレンダー（名前・所有者・利用アカウント）、重複確認の結果。
+    
+    私が原文と照合した確認済み情報と、提示した全項目が一致しているか、私に明示的に確認を求めてください。教材の7項目チェックや以前のコピー、検索依頼は最終承認ではありません。私がこの提示を見た後、別の最終実行メッセージで確認用IDと全項目を示して一致を承認するまで、作成・変更・削除を行わないでください。対象や内容が変わったら再提示し、新たな最終承認を待ってください。
+    
+    招待者の追加や通知は依頼しません。登録後は私がGoogleカレンダーを直接開き、対象カレンダーと予定の実在・内容・重複なしを確認します。
+    対象は件名「Gemini学習用・打ち合わせ案内」のテストメールから私が選択・原文照合した1件です。目的も説明に含める候補として提示し、私が照合するまで作成しないでください。"
+
+
+      435 |   await step(page,6);
+      436 |   const card = page.getByLabel("実践・依頼文の全文",{exact:true});
+    > 437 |   await expect(card).toContainText("目的・予定の説明も必須");
+          |                      ^
+      438 |   await expect(card).toContainText("対象となるメール1件（件名・送信日時）");
+      439 |   await expect(card).toContainText("重複の可能性");
+      440 |   await page.getByLabel("今回提示された1件の全項目・目的・対象カレンダーと原文・重複なしを照合した（保存しない自己申告）",{exact:true}).check();
+        at /workspace/gemini-toranomaki/tests/services-practice.spec.ts:437:22
+
+    Error Context: test-results/services-practice-review-P-67015-with-the-same-twelve-fields-chromium/error-context.md
+
+  3) [chromium] › tests/services-practice.spec.ts:446:1 › review P3 past history and current status remain distinct through retry and reload 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('group', { name: 'これまでの学習記録（自己申告・外部結果は教材未検証）', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('group', { name: 'これまでの学習記録（自己申告・外部結果は教材未検証）', exact: true }) with timeout 5000ms
+      - waiting for getByRole('group', { name: 'これまでの学習記録（自己申告・外部結果は教材未検証）', exact: true })
+
+
+      449 |   await page.reload();
+      450 |   const history=page.getByRole("group",{name:"これまでの学習記録（自己申告・外部結果は教材未検証）",exact:true});
+    > 451 |   await expect(history).toBeVisible();
+          |                         ^
+      452 |   await expect(history.getByLabel("実操作を自分で実施した（自己申告）",{exact:true})).toBeChecked();
+      453 |   await expect(history.getByLabel("実結果を自分で確認した（自己申告）",{exact:true})).toBeChecked();
+      454 |   const current=page.getByRole("group",{name:"現在の学習状態",exact:true});
+        at /workspace/gemini-toranomaki/tests/services-practice.spec.ts:451:25
+
+    Error Context: test-results/services-practice-review-P-0a609-ct-through-retry-and-reload-chromium/error-context.md
+
+  3 failed
+    [chromium] › tests/services-practice.spec.ts:380:1 › review P2-A separate mail fields copy exact text, share busy state and allow manual fallback 
+    [chromium] › tests/services-practice.spec.ts:433:1 › review P2-B the visible real card and approval require purpose with the same twelve fields 
+    [chromium] › tests/services-practice.spec.ts:446:1 › review P3 past history and current status remain distinct through retry and reload 
