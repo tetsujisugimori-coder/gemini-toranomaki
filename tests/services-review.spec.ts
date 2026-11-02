@@ -2,6 +2,14 @@ import { test, expect, type Page } from "@playwright/test";
 import { reviewItems } from "../src/services-data";
 import { servicesKey } from "../src/services-storage";
 
+// Existing suite verifies the preserved mock/legacy path; new practice has its own suite.
+test.beforeEach(async ({ page }) => {
+  await page.addInitScript(() => {
+    if (!localStorage.getItem('gemini-toranomaki:services-practice:v1'))
+      localStorage.setItem('gemini-toranomaki:services-practice:v1', JSON.stringify({mode:'mock'}));
+  });
+});
+
 const step = (page: Page, n: number) =>
   page.getByRole("button", { name: new RegExp(`^${n}\\. `) }).click();
 async function approveMock(page: Page) {

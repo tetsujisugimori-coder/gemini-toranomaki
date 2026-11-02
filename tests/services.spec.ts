@@ -3,6 +3,14 @@ import { eventFields, reviewItems, troubles } from "../src/services-data";
 import { servicesKey } from "../src/services-storage";
 import { progressKey } from "../src/storage";
 
+// Existing suite verifies the preserved mock/legacy path; new practice has its own suite.
+test.beforeEach(async ({ page }) => {
+  await page.addInitScript(() => {
+    if (!localStorage.getItem('gemini-toranomaki:services-practice:v1'))
+      localStorage.setItem('gemini-toranomaki:services-practice:v1', JSON.stringify({mode:'mock'}));
+  });
+});
+
 const step = (page: Page, n: number) =>
   page.getByRole("button", { name: new RegExp(`^${n}\\. `) }).click();
 const chapterComplete = (page: Page) =>

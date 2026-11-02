@@ -1103,3 +1103,12 @@ fieldset + fieldset {
 .skills-chapter details { padding: .5rem; border-bottom: 1px solid currentColor; }
 .skills-result { white-space: pre-wrap; overflow-wrap: anywhere; }
 @media (max-width: 700px) { .skills-grid { grid-template-columns: minmax(0, 1fr); } }
+
+/* Chapter 2: one external practice task at a time, including half-width windows. */
+.services-practice { min-width: 0; overflow-wrap: anywhere; }
+.services-practice select { max-width: 100%; width: 100%; min-height: 44px; font: inherit; }
+.services-practice pre { white-space: pre-wrap; overflow-wrap: anywhere; word-break: break-word; font: inherit; padding: 1rem; background: var(--soft); border-radius: .5rem; }
+.services-practice .lab-actions { flex-wrap: wrap; }
+.services-practice li { margin-block: .6rem; }
+.services-practice fieldset { min-width: 0; }
+.services-practice nav a { display: inline-flex; align-items: center; min-height: 44px; }

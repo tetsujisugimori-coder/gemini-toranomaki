@@ -4,7 +4,7 @@ import { nanoReferences } from "./nano-data";
 import { canvasReferences } from "./canvas-data";
 import { liveReferences } from "./live-data";
 import { studyReferences } from "./study-data";
-import { serviceReferences } from "./services-data";
+import { practiceReferences } from "./services-practice-data";
 export interface Reference {
   title: string;
   url: string;
@@ -177,12 +177,12 @@ lessons[0].quiz = {
 lessons[1].goal =
   "メールの原文・訂正・AIの抽出結果を照合し、Googleサービスの操作前後に人が確認すべきことを判断する。";
 lessons[1].description =
-  "架空の受信箱で予定を読み解き、検索と登録を分けた指示を組み立てます。実アカウントの利用は任意です。";
-lessons[1].references = serviceReferences;
+  "自分で環境を準備し、GeminiでGmailのテストメールを探して原文と照合、予定作成を依頼してCalendarで実結果を確認します。模擬での代替も選べます。";
+lessons[1].references = practiceReferences.map(([title, url]) => ({ title, url }));
 lessons[1].conditions =
-  "Google公式ヘルプ本文を2026-10-23に確認。アカウント・管理者設定・プラン・地域・端末による実際の提供範囲は未確認です。模擬演習には接続や契約は不要です。";
+  "Google・Chrome・Edge公式本文を2026-11-01 JSTに確認。アカウント・管理者設定・プラン・地域・端末による実際の提供範囲は未確認です。模擬演習には接続や契約は不要です。";
 lessons[1].checkedAt =
-  "2026-10-23：接続・予定管理・アプリ連携・Gemini in Gmailの公式ヘルプ本文を確認。実アカウントでの操作は未検証";
+  "2026-11-01 JST：接続・予定管理・プライバシー・分割表示の公式本文を確認。実Google操作は未検証";
 
 lessons[2].title = "Deep Research：調査計画から出典検証まで";
 lessons[2].goal =

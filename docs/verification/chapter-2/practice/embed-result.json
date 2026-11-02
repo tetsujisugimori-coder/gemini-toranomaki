@@ -1,0 +1,46 @@
+{
+  "observedAt": "2026-11-01T09:18:28.390Z",
+  "authentication": "NOT_TESTED (fresh signed-out contexts only)",
+  "headers": {
+    "statuses": [
+      "HTTP/1.1 200 OK",
+      "HTTP/2 200 "
+    ],
+    "xFrameOptions": [
+      "x-frame-options: DENY"
+    ],
+    "cspFrameAncestors": []
+  },
+  "browsers": [
+    {
+      "name": "chromium",
+      "version": "156.0.8078.4",
+      "evidence": [
+        "Gemini request failure: net::ERR_CERT_AUTHORITY_INVALID"
+      ],
+      "frameURLs": [
+        "http://127.0.0.1:4189/",
+        "chrome-error://chromewebdata/"
+      ],
+      "result": "UNKNOWN"
+    },
+    {
+      "name": "webkit",
+      "version": "27.2",
+      "evidence": [
+        "Refused to display 'https://gemini.google.com/' in a frame because it set 'X-Frame-Options' to 'DENY'.",
+        "Gemini response 200 X-Frame-Options=DENY",
+        "Gemini request failure: Load request cancelled"
+      ],
+      "frameURLs": [
+        "http://127.0.0.1:4189/",
+        "https://gemini.google.com/"
+      ],
+      "result": "BLOCKED"
+    }
+  ],
+  "signedIn": "NOT_TESTED",
+  "actualIPhoneAndroid": "NOT_TESTED",
+  "userDataAccess": "NONE",
+  "observedAtJST": "2026-11-01T18:18:28.390000+09:00"
+}

@@ -48,7 +48,7 @@ function EventCard({
     </div>
   );
 }
-export function Services({
+export function MockServices({
   completed,
   onComplete,
 }: {
