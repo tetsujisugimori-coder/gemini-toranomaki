@@ -1,0 +1,111 @@
+{
+  "head": "7320881a1de8591986f6377e5653deafad34fb83",
+  "checks": [
+    {
+      "name": "chromium launch",
+      "status": "PASS",
+      "details": "156.0.8078.80"
+    },
+    {
+      "engine": "chromium",
+      "name": "PC acceptance",
+      "status": "FAIL",
+      "details": "Error: expect(locator).toBeFocused() failed\n\nLocator:  locator('#practice-heading')\nExpected: focused\nReceived: inactive\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toBeFocused\" locator('#practice-heading') with timeout 5000ms\n  - waiting for locator('#practice-heading')\n    14 × locator resolved to <h2 tabindex=\"-1\" id=\"practice-heading\">STEP 0 学習環境</h2>\n       - unexpected value \"inactive\"\n"
+    },
+    {
+      "engine": "chromium",
+      "name": "narrow 320 light",
+      "status": "FAIL",
+      "details": "Error: expect(locator).toBeFocused() failed\n\nLocator:  getByRole('button', { name: '件名をコピー', exact: true })\nExpected: focused\nReceived: inactive\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toBeFocused\" getByRole('button', { name: '件名をコピー', exact: true }) with timeout 5000ms\n  - waiting for getByRole('button', { name: '件名をコピー', exact: true })\n    14 × locator resolved to <button>件名をコピー</button>\n       - unexpected value \"inactive\"\n"
+    },
+    {
+      "engine": "chromium",
+      "name": "narrow 320 dark",
+      "status": "FAIL",
+      "details": "Error: expect(locator).toBeFocused() failed\n\nLocator:  getByRole('button', { name: '件名をコピー', exact: true })\nExpected: focused\nReceived: inactive\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toBeFocused\" getByRole('button', { name: '件名をコピー', exact: true }) with timeout 5000ms\n  - waiting for getByRole('button', { name: '件名をコピー', exact: true })\n    14 × locator resolved to <button>件名をコピー</button>\n       - unexpected value \"inactive\"\n"
+    },
+    {
+      "engine": "chromium",
+      "name": "narrow 375 light",
+      "status": "FAIL",
+      "details": "Error: expect(locator).toBeFocused() failed\n\nLocator:  getByRole('button', { name: '件名をコピー', exact: true })\nExpected: focused\nReceived: inactive\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toBeFocused\" getByRole('button', { name: '件名をコピー', exact: true }) with timeout 5000ms\n  - waiting for getByRole('button', { name: '件名をコピー', exact: true })\n    14 × locator resolved to <button>件名をコピー</button>\n       - unexpected value \"inactive\"\n"
+    },
+    {
+      "engine": "chromium",
+      "name": "narrow 375 dark",
+      "status": "FAIL",
+      "details": "Error: expect(locator).toBeFocused() failed\n\nLocator:  getByRole('button', { name: '本文をコピー', exact: true })\nExpected: focused\nReceived: inactive\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toBeFocused\" getByRole('button', { name: '本文をコピー', exact: true }) with timeout 5000ms\n  - waiting for getByRole('button', { name: '本文をコピー', exact: true })\n    14 × locator resolved to <button>本文をコピー</button>\n       - unexpected value \"inactive\"\n"
+    },
+    {
+      "name": "chromium v1 history/current/retry/reset old mock/progress/other chapter unchanged",
+      "status": "PASS"
+    },
+    {
+      "name": "chromium corrupt storage warning/no write on load",
+      "status": "PASS"
+    },
+    {
+      "name": "chromium denied write warning/current UI available",
+      "status": "PASS"
+    },
+    {
+      "name": "chromium other chapter default shared-copy success",
+      "status": "PASS"
+    },
+    {
+      "name": "webkit launch",
+      "status": "PASS",
+      "details": "27.2"
+    },
+    {
+      "engine": "webkit",
+      "name": "PC acceptance",
+      "status": "FAIL",
+      "details": "Error: expect(locator).toBeFocused() failed\n\nLocator:  locator('#practice-heading')\nExpected: focused\nReceived: inactive\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toBeFocused\" locator('#practice-heading') with timeout 5000ms\n  - waiting for locator('#practice-heading')\n    14 × locator resolved to <h2 tabindex=\"-1\" id=\"practice-heading\">STEP 0 学習環境</h2>\n       - unexpected value \"inactive\"\n"
+    },
+    {
+      "engine": "webkit",
+      "name": "narrow 320 light",
+      "status": "FAIL",
+      "details": "Error: expect(locator).toBeFocused() failed\n\nLocator:  getByRole('button', { name: '本文をコピー', exact: true })\nExpected: focused\nReceived: inactive\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toBeFocused\" getByRole('button', { name: '本文をコピー', exact: true }) with timeout 5000ms\n  - waiting for getByRole('button', { name: '本文をコピー', exact: true })\n    14 × locator resolved to <button>本文をコピー</button>\n       - unexpected value \"inactive\"\n"
+    },
+    {
+      "engine": "webkit",
+      "name": "narrow 320 dark",
+      "status": "FAIL",
+      "details": "Error: expect(locator).toBeFocused() failed\n\nLocator:  getByRole('button', { name: '本文をコピー', exact: true })\nExpected: focused\nReceived: inactive\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toBeFocused\" getByRole('button', { name: '本文をコピー', exact: true }) with timeout 5000ms\n  - waiting for getByRole('button', { name: '本文をコピー', exact: true })\n    14 × locator resolved to <button>本文をコピー</button>\n       - unexpected value \"inactive\"\n"
+    },
+    {
+      "name": "webkit 375 light 200% copy success/pending/failure/manual/retry/stale success+failure/layout/focus",
+      "status": "PASS",
+      "details": {
+        "sw": 375,
+        "cw": 375
+      }
+    },
+    {
+      "engine": "webkit",
+      "name": "narrow 375 dark",
+      "status": "FAIL",
+      "details": "Error: expect(locator).toBeFocused() failed\n\nLocator:  getByRole('button', { name: '件名をコピー', exact: true })\nExpected: focused\nReceived: inactive\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toBeFocused\" getByRole('button', { name: '件名をコピー', exact: true }) with timeout 5000ms\n  - waiting for getByRole('button', { name: '件名をコピー', exact: true })\n    14 × locator resolved to <button>件名をコピー</button>\n       - unexpected value \"inactive\"\n"
+    },
+    {
+      "name": "webkit v1 history/current/retry/reset old mock/progress/other chapter unchanged",
+      "status": "PASS"
+    },
+    {
+      "name": "webkit corrupt storage warning/no write on load",
+      "status": "PASS"
+    },
+    {
+      "name": "webkit denied write warning/current UI available",
+      "status": "PASS"
+    },
+    {
+      "engine": "webkit",
+      "name": "other chapter shared copy",
+      "status": "FAIL",
+      "details": "TimeoutError: locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: '調査依頼文を全文コピー', exact: true })\n"
+    }
+  ]
+}

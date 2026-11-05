@@ -1,0 +1,22 @@
+{
+  "acceptance.cjs": {
+    "archived_as": "acceptance.cjs.txt",
+    "bytes": 12046,
+    "sha256": "8e15adfbab1c57a9159b1ed98033f6a03c74a14d95cccaab79a935650c944ead"
+  },
+  "pointer-selection.cjs": {
+    "archived_as": "pointer-selection.cjs.txt",
+    "bytes": 1335,
+    "sha256": "66f75eeb0f44635aa03b4513d8650fa6d468ab817ee847b4b822efac8c21e627"
+  },
+  "supplement.cjs": {
+    "archived_as": "supplement.cjs.txt",
+    "bytes": 3864,
+    "sha256": "a59432b316930bdd112c4e365d2a1866eec8a628297493db40e1dd4d80914004"
+  },
+  "acceptance-2.cjs": {
+    "archived_as": "acceptance-2.cjs.txt",
+    "bytes": 12721,
+    "sha256": "5c8d15d66034d9ad01934c9791e653f7070658b98af4fe22163f023c7bfcd739"
+  }
+}

@@ -1,0 +1,221 @@
+
+> gemini-toranomaki@0.1.0 test
+> vitest run src --reporter=verbose
+
+
+ RUN  v3.2.7 /workspace/gemini-toranomaki
+
+ ✓ src/study.test.ts > changes the research request and diagnoses each ambiguous scope condition 3ms
+ ✓ src/study.test.ts > keeps mock evidence and claims consistent while distinguishing source type, date, method and support 2ms
+ ✓ src/study.test.ts > requires corrected conditions, all plan fixes, source reasoning and report checks before transfer 1ms
+ ✓ src/study.test.ts > invalidates stale imports after topic, revision, checks or reset but leaves standalone notebooks independent 1ms
+ ✓ src/study.test.ts > makes citation existence different from support and never answers from excluded sources 1ms
+ ✓ src/study.test.ts > changes all twelve guide combinations substantively and cites only selected materials 2ms
+ ✓ src/study.test.ts > round-trips fixed records without changing legacy keys and supports independent deletion 3ms
+ ✓ src/study.test.ts > drops malformed choices, cross-topic sources and private fields 1ms
+ ✓ src/study.test.ts > reports corrupt JSON and blocked reads, writes and deletion without claiming success 1ms
+ ✓ src/study.test.ts > accepts a company announcement for its own reported test without treating it as independent comparative proof 0ms
+ ✓ src/study.test.ts > rejects an old public-style document for a current claim without denying its historical use 0ms
+ ✓ src/study.test.ts > keeps only explicit same-topic additions when imports expire, including on reset 1ms
+ ✓ src/study.test.ts > restores provenance, migrates legacy imports conservatively and filters corrupt ownership 1ms
+ ✓ src/study.test.ts > has three distinct evidence decisions and withholds transfer until the uncertain source is reconsidered 1ms
+ ✓ src/study.test.ts > distinguishes deleted research from an explicit new topic during reset reconciliation 1ms
+ ✓ src/nano.test.ts > all 81 conditions have deterministic complete distinct instructions 11ms
+ ✓ src/nano.test.ts > edit prompts name changed/retained/checked objects and flag omissions 0ms
+ ✓ src/nano.test.ts > repair prompt responds to all four evidence sections 1ms
+ ✓ src/nano.test.ts > character instructions select only pinned features and do not promise identity 4ms
+ ✓ src/nano.test.ts > exact unordered observations reject missed/extra regions 1ms
+ ✓ src/nano.test.ts > all hit regions lie in the shared image coordinate system 1ms
+ ✓ src/nano.test.ts > copy identities follow complete text and problem revision 1ms
+ ✓ src/nano.test.ts > OS references are explicit and the common reference belongs to all OSs 1ms
+ ✓ src/nano.test.ts > sanitizer accepts fixed histories but never current explanation or slider 9ms
+ ✓ src/nano.test.ts > invalid types, out of range settings and old unknown IDs are safe 1ms
+ ✓ src/nano.test.ts > roundtrips only chapter 7 state and preserves old keys/completions 1ms
+ ✓ src/nano.test.ts > corrupt JSON, rejected reads/writes and quota failures never claim persistence 1ms
+ ✓ src/nano.test.ts > all finite prompt fingerprints map back to the exact same text without collisions 9ms
+ ✓ src/nano.test.ts > character answers reject region IDs while preserving valid ordered values 0ms
+ ✓ src/nano.test.ts > edit answers keep only region IDs for every versioned task 0ms
+ ✓ src/nano.test.ts > find answers keep only region IDs for every versioned task 0ms
+ ✓ src/nano.test.ts > answer IDs and value arrays reject unknown revisions and invalid types 0ms
+ ✓ src/nano.test.ts > character answer format is exact, including rejection of trailing line endings 0ms
+ ✓ src/nano.test.ts > normal legacy answer records preserve all formats, order and other chapter-seven fields 0ms
+ ✓ src/nano.test.ts > load and save remove cross-kind contamination without writing other keys or mutating stored input on read 1ms
+ ✓ src/video-music.test.ts > video and prompt invariants > reflects every director condition in full text and reproduces restored conditions 10ms
+ ✓ src/video-music.test.ts > video and prompt invariants > clamps time and uses exact scene boundaries in both orders 2ms
+ ✓ src/video-music.test.ts > video and prompt invariants > speed changes duration, and action/camera/background change actual frame values 1ms
+ ✓ src/video-music.test.ts > video and prompt invariants > fault 'costume-v1' exists only in the middle, and text matches frame evidence 1ms
+ ✓ src/video-music.test.ts > video and prompt invariants > fault 'tool-v1' exists only in the middle, and text matches frame evidence 0ms
+ ✓ src/video-music.test.ts > video and prompt invariants > fault 'jump-v1' exists only in the middle, and text matches frame evidence 0ms
+ ✓ src/video-music.test.ts > video and prompt invariants > scores missed and excess regions separately for 'costume-v1' 1ms
+ ✓ src/video-music.test.ts > video and prompt invariants > scores missed and excess regions separately for 'tool-v1' 0ms
+ ✓ src/video-music.test.ts > video and prompt invariants > scores missed and excess regions separately for 'jump-v1' 0ms
+ ✓ src/video-music.test.ts > video and prompt invariants > distinguishes prompt fingerprints by kind and body 0ms
+ ✓ src/video-music.test.ts > video and prompt invariants > uses explicit OS reference metadata and meaningful checked reasons 1ms
+ ✓ src/video-music.test.ts > music composition > maps tempo to real scheduled intervals and length 1ms
+ ✓ src/video-music.test.ts > music composition > genre changes rhythm, mood changes pitch, instrument changes waveform 0ms
+ ✓ src/video-music.test.ts > music composition > represents all conditions, vocal only in text, and notes remain independent 1ms
+ ✓ src/video-music.test.ts > chapter-eight storage compatibility > restores only fixed fields, dedupes histories and never stores current playback or predictions 4ms
+ ✓ src/video-music.test.ts > chapter-eight storage compatibility > rejects corrupt JSON and invalid types while preserving safe defaults 1ms
+ ✓ src/video-music.test.ts > chapter-eight storage compatibility > keeps normal v1 data, valid answer order and all other chapter keys 1ms
+ ✓ src/video-music.test.ts > chapter-eight storage compatibility > survives getItem refusal without claiming persistence 1ms
+ ✓ src/video-music.test.ts > chapter-eight storage compatibility > survives setItem refusal without claiming persistence 1ms
+ ✓ src/video-music.test.ts > chapter-eight storage compatibility > survives removeItem refusal without claiming persistence 0ms
+ ✓ src/video-music.test.ts > chapter-eight storage compatibility > preserves chapter1–7 completion and independently toggles chapter8 1ms
+ ✓ src/video-music.test.ts > Web Audio lifecycle without asserting audible quality > does not initialize audio until an explicit play and caps master volume 6ms
+ ✓ src/video-music.test.ts > Web Audio lifecycle without asserting audible quality > applies waveforms, pitch and timing to actual oscillator calls 2ms
+ ✓ src/video-music.test.ts > Web Audio lifecycle without asserting audible quality > stops and disconnects the previous run before replay, with one end timer 4ms
+ ✓ src/video-music.test.ts > Web Audio lifecycle without asserting audible quality > invalidates a deferred resume after stop and never schedules or notifies late 1ms
+ ✓ src/video-music.test.ts > Web Audio lifecycle without asserting audible quality > invalidates a deferred resume after dispose and never schedules or notifies late 0ms
+ ✓ src/video-music.test.ts > Web Audio lifecycle without asserting audible quality > route validation cancels resume before React cleanup and closes its own context 1ms
+ ✓ src/video-music.test.ts > Web Audio lifecycle without asserting audible quality > old resume cannot overwrite a new run or resurrect audio 4ms
+ ✓ src/video-music.test.ts > Web Audio lifecycle without asserting audible quality > falls back safely on unsupported APIs, resume refusal and non-running contexts 1ms
+ ✓ src/video-music.test.ts > Web Audio lifecycle without asserting audible quality > muted and disposed players do not create contexts, and legacy webkitAudioContext is supported 2ms
+ ✓ src/canvas.test.ts > scores all 64 complete/incomplete combinations for both original themes without treating missing as answered 9ms
+ ✓ src/canvas.test.ts > keeps answers common but grades independent by version, never adds points on repeated submission, and clears old results on actual answer changes 1ms
+ ✓ src/canvas.test.ts > sets actual option values for empty, partial, correct, incorrect and mixed boundaries 1ms
+ ✓ src/canvas.test.ts > reflects selected conditions in full prompts, preserves grading and reset rules, and distinguishes cosmetic from behavioral repair 1ms
+ ✓ src/canvas.test.ts > ties copy IDs to all and only conditions used by each fixed prompt 1ms
+ ✓ src/canvas.test.ts > classifies PC, iOS, Android and common official sources explicitly 1ms
+ ✓ src/canvas.test.ts > restores fixed records but never persists quiz answers, scores, current test evidence or private text 2ms
+ ✓ src/canvas.test.ts > saves and removes only chapter six without touching old activity or completion keys 1ms
+ ✓ src/canvas.test.ts > continues with safe defaults when JSON, read, quota or removal fail 1ms
+ ✓ src/live.test.ts > provides substantive, explained conversation changes for both topics 5ms
+ ✓ src/live.test.ts > separates visible labels, uncertain claims and the explicit answer key 1ms
+ ✓ src/live.test.ts > judges sharing by purpose rather than always sharing a screen 1ms
+ ✓ src/live.test.ts > versions fixed practice copy text without inventing the learner's real object result 0ms
+ ✓ src/live.test.ts > round trips fixed selections and current answers, keeps history separate and preserves old records 1ms
+ ✓ src/live.test.ts > filters unknown IDs and private fields, and does not grant current answers from history 1ms
+ ✓ src/live.test.ts > reports corrupt, denied and quota-limited storage without blocking in-memory learning 1ms
+ ✓ src/live.test.ts > classifies official references explicitly by platform without changing URLs 0ms
+ ✓ src/services.test.ts > uses explicit corrections rather than sent dates, old dates or a newer unrelated message 6ms
+ ✓ src/services.test.ts > separates fictional search from real Gmail, includes all source messages and reflects conditions 1ms
+ ✓ src/services.test.ts > keeps registration a separate explicit instruction with unknown, duplicate and target guards 1ms
+ ✓ src/services.test.ts > restores old chapter 1 progress and saves independent chapter completions without touching other keys 2ms
+ ✓ src/services.test.ts > whitelists only fixed exercise choices and record types; never retains email text or review authorization 2ms
+ ✓ src/services.test.ts > real preflight identifies one candidate and presents every field without authorizing an operation 1ms
+ ✓ src/services.test.ts > final execution requires filled identity fields matching the displayed single candidate and a later separate approval 3ms
+ ✓ src/services.test.ts > retains legacy copy history alongside new preflight and execution history without persisting authorization or event data 1ms
+ ✓ src/skills.test.ts > 第9章 > 条件ごとに模擬回答と説明が変わる 2ms
+ ✓ src/skills.test.ts > 第9章 > ローカル評価は入力変更に追従する 0ms
+ ✓ src/skills.test.ts > 第9章 > 不正な保存値を制限する 2ms
+ ✓ src/skills.test.ts > 決定的な比較と記録の保護 > 4つの質問それぞれに説明とヒントを用意する 2ms
+ ✓ src/skills.test.ts > 決定的な比較と記録の保護 > 無関係な条件の変更でも回答と下書きを残す 1ms
+ ✓ src/skills.test.ts > 分野の回答例と自動適用条件は質問ごとに変わる 1ms
+ ✓ src/skills.test.ts > 家庭教師の条件による具体的な違い > 一般教養でもレベル・長さ・形式を回答に反映する 1ms
+ ✓ src/skills.test.ts > 家庭教師の条件による具体的な違い > 全分野でヒントと解説、上級の内容、詳しい補足、練習が得られる 1ms
+ ✓ src/skills.test.ts > 保存の拒否と不正な旧データを保守的に扱う 1ms
+ ✓ src/canvas-workshop.test.ts > timer actually counts down, stops or loops at zero, and never advances while paused 3ms
+ ✓ src/canvas-workshop.test.ts > each timer condition and prompt kind has matching full text and a distinct copy identity 2ms
+ ✓ src/canvas-workshop.test.ts > old chapter records keep old answers and copies but cannot earn new judgments or viewing credit 2ms
+ ✓ src/canvas-workshop.test.ts > new failure scenarios have distinct versioned IDs, plausible alternatives and reasons about evidence and regression 1ms
+ × src/services-practice-review.test.ts > keeps the exact subject and complete multiline body as independent data 8ms
+   → expected undefined to be 'Gemini学習用・打ち合わせ案内' // Object.is equality
+ × src/services-practice-review.test.ts > uses the same twelve mandatory fields in both real cards and approval templates 4ms
+   → expected [ Array(1) ] to deeply equal [ '確認用ID', …(11) ]
+ × src/services-practice-review.test.ts > retains v1 history and current status together without rewriting old or other chapter records 4ms
+   → expected { mode: 'real', step: 4, …(5) } to deeply equal { mode: 'real', step: 4, …(5) }
+ ✓ src/services-practice.test.ts > does not promote old service checkboxes or mock completion to real practice 2ms
+ ✓ src/services-practice.test.ts > whitelists fixed states and excludes email text, credentials, free content and invalid indices 2ms
+ ✓ src/services-practice.test.ts > reads without rewriting and saves only the isolated practice key 2ms
+ ✓ src/services-practice.test.ts > handles corrupt JSON, denied reads and quota writes without throwing 1ms
+ ✓ src/services-practice.test.ts > has nine actionable tasks and separates search, preflight, explicit approval and postcheck 2ms
+ ✓ src/storage.test.ts > progress > saves, restores and resets valid progress 2ms
+ ✓ src/storage.test.ts > progress > survives blocked storage 1ms
+ ✓ src/storage.test.ts > progress > rejects corrupt and unknown completion data 0ms
+ ✓ src/storage.test.ts > keeps Issue #1 curriculum order and chapters 1 through 9 available 2ms
+ ✓ src/storage.test.ts > reports deletion failure when stored progress is still readable 0ms
+ ✓ src/exploration.test.ts > preserves existing records and round-trips separate exploration records 3ms
+ ✓ src/exploration.test.ts > rejects malformed, duplicate and unknown records without crashing 1ms
+ ✓ src/exploration.test.ts > reports blocked reads and failed writes 0ms
+ ✓ src/exploration.test.ts > routes learning goals to appropriate chapters and valid screen entrances 1ms
+ ✓ src/lab.test.ts > lab prompt generation > ask: every editable condition affects the prompt 3ms
+ ✓ src/lab.test.ts > lab prompt generation > rewrite: every editable condition affects the prompt 0ms
+ ✓ src/lab.test.ts > lab prompt generation > image: every editable condition affects the prompt 1ms
+ ✓ src/lab.test.ts > lab prompt generation > quiz: every editable condition affects the prompt 1ms
+ ✓ src/lab.test.ts > lab prompt generation > image revision explicitly preserves other elements 0ms
+ ✓ src/lab.test.ts > lab progress privacy and resilience > only restores known ids and valid records 1ms
+ ✓ src/lab.test.ts > lab progress privacy and resilience > saves no learner text and leaves chapter storage untouched 2ms
+ ✓ src/lab.test.ts > lab progress privacy and resilience > handles corrupt and blocked storage 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/services-practice-review.test.ts > keeps the exact subject and complete multiline body as independent data
+AssertionError: expected undefined to be 'Gemini学習用・打ち合わせ案内' // Object.is equality
+
+- Expected: 
+"Gemini学習用・打ち合わせ案内"
+
++ Received: 
+undefined
+
+ ❯ src/services-practice-review.test.ts:14:24
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/services-practice-review.test.ts > uses the same twelve mandatory fields in both real cards and approval templates
+AssertionError: expected [ Array(1) ] to deeply equal [ '確認用ID', …(11) ]
+
+- Expected
++ Received
+
+  [
+-   "確認用ID",
+-   "対象となるメール1件（件名・送信日時）",
+-   "イベント名",
+-   "開催日（年を含む）",
+-   "開始時刻",
+-   "終了時刻",
+-   "タイムゾーン",
+-   "場所",
+-   "目的・予定の説明",
+-   "訂正情報（出典の件名・送信日時・変更箇所、または訂正なし）",
+-   "対象カレンダー（名前・所有者・利用アカウント）",
+-   "重複確認の結果",
++   "確認用ID、イベント名、開催日（年を含む）、開始時刻、終了時刻、タイムゾーン、場所、訂正情報（出典の件名・送信日時・変更箇所。訂正なしの場合も明記）、対象カレンダー（名前・所有者・利用アカウント）、重複確認の結果。",
+  ]
+
+ ❯ src/services-practice-review.test.ts:23:35
+     21|   const approval = buildFinalExecutionPrompt();
+     22|   const cardFields = card.split("1枚の確認カードとして提示してください：")[1]?.split("\n\…
+     23|   expect(cardFields?.split("\n")).toEqual(fields);
+       |                                   ^
+     24|   const approvalFields = approval.split("\n\n")[2].split("\n").map(lin…
+     25|   expect(approvalFields).toEqual(fields);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/services-practice-review.test.ts > retains v1 history and current status together without rewriting old or other chapter records
+AssertionError: expected { mode: 'real', step: 4, …(5) } to deeply equal { mode: 'real', step: 4, …(5) }
+
+- Expected
++ Received
+
+@@ -1,10 +1,8 @@
+  {
+    "copied": [
+      "step-1",
+-     "mail-subject",
+-     "mail-body",
+    ],
+    "environment": 3,
+    "mode": "real",
+    "performed": [
+      4,
+
+ ❯ src/services-practice-review.test.ts:42:33
+     40|   const setItem = vi.fn((key:string,value:string) => stored.set(key,va…
+     41|   vi.stubGlobal("localStorage", {getItem:(key:string)=>stored.get(key)…
+     42|   expect(loadPractice().record).toEqual(record);
+       |                                 ^
+     43|   expect(setItem).not.toHaveBeenCalled();
+     44|   expect(savePractice(sanitizePractice(record))).toBe(true);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed | 12 passed (13)
+      Tests  3 failed | 125 passed (128)
+   Start at  03:34:19
+   Duration  1.43s (transform 609ms, setup 0ms, collect 1.00s, tests 234ms, environment 3ms, prepare 930ms)
+

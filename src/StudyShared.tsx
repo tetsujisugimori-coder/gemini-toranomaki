@@ -21,6 +21,7 @@ export function useStudyCopy() {
     text: string,
     onSuccess: () => void,
     matches: () => boolean = () => true,
+    messages?: { success: string; failure: string },
   ) {
     if (busy) return;
     const ticket = version.current;
@@ -30,18 +31,21 @@ export function useStudyCopy() {
       version.current === ticket &&
       location.hash === route &&
       matches();
+    setMessage("");
     setBusy(true);
     try {
       await navigator.clipboard.writeText(text);
       if (!current()) return;
       onSuccess();
       setMessage(
-        "全文をコピーしました。実サービスへの送信や実行はしていません。",
+        messages?.success ??
+          "全文をコピーしました。実サービスへの送信や実行はしていません。",
       );
     } catch {
       if (current())
         setMessage(
-          "コピーできませんでした。全文を選択して手動でコピーしてください。成功記録は追加しません。",
+          messages?.failure ??
+            "コピーできませんでした。全文を選択して手動でコピーしてください。成功記録は追加しません。",
         );
     } finally {
       if (current()) setBusy(false);
