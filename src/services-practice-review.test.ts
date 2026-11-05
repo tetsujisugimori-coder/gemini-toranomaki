@@ -89,3 +89,11 @@ it("retains v1 history and current status together without rewriting old or othe
   expect(setItem).toHaveBeenCalledTimes(1);
   expect(setItem.mock.calls[0][0]).toBe(practiceKey);
 });
+it("distinguishes twelve-field cards from transient self-report and later Gemini approval", () => {
+  const prompt = buildRegistrationPrompt("real");
+  expect(prompt).not.toContain("7項目チェック");
+  expect(prompt).toContain("12必須項目の確認カード");
+  expect(prompt).toContain("一時的な自己申告チェック");
+  expect(prompt).toContain("最終承認ではありません");
+  expect(prompt).toContain("別の最終実行メッセージ");
+});

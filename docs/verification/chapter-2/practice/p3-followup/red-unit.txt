@@ -1,0 +1,78 @@
+
+> gemini-toranomaki@0.1.0 test
+> vitest run src
+
+
+ RUN  v3.2.7 /workspace/gemini-toranomaki
+
+ ✓ src/study.test.ts (15 tests) 19ms
+ ✓ src/nano.test.ts (20 tests) 32ms
+ ✓ src/video-music.test.ts (30 tests) 51ms
+ ✓ src/canvas.test.ts (9 tests) 19ms
+ ✓ src/services.test.ts (8 tests) 15ms
+ ✓ src/live.test.ts (8 tests) 23ms
+ ✓ src/skills.test.ts (9 tests) 14ms
+ ❯ src/services-practice-review.test.ts (4 tests | 1 failed) 20ms
+   ✓ keeps the exact subject and complete multiline body as independent data 2ms
+   ✓ uses the same twelve mandatory fields in both real cards and approval templates 2ms
+   ✓ retains v1 history and current status together without rewriting old or other chapter records 3ms
+   × distinguishes twelve-field cards from transient self-report and later Gemini approval 10ms
+     → expected '【任意の実アカウント演習】第2段階A：登録前確認の提示だけ。\n\nこのメ…' not to contain '7項目チェック'
+ ✓ src/canvas-workshop.test.ts (4 tests) 16ms
+ ✓ src/services-practice.test.ts (5 tests) 8ms
+ ✓ src/storage.test.ts (5 tests) 8ms
+ ✓ src/exploration.test.ts (4 tests) 13ms
+ ✓ src/lab.test.ts (8 tests) 6ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/services-practice-review.test.ts > distinguishes twelve-field cards from transient self-report and later Gemini approval
+AssertionError: expected '【任意の実アカウント演習】第2段階A：登録前確認の提示だけ。\n\nこのメ…' not to contain '7項目チェック'
+
+- Expected
++ Received
+
+- 7項目チェック
++ 【任意の実アカウント演習】第2段階A：登録前確認の提示だけ。
++
++ このメッセージでは予定の作成・変更・削除を一切実行しないでください。確認と作成を連続実行せず、全項目を提示して返答を止め、私の別メッセージによる最終承認を待ってください。
++
++ 同じ会話の検索結果から、私が明示的に選んだ1件だけを特定してください。「直前の予定」「確認済み」という表現だけでは対象を特定したことになりません。複数候補、対象不明、情報不足、曖昧、未確認、未発見、矛盾、重複があれば登録せず質問してください。対象カレンダーが未指定なら先に聞いてください。
++
++ 特定できた1件に同じ会話で重複しない確認用IDを付け、以下の全項目を1枚の確認カードとして提示してください：確認用ID
++ 対象となるメール1件（件名・送信日時）
++ イベント名
++ 開催日（年を含む）
++ 開始時刻
++ 終了時刻
++ タイムゾーン
++ 場所
++ 目的・予定の説明
++ 訂正情報（出典の件名・送信日時・変更箇所、または訂正なし）
++ 対象カレンダー（名前・所有者・利用アカウント）
++ 重複確認の結果
++
++ 全12項目は目的・予定の説明も必須です。不明・未記入・矛盾・対象不明・重複の可能性があれば推測で補わず停止してください。
++
++ 私がGmailの原文を直接開いて全項目を照合します。対象または内容が変更された場合は以前の承認を無効とし、全項目を再提示して新しい別メッセージによる最終承認を待ってください。
++
++ 私が原文と照合した確認済み情報と、提示した全項目が一致しているか、私に明示的に確認を求めてください。教材の7項目チェックや以前のコピー、検索依頼は最終承認ではありません。私がこの提示を見た後、別の最終実行メッセージで確認用IDと全項目を示して一致を承認するまで、作成・変更・削除を行わないでください。対象や内容が変わったら再提示し、新たな最終承認を待ってください。
++
++ 招待者の追加や通知は依頼しません。登録後は私がGoogleカレンダーを直接開き、対象カレンダーと予定の実在・内容・重複なしを確認します。
+
+ ❯ src/services-practice-review.test.ts:94:22
+     92| it("distinguishes twelve-field cards from transient self-report and la…
+     93|   const prompt = buildRegistrationPrompt("real");
+     94|   expect(prompt).not.toContain("7項目チェック");
+       |                      ^
+     95|   expect(prompt).toContain("12必須項目の確認カード");
+     96|   expect(prompt).toContain("一時的な自己申告チェック");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 12 passed (13)
+      Tests  1 failed | 128 passed (129)
+   Start at  22:51:50
+   Duration  1.66s (transform 641ms, setup 0ms, collect 1.14s, tests 245ms, environment 2ms, prepare 1.01s)
+

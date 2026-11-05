@@ -37,6 +37,7 @@ export function Services({
   const [reset, setReset] = useState(false);
   const [mockInitial, setMockInitial] = useState(loadServices);
   const copy = useStudyCopy();
+  const [mailCopy, setMailCopy] = useState<string | null>(null);
   const heading = useRef<HTMLHeadingElement>(null);
   const focus = useRef(false);
   useEffect(() => {
@@ -53,6 +54,7 @@ export function Services({
   }
   function invalidate() {
     copy.invalidate();
+    setMailCopy(null);
     setApproved(false);
   }
   function go(step: number) {
@@ -70,6 +72,8 @@ export function Services({
     });
   }
   function prompt(text: string, id: string, label?: string) {
+    const target =
+      id === "mail-subject" ? "件名" : id === "mail-body" ? "本文" : null;
     return (
       <div className="practice-prompt">
         <pre
@@ -85,7 +89,8 @@ export function Services({
         </pre>
         <button
           disabled={copy.busy}
-          onClick={() =>
+          onClick={() => {
+            setMailCopy(target ? id : null);
             void copy.copy(
               text,
               () =>
@@ -95,8 +100,14 @@ export function Services({
               () =>
                 latest.current.mode === "real" &&
                 (id !== "execution" || approved),
-            )
-          }
+              target
+                ? {
+                    success: `${target}をコピーしました。実サービスへの送信や実行はしていません。`,
+                    failure: `${target}をコピーできませんでした。上の${target}の全文を選択して手動でコピーしてください。成功記録は追加しません。`,
+                  }
+                : undefined,
+            );
+          }}
         >
           {id === "mail-subject"
             ? "件名をコピー"
@@ -104,6 +115,15 @@ export function Services({
               ? "本文をコピー"
               : `全文をコピー${id === "execution" ? "（最終実行）" : ""}`}
         </button>
+        {target && (
+          <p
+            role="status"
+            aria-atomic="true"
+            className={mailCopy === id ? "feedback" : undefined}
+          >
+            {mailCopy === id ? copy.message : ""}
+          </p>
+        )}
       </div>
     );
   }
@@ -400,9 +420,11 @@ export function Services({
               次の工程 →
             </button>
           </div>
-          <p role="status" className="feedback">
-            {copy.message}
-          </p>
+          {mailCopy === null && (
+            <p role="status" aria-atomic="true" className="feedback">
+              {copy.message}
+            </p>
+          )}
           <details>
             <summary>実践・模擬の記録一覧</summary>
             <p>

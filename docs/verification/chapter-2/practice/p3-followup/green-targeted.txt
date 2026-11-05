@@ -1,0 +1,9 @@
+
+Running 4 tests using 2 workers
+
+  ✓  1 [chromium] › tests/services-practice.spec.ts:646:3 › P3 targeted mail notifications stay local and invalidate at 320px (714ms)
+  ✓  3 [chromium] › tests/services-practice.spec.ts:646:3 › P3 targeted mail notifications stay local and invalidate at 375px (605ms)
+  ✓  2 [webkit] › tests/services-practice.spec.ts:646:3 › P3 targeted mail notifications stay local and invalidate at 320px (1.5s)
+  ✓  4 [webkit] › tests/services-practice.spec.ts:646:3 › P3 targeted mail notifications stay local and invalidate at 375px (761ms)
+
+  4 passed (3.3s)

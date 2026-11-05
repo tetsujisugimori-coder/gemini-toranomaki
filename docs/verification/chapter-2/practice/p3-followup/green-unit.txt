@@ -1,0 +1,26 @@
+
+> gemini-toranomaki@0.1.0 test
+> vitest run src
+
+
+ RUN  v3.2.7 /workspace/gemini-toranomaki
+
+ ✓ src/services-practice-review.test.ts (4 tests) 7ms
+ ✓ src/nano.test.ts (20 tests) 23ms
+ ✓ src/video-music.test.ts (30 tests) 45ms
+ ✓ src/live.test.ts (8 tests) 7ms
+ ✓ src/canvas.test.ts (9 tests) 16ms
+ ✓ src/study.test.ts (15 tests) 17ms
+ ✓ src/canvas-workshop.test.ts (4 tests) 7ms
+ ✓ src/skills.test.ts (9 tests) 8ms
+ ✓ src/services.test.ts (8 tests) 11ms
+ ✓ src/exploration.test.ts (4 tests) 5ms
+ ✓ src/services-practice.test.ts (5 tests) 6ms
+ ✓ src/storage.test.ts (5 tests) 8ms
+ ✓ src/lab.test.ts (8 tests) 8ms
+
+ Test Files  13 passed (13)
+      Tests  129 passed (129)
+   Start at  22:52:35
+   Duration  1.27s (transform 581ms, setup 0ms, collect 939ms, tests 169ms, environment 2ms, prepare 732ms)
+

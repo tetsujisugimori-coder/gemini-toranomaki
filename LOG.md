@@ -413,3 +413,11 @@ PR #19の独立静的レビューを受け、一般教養の回答例がレベ�
 - 最終の型/lint/単体128/build/diff-check成功。最終build後の全820 E2E（Chromium410＋WebKit410、既存804＋新16）が8.3分で一括成功、失敗/skipなし。前作804件成功の継承ではない。5幅/両テーマ/文字200%/キーボード44px操作域、タブstub復帰、保存拒否/破損/旧記録/他章、コピー競合と承認非保存を確認。作者が375pxダーク・1280pxライトの2代表画像を目視しpageerror/横超過なし。
 - 自己検証であり独立レビュー未実施、実Google/実機Safari・Android/OS clipboard/SR/組織設定/学習効果はNOT_TESTED。Vite500kB超警告は既存の残余。開始時のignored dist/test-resultsの別バックアップは未取得（通常build/testで再生成）、既存追跡済み証拠は維持。詳しい環境差・RED・試験・未検証・引継ぎは`docs/verification/chapter-2/practice/review-fixes.md`。
 - commit/pushと新規Draft PR提出後に最終HEADの実CI終端を確認し、URL/SHA/件数をPR本文へ反映して読戻す。独立再レビュー前のmerge/auto-merge/Draft解除/本番公開は行わない。
+
+## 2026-11-05 PR #23 P3通知・旧説明の修正
+
+最新remote HEAD b2ddbceを確認し、Issue #22・PR本文・レビュー5782027948・CI run41385286997 success・差分・README/仕様/既存試験を確認。作業領域は開始時mainと一致しクリーン。fetch後のtracking指定switchが失敗した際のindexはPR HEADと同一であることを確認し、差分を/tmpへ保全後、既存PRブランチを明示SHAからcheckoutした。適用AGENTS.md/.agents/skillsなし。新Issue/PRは作らない。
+
+P3-01: STEP1の各コピー直下に事前マウントしたrole=status/aria-atomic通知。件名/本文の成功・失敗を区別。共有hookは省略可能な結果文言引数のみ追加し、既存呼出しの文言を維持。開始時に前の結果を消し、共有busy・mounted/version/hash/matches失効を維持。P3-02: 実践用のみ「7項目チェック」を12必須項目カードと一時的自己申告へ訂正。模擬生成/保存形式は変更なし。
+
+修正前REDは単体128PASS+新1FAIL、Chromium新2FAIL(320/375px)。修正後単体129PASS、両engine重点4PASS。既存試験削除/skip/timeout緩和なし。全E2E/独立受入/最終CIは継続検証中。証拠はdocs/verification/chapter-2/practice/p3-followup/。WebKitホスト起動はOS依存不足でSTARTUP_BLOCKED。代替に公式mcr.microsoft.com/playwright:v1.64.1-noble（digest sha256:2f05f8a734509a7b3f26a912639488ee08f58a7b292d14d62271bcff9038768f）を通常ユーザーで使用し、両engine標準起動成功。ホスト検査/TLS等の迂回なし。実Google/実機/OS clipboard/スクリーンリーダーはNOT_TESTED。Draft維持、merge/auto-merge/公開なし。

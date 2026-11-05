@@ -174,7 +174,7 @@ it("real preflight identifies one candidate and presents every field without aut
   expect(prompt).toContain("提示した全項目が一致");
   expect(prompt).toContain("別の最終実行メッセージ");
   expect(prompt).toContain(
-    "教材の7項目チェックや以前のコピー、検索依頼は最終承認ではありません",
+    "教材の一時的な自己申告チェックや以前のコピー、検索依頼は最終承認ではありません",
   );
   expect(prompt).not.toContain("新規作成してください");
   expect(prompt).not.toContain("追加してください");
