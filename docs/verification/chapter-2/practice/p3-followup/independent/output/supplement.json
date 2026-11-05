@@ -1,0 +1,110 @@
+[
+  {
+    "engine": "chromium",
+    "width": 320,
+    "palette": {
+      "theme": "light",
+      "color": "rgb(37, 51, 45)",
+      "background": "rgb(248, 249, 245)",
+      "bodyFont": "32px"
+    },
+    "subjectFailure": "PASS",
+    "failedCopyNoHistory": "PASS"
+  },
+  {
+    "engine": "chromium",
+    "width": 320,
+    "palette": {
+      "theme": "dark",
+      "color": "rgb(233, 240, 232)",
+      "background": "rgb(21, 34, 28)",
+      "bodyFont": "32px"
+    },
+    "subjectFailure": "PASS",
+    "failedCopyNoHistory": "PASS"
+  },
+  {
+    "engine": "chromium",
+    "width": 375,
+    "palette": {
+      "theme": "light",
+      "color": "rgb(37, 51, 45)",
+      "background": "rgb(248, 249, 245)",
+      "bodyFont": "32px"
+    },
+    "subjectFailure": "PASS",
+    "failedCopyNoHistory": "PASS"
+  },
+  {
+    "engine": "chromium",
+    "width": 375,
+    "palette": {
+      "theme": "dark",
+      "color": "rgb(233, 240, 232)",
+      "background": "rgb(21, 34, 28)",
+      "bodyFont": "32px"
+    },
+    "subjectFailure": "PASS",
+    "failedCopyNoHistory": "PASS"
+  },
+  {
+    "engine": "chromium",
+    "oldMockOnlyNeverPromoted": "PASS",
+    "headingFocus": "PASS",
+    "cardApprovalScreenshots": "SAVED"
+  },
+  {
+    "engine": "webkit",
+    "width": 320,
+    "palette": {
+      "theme": "light",
+      "color": "rgb(37, 51, 45)",
+      "background": "rgb(248, 249, 245)",
+      "bodyFont": "32px"
+    },
+    "subjectFailure": "PASS",
+    "failedCopyNoHistory": "PASS"
+  },
+  {
+    "engine": "webkit",
+    "width": 320,
+    "palette": {
+      "theme": "dark",
+      "color": "rgb(233, 240, 232)",
+      "background": "rgb(21, 34, 28)",
+      "bodyFont": "32px"
+    },
+    "subjectFailure": "PASS",
+    "failedCopyNoHistory": "PASS"
+  },
+  {
+    "engine": "webkit",
+    "width": 375,
+    "palette": {
+      "theme": "light",
+      "color": "rgb(37, 51, 45)",
+      "background": "rgb(248, 249, 245)",
+      "bodyFont": "32px"
+    },
+    "subjectFailure": "PASS",
+    "failedCopyNoHistory": "PASS"
+  },
+  {
+    "engine": "webkit",
+    "width": 375,
+    "palette": {
+      "theme": "dark",
+      "color": "rgb(233, 240, 232)",
+      "background": "rgb(21, 34, 28)",
+      "bodyFont": "32px"
+    },
+    "subjectFailure": "PASS",
+    "failedCopyNoHistory": "PASS"
+  },
+  {
+    "engine": "webkit",
+    "oldMockOnlyNeverPromoted": "PASS",
+    "headingFocus": "PASS",
+    "cardApprovalScreenshots": "SAVED"
+  }
+]

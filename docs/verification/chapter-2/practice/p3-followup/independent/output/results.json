@@ -1,0 +1,135 @@
+{
+  "head": "7320881a1de8591986f6377e5653deafad34fb83",
+  "checks": [
+    {
+      "name": "chromium launch",
+      "status": "PASS",
+      "details": "156.0.8078.80"
+    },
+    {
+      "name": "chromium PC nine steps direct/next/back keyboard focus",
+      "status": "PASS"
+    },
+    {
+      "name": "chromium external popup stub return/reload (not Google integration)",
+      "status": "PASS"
+    },
+    {
+      "name": "chromium independent 12 fields/card/approval stop/separate verification/revocation",
+      "status": "PASS"
+    },
+    {
+      "name": "chromium 320 light 200% copy success/pending/failure/manual/retry/stale success+failure/layout/focus",
+      "status": "PASS",
+      "details": {
+        "sw": 320,
+        "cw": 320
+      }
+    },
+    {
+      "name": "chromium 320 dark 200% copy success/pending/failure/manual/retry/stale success+failure/layout/focus",
+      "status": "PASS",
+      "details": {
+        "sw": 320,
+        "cw": 320
+      }
+    },
+    {
+      "name": "chromium 375 light 200% copy success/pending/failure/manual/retry/stale success+failure/layout/focus",
+      "status": "PASS",
+      "details": {
+        "sw": 375,
+        "cw": 375
+      }
+    },
+    {
+      "name": "chromium 375 dark 200% copy success/pending/failure/manual/retry/stale success+failure/layout/focus",
+      "status": "PASS",
+      "details": {
+        "sw": 375,
+        "cw": 375
+      }
+    },
+    {
+      "name": "chromium v1 history/current/retry/reset old mock/progress/other chapter unchanged",
+      "status": "PASS"
+    },
+    {
+      "name": "chromium corrupt storage warning/no write on load",
+      "status": "PASS"
+    },
+    {
+      "name": "chromium denied write warning/current UI available",
+      "status": "PASS"
+    },
+    {
+      "name": "chromium other chapter default shared-copy success",
+      "status": "PASS"
+    },
+    {
+      "name": "webkit launch",
+      "status": "PASS",
+      "details": "27.2"
+    },
+    {
+      "name": "webkit PC nine steps direct/next/back keyboard focus",
+      "status": "PASS"
+    },
+    {
+      "name": "webkit external popup stub return/reload (not Google integration)",
+      "status": "PASS"
+    },
+    {
+      "name": "webkit independent 12 fields/card/approval stop/separate verification/revocation",
+      "status": "PASS"
+    },
+    {
+      "name": "webkit 320 light 200% copy success/pending/failure/manual/retry/stale success+failure/layout/focus",
+      "status": "PASS",
+      "details": {
+        "sw": 320,
+        "cw": 320
+      }
+    },
+    {
+      "name": "webkit 320 dark 200% copy success/pending/failure/manual/retry/stale success+failure/layout/focus",
+      "status": "PASS",
+      "details": {
+        "sw": 320,
+        "cw": 320
+      }
+    },
+    {
+      "name": "webkit 375 light 200% copy success/pending/failure/manual/retry/stale success+failure/layout/focus",
+      "status": "PASS",
+      "details": {
+        "sw": 375,
+        "cw": 375
+      }
+    },
+    {
+      "name": "webkit 375 dark 200% copy success/pending/failure/manual/retry/stale success+failure/layout/focus",
+      "status": "PASS",
+      "details": {
+        "sw": 375,
+        "cw": 375
+      }
+    },
+    {
+      "name": "webkit v1 history/current/retry/reset old mock/progress/other chapter unchanged",
+      "status": "PASS"
+    },
+    {
+      "name": "webkit corrupt storage warning/no write on load",
+      "status": "PASS"
+    },
+    {
+      "name": "webkit denied write warning/current UI available",
+      "status": "PASS"
+    },
+    {
+      "name": "webkit other chapter default shared-copy success",
+      "status": "PASS"
+    }
+  ]
+}

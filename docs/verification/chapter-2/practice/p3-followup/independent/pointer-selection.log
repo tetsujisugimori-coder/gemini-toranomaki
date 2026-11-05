@@ -1,0 +1,18 @@
+[
+  {
+    "engine": "chromium",
+    "manualPointerSelection": "PASS",
+    "selected": {
+      "text": "これは架空の学習用メールです。実際の会議はありません。\n",
+      "inside": true
+    }
+  },
+  {
+    "engine": "webkit",
+    "manualPointerSelection": "PASS",
+    "selected": {
+      "text": "これは架空の学習用メールです。実際の会議はありません。\n",
+      "inside": true
+    }
+  }
+]

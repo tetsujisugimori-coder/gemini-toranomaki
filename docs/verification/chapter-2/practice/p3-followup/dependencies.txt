@@ -1,0 +1,13 @@
+gemini-toranomaki@0.1.0 /workspace/gemini-toranomaki
+├── @eslint/js@9.39.5
+├── @playwright/test@1.64.1
+├── @types/react-dom@19.3.0
+├── @types/react@19.3.0
+├── eslint@9.39.5
+├── react-dom@19.3.1
+├── react@19.3.1
+├── typescript-eslint@8.72.0
+├── typescript@5.9.3
+├── vite@7.3.7
+└── vitest@3.2.7
+

@@ -421,3 +421,5 @@ PR #19の独立静的レビューを受け、一般教養の回答例がレベ�
 P3-01: STEP1の各コピー直下に事前マウントしたrole=status/aria-atomic通知。件名/本文の成功・失敗を区別。共有hookは省略可能な結果文言引数のみ追加し、既存呼出しの文言を維持。開始時に前の結果を消し、共有busy・mounted/version/hash/matches失効を維持。P3-02: 実践用のみ「7項目チェック」を12必須項目カードと一時的自己申告へ訂正。模擬生成/保存形式は変更なし。
 
 修正前REDは単体128PASS+新1FAIL、Chromium新2FAIL(320/375px)。修正後単体129PASS、両engine重点4PASS。既存試験削除/skip/timeout緩和なし。全E2E/独立受入/最終CIは継続検証中。証拠はdocs/verification/chapter-2/practice/p3-followup/。WebKitホスト起動はOS依存不足でSTARTUP_BLOCKED。代替に公式mcr.microsoft.com/playwright:v1.64.1-noble（digest sha256:2f05f8a734509a7b3f26a912639488ee08f58a7b292d14d62271bcff9038768f）を通常ユーザーで使用し、両engine標準起動成功。ホスト検査/TLS等の迂回なし。実Google/実機/OS clipboard/スクリーンリーダーはNOT_TESTED。Draft維持、merge/auto-merge/公開なし。
+
+PR #23 P3追補の提出検証: 型/lint/単体129/build/diff-check成功。全824 E2E（Chromium412+WebKit412）が公式コンテナで5.2分、一括PASS（失敗/skipなし）。旧820件を削除せず新4件追加。別担当independent_acceptanceの独立操作24/24組＋追加10組＋両engine実pointer選択PASS、代表10画像を独立目視、新規P1/P2/P3なし。初回独立driverの誤仮定10FAILは原ログ/画像を保持し製品失敗と区別。製品変更なしで訂正した操作を完了。原報告/スクリプト/PNG/manifestをp3-followup/へ保存。最終証拠コミットは製品修正7320881から文書/証拠だけ。最終HEADの独立適用確認・終端CIとURLはPR #23結果投稿で読戻し確認する。実Google等のNOT_TESTEDは継続。
