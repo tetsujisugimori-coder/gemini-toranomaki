@@ -56,3 +56,7 @@ git diff --check
 ## NOT_TESTED / 保証外
 
 実Googleのメール送信・検索・予定作成・実登録、実機iPhone Safari/Android、製品Chrome/Edge分割UI、実OSクリップボード、実スクリーンリーダー、組織設定、学習効果。role=statusのDOM/視覚確認は読み上げ実測ではない。Google側のプロンプト遵守は教材から保証しない。Playwright WebKitは実機Safariではない。既存の500kB超Vite bundle警告は継続。
+
+## 証拠スクリプトの保存形式訂正
+
+最初の証拠コミット1cf695bでは独立実行用のraw .cjsをそのまま配置したため、最終lintが製品用ルールで105エラーとなった。pushまで継続した実装担当の手順誤りであり、成功として扱わない。[失敗原ログ](evidence-lint-failure.txt)を保持。原文bytesを変更せず `.cjs.txt` として保存し直した。ESLint設定/製品/試験の除外・緩和はしない。旧path→保存pathと原文hashは[independent/archive-map.json](independent/archive-map.json)。独立担当の元manifestは改変せず、pathのみこの対応で読む。再実行時は原文を作業領域へcopyして `.cjs` に戻す（例 `cp acceptance-2.cjs.txt /independent/acceptance-2.cjs`）と同じdriverを実行できる。これは証拠のアーカイブであり既存自動試験を無効化する変更ではない。訂正後の最終CIは新HEADで全件実行する。

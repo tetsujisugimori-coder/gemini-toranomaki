@@ -8,8 +8,8 @@
   },
   "files": {
     "README.md": {
-      "bytes": 6847,
-      "sha256": "badd72ba2332f47e84a9031062aae73ae4f112b89dc3e0606145bf32c6d5d404"
+      "bytes": 7830,
+      "sha256": "f9ea75973ecb97c8189f16c0604cec2dac1f7b90067c1a9835033161b40d329c"
     },
     "build-hashes.txt": {
       "bytes": 277,
@@ -22,6 +22,10 @@
     "docker-pull.txt": {
       "bytes": 1196,
       "sha256": "0248d12dee2a723d6809d7f17c39bd103bb33927a0088785928fb443417bc591"
+    },
+    "evidence-lint-failure.txt": {
+      "bytes": 10176,
+      "sha256": "9aff989fc9b17a8a6a212793fd296756d4e23ead6bb13032801dd12c7802ff1d"
     },
     "full-e2e.txt": {
       "bytes": 119683,
@@ -43,13 +47,17 @@
       "bytes": 1070,
       "sha256": "7d890b83a43002c3eb64c5810e13c39f25b942dc3e1f40cad3293e08a40923b6"
     },
-    "independent/acceptance-2.cjs": {
+    "independent/acceptance-2.cjs.txt": {
       "bytes": 12721,
       "sha256": "5c8d15d66034d9ad01934c9791e653f7070658b98af4fe22163f023c7bfcd739"
     },
-    "independent/acceptance.cjs": {
+    "independent/acceptance.cjs.txt": {
       "bytes": 12046,
       "sha256": "8e15adfbab1c57a9159b1ed98033f6a03c74a14d95cccaab79a935650c944ead"
+    },
+    "independent/archive-map.json": {
+      "bytes": 695,
+      "sha256": "3d857ea8a2971001476c2c6c5152e45339bbed43e41a917e6b4e962550e2f16b"
     },
     "independent/first-run-output/chromium-320-dark-failure.png": {
       "bytes": 51369,
@@ -383,7 +391,7 @@
       "bytes": 1855,
       "sha256": "6290a2c418c33f6113bc783ef06a489c75d996ec904882fc8eaaf90244ffb368"
     },
-    "independent/pointer-selection.cjs": {
+    "independent/pointer-selection.cjs.txt": {
       "bytes": 1335,
       "sha256": "66f75eeb0f44635aa03b4513d8650fa6d468ab817ee847b4b822efac8c21e627"
     },
@@ -399,7 +407,7 @@
       "bytes": 5299,
       "sha256": "5c52f014c09cd3426ca43bd774df57d9f5f0dd59836de6d26853486c946aca92"
     },
-    "independent/supplement.cjs": {
+    "independent/supplement.cjs.txt": {
       "bytes": 3864,
       "sha256": "a59432b316930bdd112c4e365d2a1866eec8a628297493db40e1dd4d80914004"
     },

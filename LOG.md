@@ -423,3 +423,5 @@ P3-01: STEP1の各コピー直下に事前マウントしたrole=status/aria-ato
 修正前REDは単体128PASS+新1FAIL、Chromium新2FAIL(320/375px)。修正後単体129PASS、両engine重点4PASS。既存試験削除/skip/timeout緩和なし。全E2E/独立受入/最終CIは継続検証中。証拠はdocs/verification/chapter-2/practice/p3-followup/。WebKitホスト起動はOS依存不足でSTARTUP_BLOCKED。代替に公式mcr.microsoft.com/playwright:v1.64.1-noble（digest sha256:2f05f8a734509a7b3f26a912639488ee08f58a7b292d14d62271bcff9038768f）を通常ユーザーで使用し、両engine標準起動成功。ホスト検査/TLS等の迂回なし。実Google/実機/OS clipboard/スクリーンリーダーはNOT_TESTED。Draft維持、merge/auto-merge/公開なし。
 
 PR #23 P3追補の提出検証: 型/lint/単体129/build/diff-check成功。全824 E2E（Chromium412+WebKit412）が公式コンテナで5.2分、一括PASS（失敗/skipなし）。旧820件を削除せず新4件追加。別担当independent_acceptanceの独立操作24/24組＋追加10組＋両engine実pointer選択PASS、代表10画像を独立目視、新規P1/P2/P3なし。初回独立driverの誤仮定10FAILは原ログ/画像を保持し製品失敗と区別。製品変更なしで訂正した操作を完了。原報告/スクリプト/PNG/manifestをp3-followup/へ保存。最終証拠コミットは製品修正7320881から文書/証拠だけ。最終HEADの独立適用確認・終端CIとURLはPR #23結果投稿で読戻し確認する。実Google等のNOT_TESTEDは継続。
+
+証拠保存後の最終lintでraw独立driver(.cjs)が製品ルールに入り105エラー。コマンドを連結したためその失敗後も1cf695bをpushしてしまった。成功扱いしない。原文bytesはそのまま.cjs.txtにアーカイブし、path/hash対応と再実行recipeを追記、失敗原ログを保持。lint設定や製品コード/試験は変更しない。新HEADでlintとCIを確認し直す。

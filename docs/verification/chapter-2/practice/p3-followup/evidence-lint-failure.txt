@@ -1,0 +1,120 @@
+
+> gemini-toranomaki@0.1.0 lint
+> eslint .
+
+
+/workspace/gemini-toranomaki/docs/verification/chapter-2/practice/p3-followup/independent/acceptance-2.cjs
+   1:36   error  A `require()` style import is forbidden                                @typescript-eslint/no-require-imports
+   1:36   error  'require' is not defined                                               no-undef
+   2:12   error  A `require()` style import is forbidden                                @typescript-eslint/no-require-imports
+   2:12   error  'require' is not defined                                               no-undef
+   2:42   error  A `require()` style import is forbidden                                @typescript-eslint/no-require-imports
+   2:42   error  'require' is not defined                                               no-undef
+   2:79   error  A `require()` style import is forbidden                                @typescript-eslint/no-require-imports
+   2:79   error  'require' is not defined                                               no-undef
+   6:70   error  'console' is not defined                                               no-undef
+   7:7    error  'names' is assigned a value but never used                             @typescript-eslint/no-unused-vars
+  10:55   error  'window' is not defined                                                no-undef
+  10:96   error  'navigator' is not defined                                             no-undef
+  10:180  error  'window' is not defined                                                no-undef
+  11:73   error  'window' is not defined                                                no-undef
+  11:92   error  Expected an assignment or function call and instead saw an expression  @typescript-eslint/no-unused-expressions
+  25:11   error  'console' is not defined                                               no-undef
+  29:99   error  'getComputedStyle' is not defined                                      no-undef
+  31:102  error  'document' is not defined                                              no-undef
+  31:131  error  'document' is not defined                                              no-undef
+  31:185  error  'getSelection' is not defined                                          no-undef
+  31:265  error  'getSelection' is not defined                                          no-undef
+  32:332  error  'document' is not defined                                              no-undef
+  32:372  error  'document' is not defined                                              no-undef
+  37:12   error  'console' is not defined                                               no-undef
+  42:43   error  'localStorage' is not defined                                          no-undef
+  42:133  error  'localStorage' is not defined                                          no-undef
+  42:466  error  'localStorage' is not defined                                          no-undef
+  43:270  error  'localStorage' is not defined                                          no-undef
+  43:410  error  'localStorage' is not defined                                          no-undef
+  44:24   error  'localStorage' is not defined                                          no-undef
+  44:204  error  'localStorage' is not defined                                          no-undef
+  46:48   error  'Storage' is not defined                                               no-undef
+  47:373  error  'console' is not defined                                               no-undef
+  49:219  error  'console' is not defined                                               no-undef
+  49:262  error  'process' is not defined                                               no-undef
+  49:332  error  'console' is not defined                                               no-undef
+  49:349  error  'process' is not defined                                               no-undef
+
+/workspace/gemini-toranomaki/docs/verification/chapter-2/practice/p3-followup/independent/acceptance.cjs
+   1:36   error  A `require()` style import is forbidden                                @typescript-eslint/no-require-imports
+   1:36   error  'require' is not defined                                               no-undef
+   2:12   error  A `require()` style import is forbidden                                @typescript-eslint/no-require-imports
+   2:12   error  'require' is not defined                                               no-undef
+   2:42   error  A `require()` style import is forbidden                                @typescript-eslint/no-require-imports
+   2:42   error  'require' is not defined                                               no-undef
+   2:79   error  A `require()` style import is forbidden                                @typescript-eslint/no-require-imports
+   2:79   error  'require' is not defined                                               no-undef
+   6:70   error  'console' is not defined                                               no-undef
+   7:7    error  'names' is assigned a value but never used                             @typescript-eslint/no-unused-vars
+  10:55   error  'window' is not defined                                                no-undef
+  10:96   error  'navigator' is not defined                                             no-undef
+  10:180  error  'window' is not defined                                                no-undef
+  11:73   error  'window' is not defined                                                no-undef
+  11:92   error  Expected an assignment or function call and instead saw an expression  @typescript-eslint/no-unused-expressions
+  31:102  error  'document' is not defined                                              no-undef
+  31:131  error  'document' is not defined                                              no-undef
+  31:185  error  'getSelection' is not defined                                          no-undef
+  31:265  error  'getSelection' is not defined                                          no-undef
+  32:332  error  'document' is not defined                                              no-undef
+  32:372  error  'document' is not defined                                              no-undef
+  42:43   error  'localStorage' is not defined                                          no-undef
+  42:133  error  'localStorage' is not defined                                          no-undef
+  42:466  error  'localStorage' is not defined                                          no-undef
+  43:270  error  'localStorage' is not defined                                          no-undef
+  43:410  error  'localStorage' is not defined                                          no-undef
+  44:24   error  'localStorage' is not defined                                          no-undef
+  44:204  error  'localStorage' is not defined                                          no-undef
+  46:48   error  'Storage' is not defined                                               no-undef
+  49:219  error  'console' is not defined                                               no-undef
+  49:262  error  'process' is not defined                                               no-undef
+  49:332  error  'console' is not defined                                               no-undef
+  49:349  error  'process' is not defined                                               no-undef
+
+/workspace/gemini-toranomaki/docs/verification/chapter-2/practice/p3-followup/independent/pointer-selection.cjs
+  1:31    error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+  1:31    error  'require' is not defined                 no-undef
+  1:91    error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+  1:91    error  'require' is not defined                 no-undef
+  1:119   error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+  1:119   error  'require' is not defined                 no-undef
+  1:742   error  'getSelection' is not defined            no-undef
+  1:777   error  'getSelection' is not defined            no-undef
+  1:1192  error  'console' is not defined                 no-undef
+  1:1250  error  'console' is not defined                 no-undef
+  1:1267  error  'process' is not defined                 no-undef
+
+/workspace/gemini-toranomaki/docs/verification/chapter-2/practice/p3-followup/independent/supplement.cjs
+  1:31    error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+  1:31    error  'require' is not defined                 no-undef
+  1:87    error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+  1:87    error  'require' is not defined                 no-undef
+  1:108   error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+  1:108   error  'require' is not defined                 no-undef
+  2:288   error  'navigator' is not defined               no-undef
+  2:355   error  'window' is not defined                  no-undef
+  2:667   error  'document' is not defined                no-undef
+  2:712   error  'getComputedStyle' is not defined        no-undef
+  2:729   error  'document' is not defined                no-undef
+  2:772   error  'getComputedStyle' is not defined        no-undef
+  2:789   error  'document' is not defined                no-undef
+  2:840   error  'getComputedStyle' is not defined        no-undef
+  2:857   error  'document' is not defined                no-undef
+  2:1337  error  'window' is not defined                  no-undef
+  2:1592  error  'localStorage' is not defined            no-undef
+  3:195   error  'localStorage' is not defined            no-undef
+  3:261   error  'localStorage' is not defined            no-undef
+  3:403   error  'localStorage' is not defined            no-undef
+  3:712   error  'localStorage' is not defined            no-undef
+  3:1449  error  'console' is not defined                 no-undef
+  3:1508  error  'console' is not defined                 no-undef
+  3:1525  error  'process' is not defined                 no-undef
+
+✖ 105 problems (105 errors, 0 warnings)
+
