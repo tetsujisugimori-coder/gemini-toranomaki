@@ -1,0 +1,49 @@
+name: PR23 One-shot Dependency Audit
+on:
+  push:
+    branches:
+      - audit/pr23-dependencies-20261106
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install lockfile dependencies without scripts
+        run: npm ci --ignore-scripts
+      - name: Audit all and production-only package sets
+        shell: bash
+        run: |
+          npm audit --json > audit-full.json || true
+          npm audit --omit=dev --json > audit-production.json || true
+          node - <<'NODE'
+          const fs = require('node:fs');
+          for (const mode of ['full', 'production']) {
+            const data = JSON.parse(fs.readFileSync('audit-' + mode + '.json','utf8'));
+            const vulnerable = Object.entries(data.vulnerabilities || {});
+            console.log('AUDIT_BEGIN_' + mode.toUpperCase());
+            console.log(JSON.stringify({
+              mode,
+              totals: data.metadata?.vulnerabilities,
+              critical: vulnerable.filter(([,v])=>v.severity==='critical').map(([name,v])=>({
+                name, severity: v.severity, isDirect: v.isDirect,
+                via: v.via, effects: v.effects, range: v.range,
+                nodes: v.nodes, fixAvailable: v.fixAvailable
+              })),
+              allPackages: vulnerable.map(([name,v])=>({name,severity:v.severity, isDirect:v.isDirect})),
+              error: data.error || null
+            },null,2));
+            console.log('AUDIT_END_' + mode.toUpperCase());
+          }
+          NODE
+      - name: Upload audit source evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr23-audit-20261106
+          path: audit-*.json
+          retention-days: 14
+          if-no-files-found: error
