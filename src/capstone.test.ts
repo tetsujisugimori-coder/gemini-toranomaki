@@ -462,3 +462,18 @@ it("shared artifact features make the rubric track explanation availability in e
       }
     }
 });
+it("any malformed supplied field clears all current confirmations, including otherwise trivial stages", () => {
+  const map = storage();
+  const raw = JSON.stringify({
+    ...freshCapstone(),
+    mode: 99,
+    achieved: [0, 1],
+    history: ["history:0"],
+  });
+  map.set(capstoneKey, raw);
+  const loaded = loadCapstone();
+  expect(loaded.available).toBe(false);
+  expect(loaded.record.achieved).toEqual([]);
+  expect(loaded.record.history).toEqual(["history:0"]);
+  expect(map.get(capstoneKey)).toBe(raw);
+});

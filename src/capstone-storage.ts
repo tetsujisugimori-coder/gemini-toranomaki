@@ -249,6 +249,8 @@ export function loadCapstone() {
           Object.hasOwn(record, key) &&
           sameData(value, record[key as keyof CapstoneRecord]),
       );
+    // Once any supplied value is invalid, none of the stored current confirmations is trusted.
+    if (!valid) record.achieved = [];
     return { record, available: valid, protected: !valid };
   } catch {
     return { record: freshCapstone(), available: false, protected: true };

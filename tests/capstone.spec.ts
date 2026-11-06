@@ -588,7 +588,9 @@ for (const width of [320, 375, 390, 1280])
         ).toBe(0);
       }
       await step(page, 5);
-      await expect(page.locator(".cap-comparison .cap-artifact")).toHaveCount(2);
+      await expect(page.locator(".cap-comparison .cap-artifact")).toHaveCount(
+        2,
+      );
       await select(page, "検査する版").focus();
       await page.keyboard.press("ArrowDown");
       await page.keyboard.press("Enter");
@@ -651,12 +653,19 @@ for (const corrupt of ["invalid-context", "impossible-achievements"] as const)
     const raw = JSON.stringify(
       corrupt === "invalid-context"
         ? { achieved: [2, 3, 4, 5, 6, 7], topic: "corrupt", created: "true" }
-        : {
-            ...freshCapstone(),
-            achieved: [2, 3, 4, 5, 6, 7],
-            history: ["education:2"],
-            copied: ["history:4"],
-          },
+        : corrupt === "invalid-mode"
+          ? {
+              ...freshCapstone(),
+              mode: 99,
+              achieved: [0, 1],
+              history: ["history:0"],
+            }
+          : {
+              ...freshCapstone(),
+              achieved: [2, 3, 4, 5, 6, 7],
+              history: ["education:2"],
+              copied: ["history:4"],
+            },
     );
     await page.addInitScript(
       ({ key, raw }) => {
