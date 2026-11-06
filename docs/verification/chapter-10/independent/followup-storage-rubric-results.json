@@ -1,0 +1,24 @@
+{
+  "time": "2026-11-06T10:29:20.431Z",
+  "hashes": {
+    "Capstone.tsx": "1242ad6fd60dc07ac70c3df676ea8be971c0ebb781cd42aa38945e57c03d6c13",
+    "capstone-data.ts": "26463d467827e8e297683036790874a9d36fd2bdd3925e36c02d54f6220c2c9c",
+    "capstone-engine.ts": "f7cdd01a2f6a9f00992440e87734ee0188e76efa13df17312581902a2d578565",
+    "capstone-storage.ts": "5df862d48d178875d7412c73d7404dd3aa8c4118e5253694f14efeb782d180fd"
+  },
+  "results": [
+    {
+      "name": "broken-repair-explanation-quality2-6-8-needs-retest",
+      "result": "PASS"
+    },
+    {
+      "name": "legitimate-complete-record-restores-and-retry6-preserves-prior",
+      "result": "PASS"
+    },
+    {
+      "name": "corrupt-types-unknown-topic-and-stale-rubric-mark-protected-without-overwrite",
+      "cases": 3,
+      "result": "PASS"
+    }
+  ]
+}

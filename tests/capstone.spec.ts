@@ -646,7 +646,11 @@ test("independent P2-1: unavailable explanations fail completeness and instructi
     );
   }
 });
-for (const corrupt of ["invalid-context", "impossible-achievements"] as const)
+for (const corrupt of [
+  "invalid-context",
+  "impossible-achievements",
+  "invalid-mode",
+] as const)
   test(`independent P2-2 ${corrupt}: protect raw storage through operations until explicit scoped reset`, async ({
     page,
   }) => {

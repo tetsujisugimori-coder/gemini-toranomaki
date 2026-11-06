@@ -1,0 +1,51 @@
+[
+  {
+    "original_path": "docs/verification/chapter-10/browser-first.txt",
+    "stored_path": "docs/verification/chapter-10/browser-first.txt.gz",
+    "encoding": "gzip",
+    "original_sha256": "aa43de013ea572bf3181de23ef485793031f368cdac7ee8f49e8fdb2eecfaeef",
+    "reason": "Preserve the exact original log, including 3 lines of trailing whitespace, without weakening git diff --check."
+  },
+  {
+    "original_path": "docs/verification/chapter-10/unit.txt",
+    "stored_path": "docs/verification/chapter-10/unit.txt.gz",
+    "encoding": "gzip",
+    "original_sha256": "e232932a5f8758d66eced579d847471fea20f939f0edc85b0270e1b8eff8f319",
+    "reason": "Preserve original terminal blank lines and trailing bytes; keep git diff --check unchanged."
+  },
+  {
+    "original_path": "docs/verification/chapter-10/lint.txt",
+    "stored_path": "docs/verification/chapter-10/lint.txt.gz",
+    "encoding": "gzip",
+    "original_sha256": "cb5f5e5e97f520fbba1a27277bfe28c298e031d2856b072643996152122216fa",
+    "reason": "Preserve original terminal blank lines and trailing bytes; keep git diff --check unchanged."
+  },
+  {
+    "original_path": "docs/verification/chapter-10/independent-red-unit.txt",
+    "stored_path": "docs/verification/chapter-10/independent-red-unit.txt.gz",
+    "encoding": "gzip",
+    "original_sha256": "e74462b75054621c296130180960ad12402a153d97c7a58c7e3297a4ed465534",
+    "reason": "Preserve original terminal blank lines and trailing bytes; keep git diff --check unchanged."
+  },
+  {
+    "original_path": "docs/verification/chapter-10/dependencies.txt",
+    "stored_path": "docs/verification/chapter-10/dependencies.txt.gz",
+    "encoding": "gzip",
+    "original_sha256": "59215606470e54e980f710f6c56b688e013d95d394ffa38ed982cef8bb497ffb",
+    "reason": "Preserve original terminal blank lines and trailing bytes; keep git diff --check unchanged."
+  },
+  {
+    "original_path": "docs/verification/chapter-10/typecheck.txt",
+    "stored_path": "docs/verification/chapter-10/typecheck.txt.gz",
+    "encoding": "gzip",
+    "original_sha256": "ce17abbe1bd11346e65e32d6d0b0bfd1ea8fb1cacd99d9e619e11c3a917064c7",
+    "reason": "Preserve original terminal blank lines and trailing bytes; keep git diff --check unchanged."
+  },
+  {
+    "original_path": "docs/verification/chapter-10/independent-green-unit.txt",
+    "stored_path": "docs/verification/chapter-10/independent-green-unit.txt.gz",
+    "encoding": "gzip",
+    "original_sha256": "ad52cc7aa34873e4cdd01291bd5a421888fa4542dbd15945f2aa8cb7a935bc9b",
+    "reason": "Preserve original terminal blank lines and trailing bytes; keep git diff --check unchanged."
+  }
+]

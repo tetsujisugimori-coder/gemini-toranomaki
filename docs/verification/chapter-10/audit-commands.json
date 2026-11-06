@@ -1,0 +1,37 @@
+[
+  {
+    "command": [
+      "npm",
+      "audit",
+      "--json"
+    ],
+    "exit": 1,
+    "vulnerabilities": {
+      "info": 0,
+      "low": 0,
+      "moderate": 8,
+      "high": 0,
+      "critical": 2,
+      "total": 10
+    },
+    "stderr": ""
+  },
+  {
+    "command": [
+      "npm",
+      "audit",
+      "--omit=dev",
+      "--json"
+    ],
+    "exit": 0,
+    "vulnerabilities": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    },
+    "stderr": ""
+  }
+]
