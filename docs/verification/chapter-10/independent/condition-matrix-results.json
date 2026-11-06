@@ -1,0 +1,31 @@
+{
+  "time": "2026-11-06T10:11:38.374Z",
+  "hashes": {
+    "Capstone.tsx": "a3a0827f4810844e43557c120c37f5ae6c8e718c53d485a4f853dba6289e9505",
+    "capstone-data.ts": "26463d467827e8e297683036790874a9d36fd2bdd3925e36c02d54f6220c2c9c",
+    "capstone-engine.ts": "20c4f9b8cd1365b32cfe4ca7b4d50f696a9a3ea21cbacbf10f356d0343fd3265",
+    "capstone-storage.ts": "3ff45e3fdc3876824aa46fc032ef85303e7f99618c3da98944e81f0f64cd4ace"
+  },
+  "results": [
+    {
+      "name": "quality2-eight-condition-subsets-three-topics",
+      "checks": 24,
+      "result": "PASS"
+    },
+    {
+      "name": "quality6-sixteen-prompt-subsets-three-versions-three-topics-eight-conditions",
+      "checks": 1152,
+      "result": "PASS"
+    },
+    {
+      "name": "quality10-source-explanation-when-limit-not-required",
+      "checks": 24,
+      "result": "PASS"
+    },
+    {
+      "name": "default-independent-verdict-and-improvement-arrays-unchanged",
+      "checks": 90,
+      "result": "PASS"
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+docs/verification/chapter-10/dependencies.txt:13: new blank line at EOF.
+docs/verification/chapter-10/independent-green-unit.txt:27: new blank line at EOF.
+docs/verification/chapter-10/independent-red-unit.txt:82: new blank line at EOF.
+docs/verification/chapter-10/lint.txt:4: new blank line at EOF.
+docs/verification/chapter-10/typecheck.txt:4: new blank line at EOF.
+docs/verification/chapter-10/unit.txt:27: new blank line at EOF.

@@ -1,3 +1,4 @@
+import { capstoneReferences } from "./capstone-data";
 import { references as skillsReferences } from "./skills-data";
 import { references as videoMusicReferences } from "./video-music-data";
 import { nanoReferences } from "./nano-data";
@@ -124,7 +125,7 @@ export const lessons: Lesson[] = topics.map(
     references: [{ title: "Google公式情報（外部サイト）", url }],
     checkedAt:
       "2026-10-22：公式ページ取得がネットワーク制限で拒否されたため、現行仕様は未確認",
-    status: i < 9 ? "ready" : "planned",
+    status: "ready",
     steps: [],
   }),
 );
@@ -254,3 +255,10 @@ lessons[8].description = "家庭教師、指示工房、模擬回答の比較、
 lessons[8].references = skillsReferences;
 lessons[8].conditions = "Skillsは18歳以上、ログイン、アクティビティの保存が必要。個別の提供状況は未確認で、アカウントと提供時期によって異なります。教材は実Geminiに接続しません。";
 lessons[8].checkedAt = "2026-10-31 UTC：公式ヘルプとGoogleブログを確認。実アカウントでの操作は未検証。";
+
+lessons[9].title = "総合演習：複数機能を連携させて成果物を作る";
+lessons[9].goal = "課題・根拠・完成条件をつなぎ、AIの誤りと修正による退行を発見して改善する。";
+lessons[9].description = "3つの架空テーマで、調査・資料整理・制作・10観点の検証・再修正・理由付き振り返りを体験します。全10章の区切りの後も教材開発は続けます。";
+lessons[9].references = capstoneReferences;
+lessons[9].conditions = "固定模擬だけで学習可能。実Deep Researchは18歳以上・ログインが必要。Notebook系の接続・アクティビティ設定・段階提供やプラン・地域・組織で条件が異なります。個別アカウントでの利用可否は未確認です。";
+lessons[9].checkedAt = "2026-11-06：Google公式本文を確認。実Google操作・日本語の実UI・個別権限は未検証。";

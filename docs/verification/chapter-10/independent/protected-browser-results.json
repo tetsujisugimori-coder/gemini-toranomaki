@@ -1,0 +1,14 @@
+[
+  {
+    "name": "protected-ui-navigation-copy-achievement-and-reload-preserve-raw",
+    "result": "PASS"
+  },
+  {
+    "name": "cancel-and-denied-reset-keep-protection-and-raw",
+    "result": "PASS"
+  },
+  {
+    "name": "explicit-successful-reset-resumes-valid-storage-and-preserves-others",
+    "result": "PASS"
+  }
+]

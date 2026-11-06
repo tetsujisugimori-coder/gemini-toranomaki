@@ -1,0 +1,84 @@
+{
+  "time": "2026-11-06T10:00:34.370Z",
+  "hashes": {
+    "Capstone.tsx": "50a2158ec4c9b551197eaa84399bd4ad93959f3b81c9eb5b0b8b7ffb31672e11",
+    "capstone-data.ts": "e726885efd680be8260e3fdfb8f482bd8e139429ac993315dfba00c77c8989b4",
+    "capstone-storage.ts": "1c269d06c3c8545a24a518b3ee2a1792d4a9116abf9891416ec064c67b2cc5a8",
+    "capstone-engine.ts": "cb0287e472aa47e3158473837705e6c16e43db8d807019872dd7e83354eb24b6"
+  },
+  "results": [
+    {
+      "name": "notebook judgment preserves already-recorded comparison",
+      "actual": false
+    },
+    {
+      "name": "no-operation quality can be accepted as repaired-complete",
+      "actual": {
+        "trials": [],
+        "stage6": false,
+        "quality": true
+      }
+    },
+    {
+      "name": "incomplete creation prompt still graded against absent prohibition",
+      "actual": {
+        "prompt": "作って。\n\n組み立てた制作依頼：\n（目的・読者・形式は未指定）\n（出典確認が不足）\n（完成条件が不足）\n（検証と維持条件が不足）",
+        "case": {
+          "verdict": 1,
+          "improvement": 2,
+          "evidence": "制作指示自体に根拠確認がなく、指示を改善する必要がある",
+          "reason": "よい依頼文でも出力が指示通りかは別に検査する。"
+        }
+      }
+    },
+    {
+      "name": "replay retry6 does not reuse tests invalidated by clear",
+      "actual": {
+        "initialQuality": true,
+        "trials": [
+          "initial"
+        ],
+        "initialAnswer8": {
+          "verdict": 0,
+          "evidence": 1,
+          "improvement": 0,
+          "checked": true
+        },
+        "newExpected": {
+          "verdict": 0,
+          "improvement": 0,
+          "evidence": "未回答・正答・誤答の3条件で結果と解説が出る",
+          "reason": "操作の証拠は現在の版で得る。対象外を成功に数えない。"
+        }
+      }
+    },
+    {
+      "name": "unknown extra fields and free text are stripped",
+      "actual": {
+        "unknown": false,
+        "copied": [
+          "history:3"
+        ]
+      }
+    },
+    {
+      "name": "assignment change keeps historical records and invalidates current",
+      "actual": {
+        "history": [
+          "history:2"
+        ],
+        "achieved": [],
+        "real": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    }
+  ]
+}

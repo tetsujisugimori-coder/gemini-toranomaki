@@ -1,0 +1,46 @@
+{
+  "label": "red",
+  "ref": "557f12e3c408a5735f9f0686f1e16361c6578c22",
+  "quality": {
+    "completeness": {
+      "verdict": 0,
+      "improvement": 0,
+      "evidence": "選択した完成条件が本文に揃っている",
+      "reason": "STEP 1の現在の完成条件と成果物を照合する。"
+    },
+    "instruction": {
+      "verdict": 0,
+      "improvement": 0,
+      "evidence": "制作指示の対象・形式・根拠・完成条件を確認できる",
+      "reason": "よい依頼文でも出力が指示通りかは別に検査する。"
+    },
+    "operation": {
+      "verdict": 1,
+      "improvement": 3,
+      "evidence": "選択後にボタンを押しても結果が出ない",
+      "reason": "操作の証拠は現在の版で得る。対象外を成功に数えない。"
+    }
+  },
+  "storage": {
+    "available": true,
+    "protected": false,
+    "achieved": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "stageReady": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "writes": 0,
+    "originalRaw": "{\"achieved\":[2,3,4,5,6,7],\"topic\":\"corrupt\",\"created\":\"true\"}"
+  }
+}

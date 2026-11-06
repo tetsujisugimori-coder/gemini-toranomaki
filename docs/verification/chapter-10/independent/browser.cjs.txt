@@ -1,0 +1,14 @@
+const {chromium}=require('/workspace/gemini-toranomaki/node_modules/playwright');
+const fs=require('node:fs');
+(async()=>{const browser=await chromium.launch({executablePath:'/usr/bin/chromium',headless:true});const page=await browser.newPage({viewport:{width:375,height:900}});const results=[];page.on('pageerror',e=>results.push({error:String(e)}));const base='http://127.0.0.1:4187/gemini-toranomaki/';
+await page.goto(base+'#chapter-10');await page.getByRole('combobox',{name:'総合演習の工程',exact:true}).selectOption('3');
+await page.getByLabel('S2 受入帳の抜粋（架空）',{exact:true}).uncheck();await page.getByRole('button',{name:'変更前の回答を残す',exact:true}).click();await page.getByLabel('S2 受入帳の抜粋（架空）',{exact:true}).check();await page.getByRole('button',{name:'資料変更の比較を記録',exact:true}).click();
+const saved=()=>page.evaluate(()=>JSON.parse(localStorage.getItem('gemini-toranomaki:capstone:v1')));
+results.push({name:'comparison-before-answer',compared:(await saved()).compared});await page.getByRole('combobox',{name:'Notebookの誤回答への判断',exact:true}).selectOption('2');results.push({name:'comparison-after-answer',compared:(await saved()).compared,notebook:(await saved()).notebook});
+await page.getByRole('button',{name:'この工程の固定課題を確認',exact:true}).click();results.push({name:'stage3-achieved',achieved:(await saved()).achieved});
+await page.getByRole('combobox',{name:'総合演習の工程',exact:true}).selectOption('4');await page.getByRole('button',{name:'固定初版を制作して比較する',exact:true}).click();await page.getByRole('combobox',{name:'総合演習の工程',exact:true}).selectOption('5');
+const grading=page.getByRole('combobox',{name:'6 根拠',exact:true});results.push({name:'evidence-option-versus-instruction',instruction:await page.locator('body').innerText(),evidence:await grading.locator('option').allTextContents()});
+await page.screenshot({path:'/tmp/independent-capstone-review/mobile-initial.png',fullPage:true});
+results.push({name:'overflow-375',scroll:await page.evaluate(()=>({width:innerWidth,scroll:document.documentElement.scrollWidth}))});
+await page.setViewportSize({width:320,height:900});await page.evaluate(()=>document.documentElement.style.fontSize='200%');results.push({name:'overflow-320-200',scroll:await page.evaluate(()=>({width:innerWidth,scroll:document.documentElement.scrollWidth}))});await page.screenshot({path:'/tmp/independent-capstone-review/mobile-320-200.png',fullPage:true});
+fs.writeFileSync('/tmp/independent-capstone-review/browser-results.json',JSON.stringify(results,null,2));console.log(JSON.stringify(results.map(r=>r.name==='evidence-option-versus-instruction'?{...r,instruction:r.instruction.match(/組み立てた制作依頼：[\s\S]*?(?=指示文全文をコピー)/)?.[0]}:r),null,2));await browser.close();})();

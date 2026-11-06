@@ -1,0 +1,39 @@
+{
+  "label": "green",
+  "ref": "working",
+  "quality": {
+    "completeness": {
+      "verdict": 1,
+      "improvement": 3,
+      "evidence": "現在の版には完成条件「確認問題と解説を付ける」の表示がない（確認ボタンが反応せず解説を表示できない）",
+      "reason": "STEP 1の現在の完成条件と、実際に利用できる本文・解説を照合する。"
+    },
+    "instruction": {
+      "verdict": 1,
+      "improvement": 3,
+      "evidence": "制作指示の動作確認・解説条件を、反応しない確認ボタンが満たしていない",
+      "reason": "よい依頼文でも出力が指示通りかは別に検査する。"
+    },
+    "operation": {
+      "verdict": 1,
+      "improvement": 3,
+      "evidence": "選択後にボタンを押しても結果が出ない",
+      "reason": "操作の証拠は現在の版で得る。対象外を成功に数えない。"
+    }
+  },
+  "storage": {
+    "available": false,
+    "protected": true,
+    "achieved": [],
+    "stageReady": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "writes": 0,
+    "originalRaw": "{\"achieved\":[2,3,4,5,6,7],\"topic\":\"corrupt\",\"created\":\"true\"}"
+  }
+}

@@ -1,0 +1,28 @@
+[
+  {
+    "name": "complete-preconditions-without-operation",
+    "stage5": false,
+    "stage6": false
+  },
+  {
+    "name": "only-initial-operated",
+    "stage5": true,
+    "stage6": false
+  },
+  {
+    "name": "all-three-operated-and-grounded",
+    "stage6": true
+  },
+  {
+    "name": "30-non-evidence-counterexamples",
+    "rejected": 30
+  },
+  {
+    "name": "retry6-consistency",
+    "initialReady": true,
+    "stage5": true,
+    "trials": [
+      "initial"
+    ]
+  }
+]

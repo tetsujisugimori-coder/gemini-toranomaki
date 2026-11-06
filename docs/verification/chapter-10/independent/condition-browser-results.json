@@ -1,0 +1,26 @@
+[
+  {
+    "conditions": "quiz-only",
+    "checks": [
+      "initial-quiz-explanation-visible",
+      "quality2-fit",
+      "quality10-source-not-body-wording",
+      "incomplete-initial-prompt-needs-improvement",
+      "incomplete-repair-prompt-needs-improvement",
+      "incomplete-final-prompt-needs-improvement"
+    ],
+    "result": "PASS"
+  },
+  {
+    "conditions": "none",
+    "checks": [
+      "initial-quiz-explanation-visible",
+      "quality2-fit",
+      "quality10-source-not-body-wording",
+      "incomplete-initial-prompt-needs-improvement",
+      "incomplete-repair-prompt-needs-improvement",
+      "incomplete-final-prompt-needs-improvement"
+    ],
+    "result": "PASS"
+  }
+]

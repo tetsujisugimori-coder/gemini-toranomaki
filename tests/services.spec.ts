@@ -285,7 +285,7 @@ test("malformed data and failed writes preserve useful in-memory learning and an
       localStorage.setItem(servicesKey, "{broken");
       localStorage.setItem(
         progressKey,
-        '{"completed":["chapter-1","chapter-10",null]}',
+        '{"completed":["chapter-1","chapter-11",null]}',
       );
     },
     { servicesKey, progressKey },

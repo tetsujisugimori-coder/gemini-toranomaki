@@ -1,0 +1,62 @@
+{
+  "checked_utc": "2026-11-06T10:44:03.264613+00:00",
+  "product_candidate": "9281516d56c3babab126114f451b7aa58a089f0b",
+  "product_src_tree": "aad3fde4eabc1c93272be7b132246768bfffe1ce",
+  "tested_files": {
+    "src/Capstone.tsx": "1242ad6fd60dc07ac70c3df676ea8be971c0ebb781cd42aa38945e57c03d6c13",
+    "src/capstone-data.ts": "26463d467827e8e297683036790874a9d36fd2bdd3925e36c02d54f6220c2c9c",
+    "src/capstone-engine.ts": "f7cdd01a2f6a9f00992440e87734ee0188e76efa13df17312581902a2d578565",
+    "src/capstone-storage.ts": "f774b434e17f7d904373312ef69184cc6a151ce798004ea03c6350548c767310",
+    "src/capstone.test.ts": "f89c970fb746fe6ea755cd51883b5f97e3b4d399d66bfd1788957500a7bb5f2e",
+    "tests/capstone.spec.ts": "76ee4990c8d7567e0f4b729922edbde278588bc2dee1a05d667d5020155d95d7",
+    "tests/app.spec.ts": "0962634abc2b1685fd656252da2f68864625f6c76383b333ff6071cb00d1eb73",
+    "package.json": "1f8a0655d108c5252366984524e9a78b8a03efbf7cc6c648fd5ea41e7b1392dc",
+    "package-lock.json": "7ac73df42b82ed47fd8ff14a404f1971dc0f7acbabcb29cfb100e4af84531d0c"
+  },
+  "commands": [
+    {
+      "command": "npm ci --cache /tmp/gemini-npm-cache",
+      "exit": 0
+    },
+    {
+      "command": "npm run typecheck",
+      "exit": 0
+    },
+    {
+      "command": "npm run lint",
+      "exit": 0
+    },
+    {
+      "command": "npm test",
+      "exit": 0
+    },
+    {
+      "command": "npm run build",
+      "exit": 0
+    },
+    {
+      "command": "git diff --check",
+      "exit": 0
+    },
+    {
+      "command": "docker official Playwright / npm run test:e2e -- --workers=2",
+      "exit": 0,
+      "passed": 908,
+      "projects": {
+        "chromium": 454,
+        "webkit": 454
+      },
+      "skipped": 0
+    },
+    {
+      "command": "npm audit --json",
+      "exit": 1,
+      "note": "Issue #24: moderate8 critical2, not remediated"
+    },
+    {
+      "command": "npm audit --omit=dev --json",
+      "exit": 0,
+      "note": "0 vulnerabilities; not publication approval"
+    }
+  ]
+}

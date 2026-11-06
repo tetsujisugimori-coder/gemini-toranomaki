@@ -1,0 +1,65 @@
+[
+  {
+    "id": "rename",
+    "url": "https://blog.google/innovation-and-ai/products/gemini-notebook/notebooklm-gemini-notebook/",
+    "final_url": "https://blog.google/innovation-and-ai/products/gemini-notebook/notebooklm-gemini-notebook/",
+    "status": 200,
+    "checked_utc": "2026-11-06T10:07:15.824826+00:00",
+    "bytes": 354811,
+    "sha256": "8425b3ca16448a01fc1c5ab851f6222482e80a660dc298de0da4ec65b09730a6"
+  },
+  {
+    "id": "notebooks",
+    "url": "https://support.google.com/gemini/answer/16972047?co=GENIE.Platform%3DDesktop&hl=en",
+    "final_url": "https://support.google.com/gemini/answer/16972047?co=GENIE.Platform%3DDesktop&hl=en",
+    "status": 200,
+    "checked_utc": "2026-11-06T10:07:18.662544+00:00",
+    "bytes": 1663225,
+    "sha256": "00f54a9eb4f204f6a3bf679e09715a07773144b98656f9902f76ad9a69b5fd6c"
+  },
+  {
+    "id": "research",
+    "url": "https://support.google.com/gemini/answer/15719111?co=GENIE.Platform%3DDesktop&hl=en",
+    "final_url": "https://support.google.com/gemini/answer/15719111?co=GENIE.Platform%3DDesktop&hl=en",
+    "status": 200,
+    "checked_utc": "2026-11-06T10:07:17.086219+00:00",
+    "bytes": 1639295,
+    "sha256": "a121b58ddcbc1ad3cd80d411b88ef260baccc4c3fc5d836257806689e331a220"
+  },
+  {
+    "id": "sources",
+    "url": "https://support.google.com/gemininotebook/answer/16215270?co=GENIE.Platform%3DDesktop&hl=en",
+    "final_url": "https://support.google.com/gemininotebook/answer/16215270?co=GENIE.Platform%3DDesktop&hl=en",
+    "status": 200,
+    "checked_utc": "2026-11-06T10:07:19.898998+00:00",
+    "bytes": 1558143,
+    "sha256": "f2bad6027de3c951f789a63fe4a1ca7ddb58d29d68892933e76f1003be763f1c"
+  },
+  {
+    "id": "canvas",
+    "url": "https://support.google.com/gemini/answer/16047321?co=GENIE.Platform%3DDesktop&hl=en",
+    "final_url": "https://support.google.com/gemini/answer/16047321?co=GENIE.Platform%3DDesktop&hl=en",
+    "status": 200,
+    "checked_utc": "2026-11-06T10:07:16.989248+00:00",
+    "bytes": 1646341,
+    "sha256": "5f3f299bba072fbcb291096cd7968761197246b4502c648a5eada56824b46355"
+  },
+  {
+    "id": "canvas-safety",
+    "url": "https://support.google.com/gemini/answer/16419134?hl=en",
+    "final_url": "https://support.google.com/gemini/answer/16419134?hl=en",
+    "status": 200,
+    "checked_utc": "2026-11-06T10:07:20.571550+00:00",
+    "bytes": 1619302,
+    "sha256": "03a18868cc73ec0128744e206041700fb437f6dc627f62860873e81345ce1d01"
+  },
+  {
+    "id": "notebook-conditions",
+    "url": "https://support.google.com/gemininotebook/answer/16213268?hl=en",
+    "final_url": "https://support.google.com/gemininotebook/answer/16213268?hl=en",
+    "status": 200,
+    "checked_utc": "2026-11-06T10:07:20.149583+00:00",
+    "bytes": 1542278,
+    "sha256": "d254f05d67bbb5549adc8bd73222e2af9e773f8327a6bfc19ad0852847e17a38"
+  }
+]

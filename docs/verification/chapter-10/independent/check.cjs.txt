@@ -1,0 +1,15 @@
+const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
+const root='/workspace/gemini-toranomaki';const ts=require(root+'/node_modules/typescript');
+for(const name of ['capstone-data','capstone-storage','capstone-engine']){const source=fs.readFileSync(`${root}/src/${name}.ts`,'utf8');fs.writeFileSync(`/tmp/independent-capstone-review/${name}.mjs`,ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ES2022}}).outputText.replaceAll('"./capstone-data"','"./capstone-data.mjs"').replaceAll('"./capstone-storage"','"./capstone-storage.mjs"'));}
+(async()=>{
+const s=await import('./capstone-storage.mjs'),e=await import('./capstone-engine.mjs');
+const results=[];function check(name,fn){try{const actual=fn();results.push({name,actual});}catch(error){results.push({name,error:String(error)});}}
+check('notebook judgment preserves already-recorded comparison',()=>{const r=s.freshCapstone();r.compared=true;return s.invalidateFrom(r,3,{notebook:2}).compared;});
+check('no-operation quality can be accepted as repaired-complete',()=>{let r=s.freshCapstone();r.created=true;r.applied=true;r.repairStyle=1;for(const v of ['initial','repair','final'])r.quality[v]=Array.from({length:10},(_,i)=>{const q=e.qualityCase(r,v,i);return {verdict:q.verdict,evidence:i%3,improvement:q.improvement,checked:true};});return {trials:r.trials,stage6:e.stageReady(r,6),quality:e.qualityReady(r,'final')};});
+check('incomplete creation prompt still graded against absent prohibition',()=>{let r=s.freshCapstone();r.created=true;return {prompt:e.capstonePrompt(r),case:e.qualityCase(r,'initial',5)};});
+check('replay retry6 does not reuse tests invalidated by clear',()=>{let r=s.freshCapstone();r.trials=['initial','repair','final'];r.created=true;r.applied=true;r.repairStyle=1;for(const v of ['initial','repair','final'])r.quality[v]=Array.from({length:10},(_,i)=>{const q=e.qualityCase(r,v,i);return {verdict:q.verdict,evidence:i%3,improvement:q.improvement,checked:true};});let n=s.invalidateFrom(r,6);return {initialQuality:e.qualityReady(n,'initial'),trials:n.trials,initialAnswer8:n.quality.initial[7],newExpected:e.qualityCase(n,'initial',7)};});
+check('unknown extra fields and free text are stripped',()=>{let r=s.sanitizeCapstone({...s.freshCapstone(),notes:'personal data',history:['history:2','personal data'],copied:['history:3','secret']});return {unknown:JSON.stringify(r).includes('personal data'),copied:r.copied};});
+check('assignment change keeps historical records and invalidates current',()=>{let r=s.freshCapstone();r.achieved=[0,1,2];r.history=['history:2'];r.real[2]=1;let n=s.changeAssignment(r,{topic:'business'});return {history:n.history,achieved:n.achieved,real:n.real};});
+const hashes=Object.fromEntries(['Capstone.tsx','capstone-data.ts','capstone-storage.ts','capstone-engine.ts'].map(n=>[n,crypto.createHash('sha256').update(fs.readFileSync(`${root}/src/${n}`)).digest('hex')]));
+fs.writeFileSync('/tmp/independent-capstone-review/model-results.json',JSON.stringify({time:new Date().toISOString(),hashes,results},null,2));console.log(JSON.stringify(results,null,2));
+})();

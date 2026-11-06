@@ -1,0 +1,23 @@
+[
+  {
+    "name": "old-success-cannot-settle-new-copy",
+    "result": "PASS"
+  },
+  {
+    "name": "current-failure-does-not-record-success",
+    "result": "PASS"
+  },
+  {
+    "name": "retry-current-success-fulltext",
+    "result": "PASS",
+    "text": "調べて。\n\n改善した調査依頼：\nテーマ：架空の青葉町・読書室の歩み\n目的：史料が示す範囲で町の読書室を紹介する\n対象読者：テーマの初学者（地域史を初めて読む人）\n形式：小さなWeb展示・確認問題\n完成条件：原文と出典IDを示す／不明点と対象範囲を明示／確認問題と解説を付ける\n\nまず調査計画を提示し、不足条件を質問してください。承認前に調査を開始しないでください。"
+  },
+  {
+    "name": "condition-change-invalidates-old-failure",
+    "result": "PASS"
+  },
+  {
+    "name": "reset-with-pending-copy-protects-other-chapters",
+    "result": "PASS"
+  }
+]

@@ -15,7 +15,7 @@ test("navigation, lesson, copy, quiz, progress and reset", async ({ page }) => {
   await expect(page.locator(".chapter-row")).toHaveCount(10);
   await page.locator(".chapter-row").nth(9).click();
   await expect(
-    page.getByRole("heading", { name: "準備中", exact: true }),
+    page.getByRole("heading", { name: "STEP 0 環境を準備", exact: true }),
   ).toBeVisible();
   await page.getByRole("link", { name: "第1章を学ぶ", exact: true }).click();
   await page.getByText("1. 別画面でGeminiを開く", { exact: true }).click();

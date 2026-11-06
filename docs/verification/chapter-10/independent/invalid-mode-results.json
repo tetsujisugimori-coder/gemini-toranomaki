@@ -1,0 +1,21 @@
+{
+  "candidate": "9281516d56c3babab126114f451b7aa58a089f0b",
+  "result": "PASS",
+  "invalid": {
+    "available": false,
+    "protected": true,
+    "achieved": [],
+    "history": [
+      "history:0"
+    ],
+    "rawUnchanged": true
+  },
+  "valid": {
+    "available": true,
+    "protected": false,
+    "achieved": [
+      0,
+      1
+    ]
+  }
+}
