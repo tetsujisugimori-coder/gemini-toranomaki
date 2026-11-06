@@ -1,0 +1,24 @@
+{
+  "scope": "selected independent evidence only",
+  "secret_pattern_candidates": [],
+  "omitted_public_html": [
+    "evidence-557f12e/official/source-addition.html",
+    "evidence-557f12e/official/canvas.html"
+  ],
+  "private_real_person_documents_used": false,
+  "screenshots": "fictional local lesson and synthetic test state only; no real Google/login/payment screen",
+  "excluded": [
+    "node_modules",
+    "browser binaries",
+    "caches",
+    "Library transfer metadata",
+    "product source duplicates",
+    "unnecessary repeated PNGs",
+    "duplicate 19MB ZIP",
+    "unnecessary public frontend HTML bootstrap configuration"
+  ],
+  "png_count": 27,
+  "exact_png_duplicates": [],
+  "bytes_before_index": 15184467,
+  "raw_red_failure_and_interruption_logs_retained": true
+}

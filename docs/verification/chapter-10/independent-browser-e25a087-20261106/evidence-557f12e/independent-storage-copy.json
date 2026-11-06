@@ -1,0 +1,258 @@
+[
+  {
+    "engine": "chromium",
+    "test": "old-key-protection/privacy/scope/global-reset/reload",
+    "status": "PASS",
+    "protectedKeys": [
+      "gemini-toranomaki:lab:v1",
+      "gemini-toranomaki:exploration:v1",
+      "gemini-toranomaki:services:v1",
+      "gemini-toranomaki:services-practice:v1",
+      "gemini-toranomaki:research:v1",
+      "gemini-toranomaki:notebook:v1",
+      "gemini-toranomaki:live:v1",
+      "gemini-toranomaki:canvas:v1",
+      "gemini-toranomaki:nano-banana:v1",
+      "gemini-toranomaki:video-music:v1",
+      "gemini-toranomaki:skills:v1"
+    ]
+  },
+  {
+    "engine": "chromium",
+    "test": "storage-read",
+    "status": "PASS",
+    "notice": "課題設定 → 調査 → 資料整理 → 制作 → 検証 → 改善 → 振り返り。固定データの模擬演習です。実サービスは任意で、外部の結果は教材から検証できません。全10章の区切りの後も、新しい演習・機能変更への対応を続けます。\n\n保存できないか、保存データが破損しています。画面内では続けられますが、再読み込みで変更が失われたり古い記録が復活する場合があります。\n\n総合演習の工程\nSTEP 0 環境を準備\nSTEP 1 課題と完成条件\nSTEP 2 調査と出典照合\nSTEP 3 資料を整理\nSTEP 4 制作指示と初版\nSTEP 5 品質を検証\nSTEP 6 改善と再検証\nSTEP 7 評価と振り返り\n\n選択内容：STEP 0 環境を準備\n\n演習方法\n模擬演習だけで進める\n模擬＋任意の実サービス演習\n\n選択内容：模擬演習だけで進める\n\n現在位置 STEP 0 / 7 · 閲覧記録 0/8 · "
+  },
+  {
+    "engine": "chromium",
+    "test": "storage-json",
+    "status": "PASS",
+    "notice": "課題設定 → 調査 → 資料整理 → 制作 → 検証 → 改善 → 振り返り。固定データの模擬演習です。実サービスは任意で、外部の結果は教材から検証できません。全10章の区切りの後も、新しい演習・機能変更への対応を続けます。\n\n保存できないか、保存データが破損しています。画面内では続けられますが、再読み込みで変更が失われたり古い記録が復活する場合があります。\n\n総合演習の工程\nSTEP 0 環境を準備\nSTEP 1 課題と完成条件\nSTEP 2 調査と出典照合\nSTEP 3 資料を整理\nSTEP 4 制作指示と初版\nSTEP 5 品質を検証\nSTEP 6 改善と再検証\nSTEP 7 評価と振り返り\n\n選択内容：STEP 0 環境を準備\n\n演習方法\n模擬演習だけで進める\n模擬＋任意の実サービス演習\n\n選択内容：模擬演習だけで進める\n\n現在位置 STEP 0 / 7 · 閲覧記録 0/8 · "
+  },
+  {
+    "engine": "chromium",
+    "test": "storage-quota",
+    "status": "PASS",
+    "notice": "課題設定 → 調査 → 資料整理 → 制作 → 検証 → 改善 → 振り返り。固定データの模擬演習です。実サービスは任意で、外部の結果は教材から検証できません。全10章の区切りの後も、新しい演習・機能変更への対応を続けます。\n\n保存できないか、保存データが破損しています。画面内では続けられますが、再読み込みで変更が失われたり古い記録が復活する場合があります。\n\n総合演習の工程\nSTEP 0 環境を準備\nSTEP 1 課題と完成条件\nSTEP 2 調査と出典照合\nSTEP 3 資料を整理\nSTEP 4 制作指示と初版\nSTEP 5 品質を検証\nSTEP 6 改善と再検証\nSTEP 7 評価と振り返り\n\n選択内容：STEP 1 課題と完成条件\n\n演習方法\n模擬演習だけで進める\n模擬＋任意の実サービス演習\n\n選択内容：模擬＋任意の実サービス演習\n\n現在位置 STEP 1 / 7 · 閲覧記録 7"
+  },
+  {
+    "engine": "chromium",
+    "test": "storage-remove",
+    "status": "PASS",
+    "notice": "課題設定 → 調査 → 資料整理 → 制作 → 検証 → 改善 → 振り返り。固定データの模擬演習です。実サービスは任意で、外部の結果は教材から検証できません。全10章の区切りの後も、新しい演習・機能変更への対応を続けます。\n\n保存できないか、保存データが破損しています。画面内では続けられますが、再読み込みで変更が失われたり古い記録が復活する場合があります。\n\n総合演習の工程\nSTEP 0 環境を準備\nSTEP 1 課題と完成条件\nSTEP 2 調査と出典照合\nSTEP 3 資料を整理\nSTEP 4 制作指示と初版\nSTEP 5 品質を検証\nSTEP 6 改善と再検証\nSTEP 7 評価と振り返り\n\n選択内容：STEP 0 環境を準備\n\n演習方法\n模擬演習だけで進める\n模擬＋任意の実サービス演習\n\n選択内容：模擬演習だけで進める\n\n現在位置 STEP 0 / 7 · 閲覧記録 0/8 · "
+  },
+  {
+    "engine": "chromium",
+    "test": "storage-progress-write",
+    "status": "PASS",
+    "notice": "課題設定 → 調査 → 資料整理 → 制作 → 検証 → 改善 → 振り返り。固定データの模擬演習です。実サービスは任意で、外部の結果は教材から検証できません。全10章の区切りの後も、新しい演習・機能変更への対応を続けます。\n\n総合演習の工程\nSTEP 0 環境を準備\nSTEP 1 課題と完成条件\nSTEP 2 調査と出典照合\nSTEP 3 資料を整理\nSTEP 4 制作指示と初版\nSTEP 5 品質を検証\nSTEP 6 改善と再検証\nSTEP 7 評価と振り返り\n\n選択内容：STEP 0 環境を準備\n\n演習方法\n模擬演習だけで進める\n模擬＋任意の実サービス演習\n\n選択内容：模擬演習だけで進める\n\n現在位置 STEP 0 / 7 · 閲覧記録 0/8 · 現在の模擬確認 0/8\n\n工程への移動は達成や外部操作の成功を意味しません。どの工程からでも再挑戦できます。\n\nSTEP 0 環境を準備"
+  },
+  {
+    "engine": "chromium",
+    "test": "copy-step-old-success-current-failure-retry",
+    "status": "PASS"
+  },
+  {
+    "engine": "chromium",
+    "test": "copy-step-old-failure-current-failure-retry",
+    "status": "PASS"
+  },
+  {
+    "engine": "chromium",
+    "test": "copy-topic-old-success-current-failure-retry",
+    "status": "PASS"
+  },
+  {
+    "engine": "chromium",
+    "test": "copy-topic-old-failure-current-failure-retry",
+    "status": "PASS"
+  },
+  {
+    "engine": "chromium",
+    "test": "copy-ABA-old-success-current-failure-retry",
+    "status": "PASS"
+  },
+  {
+    "engine": "chromium",
+    "test": "copy-ABA-old-failure-current-failure-retry",
+    "status": "PASS"
+  },
+  {
+    "engine": "chromium",
+    "test": "copy-mode-old-success-current-failure-retry",
+    "status": "PASS"
+  },
+  {
+    "engine": "chromium",
+    "test": "copy-mode-old-failure-current-failure-retry",
+    "status": "PASS"
+  },
+  {
+    "engine": "chromium",
+    "test": "copy-retry-old-success-current-failure-retry",
+    "status": "PASS"
+  },
+  {
+    "engine": "chromium",
+    "test": "copy-retry-old-failure-current-failure-retry",
+    "status": "PASS"
+  },
+  {
+    "engine": "chromium",
+    "test": "copy-reset-old-success-current-failure-retry",
+    "status": "PASS"
+  },
+  {
+    "engine": "chromium",
+    "test": "copy-reset-old-failure-current-failure-retry",
+    "status": "PASS"
+  },
+  {
+    "engine": "chromium",
+    "test": "copy-unmount-old-success-current-failure-retry",
+    "status": "PASS"
+  },
+  {
+    "engine": "chromium",
+    "test": "copy-unmount-old-failure-current-failure-retry",
+    "status": "PASS"
+  },
+  {
+    "engine": "chromium",
+    "test": "copy-same-turn-old-success-current-failure-retry",
+    "status": "PASS"
+  },
+  {
+    "engine": "chromium",
+    "test": "copy-same-turn-old-failure-current-failure-retry",
+    "status": "PASS"
+  },
+  {
+    "engine": "webkit",
+    "test": "old-key-protection/privacy/scope/global-reset/reload",
+    "status": "PASS",
+    "protectedKeys": [
+      "gemini-toranomaki:lab:v1",
+      "gemini-toranomaki:exploration:v1",
+      "gemini-toranomaki:services:v1",
+      "gemini-toranomaki:services-practice:v1",
+      "gemini-toranomaki:research:v1",
+      "gemini-toranomaki:notebook:v1",
+      "gemini-toranomaki:live:v1",
+      "gemini-toranomaki:canvas:v1",
+      "gemini-toranomaki:nano-banana:v1",
+      "gemini-toranomaki:video-music:v1",
+      "gemini-toranomaki:skills:v1"
+    ]
+  },
+  {
+    "engine": "webkit",
+    "test": "storage-read",
+    "status": "PASS",
+    "notice": "課題設定 → 調査 → 資料整理 → 制作 → 検証 → 改善 → 振り返り。固定データの模擬演習です。実サービスは任意で、外部の結果は教材から検証できません。全10章の区切りの後も、新しい演習・機能変更への対応を続けます。\n\n保存できないか、保存データが破損しています。画面内では続けられますが、再読み込みで変更が失われたり古い記録が復活する場合があります。\n\n総合演習の工程STEP 0 環境を準備\nSTEP 1 課題と完成条件\nSTEP 2 調査と出典照合\nSTEP 3 資料を整理\nSTEP 4 制作指示と初版\nSTEP 5 品質を検証\nSTEP 6 改善と再検証\nSTEP 7 評価と振り返り\n\n選択内容：STEP 0 環境を準備\n\n演習方法模擬演習だけで進める\n模擬＋任意の実サービス演習\n\n選択内容：模擬演習だけで進める\n\n現在位置 STEP 0 / 7 · 閲覧記録 0/8 · 現在"
+  },
+  {
+    "engine": "webkit",
+    "test": "storage-json",
+    "status": "PASS",
+    "notice": "課題設定 → 調査 → 資料整理 → 制作 → 検証 → 改善 → 振り返り。固定データの模擬演習です。実サービスは任意で、外部の結果は教材から検証できません。全10章の区切りの後も、新しい演習・機能変更への対応を続けます。\n\n保存できないか、保存データが破損しています。画面内では続けられますが、再読み込みで変更が失われたり古い記録が復活する場合があります。\n\n総合演習の工程STEP 0 環境を準備\nSTEP 1 課題と完成条件\nSTEP 2 調査と出典照合\nSTEP 3 資料を整理\nSTEP 4 制作指示と初版\nSTEP 5 品質を検証\nSTEP 6 改善と再検証\nSTEP 7 評価と振り返り\n\n選択内容：STEP 0 環境を準備\n\n演習方法模擬演習だけで進める\n模擬＋任意の実サービス演習\n\n選択内容：模擬演習だけで進める\n\n現在位置 STEP 0 / 7 · 閲覧記録 0/8 · 現在"
+  },
+  {
+    "engine": "webkit",
+    "test": "storage-quota",
+    "status": "PASS",
+    "notice": "課題設定 → 調査 → 資料整理 → 制作 → 検証 → 改善 → 振り返り。固定データの模擬演習です。実サービスは任意で、外部の結果は教材から検証できません。全10章の区切りの後も、新しい演習・機能変更への対応を続けます。\n\n保存できないか、保存データが破損しています。画面内では続けられますが、再読み込みで変更が失われたり古い記録が復活する場合があります。\n\n総合演習の工程STEP 0 環境を準備\nSTEP 1 課題と完成条件\nSTEP 2 調査と出典照合\nSTEP 3 資料を整理\nSTEP 4 制作指示と初版\nSTEP 5 品質を検証\nSTEP 6 改善と再検証\nSTEP 7 評価と振り返り\n\n選択内容：STEP 1 課題と完成条件\n\n演習方法模擬演習だけで進める\n模擬＋任意の実サービス演習\n\n選択内容：模擬＋任意の実サービス演習\n\n現在位置 STEP 1 / 7 · 閲覧記録 7/8"
+  },
+  {
+    "engine": "webkit",
+    "test": "storage-remove",
+    "status": "PASS",
+    "notice": "課題設定 → 調査 → 資料整理 → 制作 → 検証 → 改善 → 振り返り。固定データの模擬演習です。実サービスは任意で、外部の結果は教材から検証できません。全10章の区切りの後も、新しい演習・機能変更への対応を続けます。\n\n保存できないか、保存データが破損しています。画面内では続けられますが、再読み込みで変更が失われたり古い記録が復活する場合があります。\n\n総合演習の工程STEP 0 環境を準備\nSTEP 1 課題と完成条件\nSTEP 2 調査と出典照合\nSTEP 3 資料を整理\nSTEP 4 制作指示と初版\nSTEP 5 品質を検証\nSTEP 6 改善と再検証\nSTEP 7 評価と振り返り\n\n選択内容：STEP 0 環境を準備\n\n演習方法模擬演習だけで進める\n模擬＋任意の実サービス演習\n\n選択内容：模擬演習だけで進める\n\n現在位置 STEP 0 / 7 · 閲覧記録 0/8 · 現在"
+  },
+  {
+    "engine": "webkit",
+    "test": "storage-progress-write",
+    "status": "PASS",
+    "notice": "課題設定 → 調査 → 資料整理 → 制作 → 検証 → 改善 → 振り返り。固定データの模擬演習です。実サービスは任意で、外部の結果は教材から検証できません。全10章の区切りの後も、新しい演習・機能変更への対応を続けます。\n\n総合演習の工程STEP 0 環境を準備\nSTEP 1 課題と完成条件\nSTEP 2 調査と出典照合\nSTEP 3 資料を整理\nSTEP 4 制作指示と初版\nSTEP 5 品質を検証\nSTEP 6 改善と再検証\nSTEP 7 評価と振り返り\n\n選択内容：STEP 0 環境を準備\n\n演習方法模擬演習だけで進める\n模擬＋任意の実サービス演習\n\n選択内容：模擬演習だけで進める\n\n現在位置 STEP 0 / 7 · 閲覧記録 0/8 · 現在の模擬確認 0/8\n\n工程への移動は達成や外部操作の成功を意味しません。どの工程からでも再挑戦できます。\n\nSTEP 0 環境を準備\n教"
+  },
+  {
+    "engine": "webkit",
+    "test": "copy-step-old-success-current-failure-retry",
+    "status": "PASS"
+  },
+  {
+    "engine": "webkit",
+    "test": "copy-step-old-failure-current-failure-retry",
+    "status": "PASS"
+  },
+  {
+    "engine": "webkit",
+    "test": "copy-topic-old-success-current-failure-retry",
+    "status": "PASS"
+  },
+  {
+    "engine": "webkit",
+    "test": "copy-topic-old-failure-current-failure-retry",
+    "status": "PASS"
+  },
+  {
+    "engine": "webkit",
+    "test": "copy-ABA-old-success-current-failure-retry",
+    "status": "PASS"
+  },
+  {
+    "engine": "webkit",
+    "test": "copy-ABA-old-failure-current-failure-retry",
+    "status": "PASS"
+  },
+  {
+    "engine": "webkit",
+    "test": "copy-mode-old-success-current-failure-retry",
+    "status": "PASS"
+  },
+  {
+    "engine": "webkit",
+    "test": "copy-mode-old-failure-current-failure-retry",
+    "status": "PASS"
+  },
+  {
+    "engine": "webkit",
+    "test": "copy-retry-old-success-current-failure-retry",
+    "status": "PASS"
+  },
+  {
+    "engine": "webkit",
+    "test": "copy-retry-old-failure-current-failure-retry",
+    "status": "PASS"
+  },
+  {
+    "engine": "webkit",
+    "test": "copy-reset-old-success-current-failure-retry",
+    "status": "PASS"
+  },
+  {
+    "engine": "webkit",
+    "test": "copy-reset-old-failure-current-failure-retry",
+    "status": "PASS"
+  },
+  {
+    "engine": "webkit",
+    "test": "copy-unmount-old-success-current-failure-retry",
+    "status": "PASS"
+  },
+  {
+    "engine": "webkit",
+    "test": "copy-unmount-old-failure-current-failure-retry",
+    "status": "PASS"
+  },
+  {
+    "engine": "webkit",
+    "test": "copy-same-turn-old-success-current-failure-retry",
+    "status": "PASS"
+  },
+  {
+    "engine": "webkit",
+    "test": "copy-same-turn-old-failure-current-failure-retry",
+    "status": "PASS"
+  }
+]

@@ -1,0 +1,39 @@
+[
+  {
+    "engine": "chromium",
+    "status": "PASS",
+    "notes": [
+      {
+        "version": "initial",
+        "observed": "固定模擬成果物 · 初版\n\n小さなWeb展示・確認問題／テーマの初学者\n\n架空の青葉町・読書室の歩み\n\n史料が示す範囲で町の読書室を紹介する\n\n読書室は1923年4月に開室した。\n\n開室時の蔵書は120冊。\n\n全国初の読書室だった。\n\n開室した年は？\n1923年\n1924年\n回答を未選択に戻す 回答を確認\n\n不正解。S1では1924年。原文を読み直しましょう。\n\n検査した入力：未回答／1924年／1923年。未回答・正答・誤答を同じ条件で試してください。操作履歴は正しく動いた証明ではありません。"
+      },
+      {
+        "version": "repair",
+        "observed": "固定模擬成果物 · 修正版1（退行あり）\n\n小さなWeb展示・確認問題／テーマの初学者\n\n架空の青葉町・読書室の歩み\n\n史料が示す範囲で町の読書室を紹介する\n\n読書室は1924年4月に開室した。\n\n開室時の蔵書は120冊。\n\n断定を避ける：この町の2史料だけでは全国初かは分からない。\n\n出典：S1「青葉町読書室 開室記録（架空）」、S2「受入帳の抜粋（架空）」。原文は資料パネルで確認。\n\n対象範囲・制約：この町の2史料だけでは全国初かは分からない。追加の比較調査は未実施。\n\n開室した年は？\n1923年\n1924年\n回答を未選択に戻す 回答を確認\n\n（結果未表示）\n\n検査した入力：未回答／1924年／1923年。未回答・正答・誤答を同じ条件で試してください。操作履歴は正しく動いた証明ではありません。"
+      },
+      {
+        "version": "final",
+        "observed": "固定模擬成果物 · 再修正版\n\n小さなWeb展示・確認問題／テーマの初学者\n\n架空の青葉町・読書室の歩み\n\n史料が示す範囲で町の読書室を紹介する\n\n読書室は1924年4月に開室した。\n\n開室時の蔵書は120冊。\n\n断定を避ける：この町の2史料だけでは全国初かは分からない。\n\n出典：S1「青葉町読書室 開室記録（架空）」、S2「受入帳の抜粋（架空）」。原文は資料パネルで確認。\n\n対象範囲・制約：この町の2史料だけでは全国初かは分からない。追加の比較調査は未実施。\n\n開室した年は？\n1923年\n1924年\n回答を未選択に戻す 回答を確認\n\n不正解。S1では1924年。原文を読み直しましょう。\n\n検査した入力：未回答／1924年／1923年。未回答・正答・誤答を同じ条件で試してください。操作履歴は正しく動いた証明ではありません。"
+      }
+    ],
+    "errors": [],
+    "completeAchievements": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ]
+  },
+  {
+    "engine": "webkit",
+    "status": "FAIL",
+    "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\nfalse !== true\n",
+    "stack": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\nfalse !== true\n\n    at go (file:///workspace/chapter10-independent-20261106/candidate-evidence-557f12e/independent-sequence.mjs:16:234)\n    at async file:///workspace/chapter10-independent-20261106/candidate-evidence-557f12e/independent-sequence.mjs:47:3",
+    "notes": [],
+    "errors": []
+  }
+]

@@ -1,0 +1,24 @@
+{
+  "tested_full_head": "9281516d56c3babab126114f451b7aa58a089f0b",
+  "final_pr_head": "e25a08791a8b97036e2abaa11457d88a0a6f9519",
+  "both_src_tree": "aad3fde4eabc1c93272be7b132246768bfffe1ce",
+  "product_dependency_ci_config_diff": [],
+  "test_diff": "tests/capstone.spec.ts adds invalid-mode to existing list (2 new E2E cases)",
+  "full_928_stats": {
+    "startTime": "2026-11-06T10:44:35.960Z",
+    "duration": 398717.157,
+    "expected": 906,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "new_final_tests": {
+    "startTime": "2026-11-06T10:51:37.116Z",
+    "duration": 3657.926,
+    "expected": 2,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "final_unit": 165
+}

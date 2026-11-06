@@ -1,0 +1,624 @@
+[
+  {
+    "engine": "chromium",
+    "finding": "P2-RUBRIC",
+    "observed": "（結果未表示）",
+    "requirements": [
+      0,
+      1,
+      2
+    ],
+    "prompt": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "accepted": [
+      {
+        "item": 2,
+        "verdict": "適合",
+        "evidence": "選択した完成条件が本文に揃っている",
+        "status": "2. 必要な情報が揃う\n2 判定\n選んでください\n適合\n要改善\n情報不足・保留\n\n選択内容：適合\n\n2 根拠\n選んでください\nAIが『すべて成功』と報告した\n選択した完成条件が本文に揃っている\n資料を読んでいないが多分正しい\n\n選択内容：選択した完成条件が本文に揃っている\n\n2 改善案\n選んでください\n変更不要・根拠を維持\n原文に合わせて訂正\n不足条件を追加\n同条件で操作し再検証\n元の正常部分を復元\n追加資料を確認するまで保留\n\n選択内容：変更不要・根拠を維持\n\n2 根拠を照合\n\n固定資料との照合OK。STEP 1の現在の完成条件と成果物を照合する。"
+      },
+      {
+        "item": 6,
+        "verdict": "適合",
+        "evidence": "制作指示の対象・形式・根拠・完成条件を確認できる",
+        "status": "6. 制作指示に従う\n6 判定\n選んでください\n適合\n要改善\n情報不足・保留\n\n選択内容：適合\n\n6 根拠\n選んでください\nAIが『すべて成功』と報告した\n見た目がきれいで使えそう\n制作指示の対象・形式・根拠・完成条件を確認できる\n\n選択内容：制作指示の対象・形式・根拠・完成条件を確認できる\n\n6 改善案\n選んでください\n変更不要・根拠を維持\n原文に合わせて訂正\n不足条件を追加\n同条件で操作し再検証\n元の正常部分を復元\n追加資料を確認するまで保留\n\n選択内容：変更不要・根拠を維持\n\n6 根拠を照合\n\n固定資料との照合OK。よい依頼文でも出力が指示通りかは別に検査する。"
+      }
+    ],
+    "expected": "確認問題と解説という選択済み完成条件を満たさない。項目2・6は要改善として根拠を返す。"
+  },
+  {
+    "engine": "chromium",
+    "finding": "P2-CORRUPT",
+    "input": {
+      "achieved": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "topic": "corrupt",
+      "created": "true"
+    },
+    "alertCount": 0,
+    "position": "総合演習の工程\nSTEP 0 環境を準備\nSTEP 1 課題と完成条件\nSTEP 2 調査と出典照合\nSTEP 3 資料を整理\nSTEP 4 制作指示と初版\nSTEP 5 品質を検証\nSTEP 6 改善と再検証\nSTEP 7 評価と振り返り\n\n選択内容：STEP 0 環境を準備\n\n演習方法\n模擬演習だけで進める\n模擬＋任意の実サービス演習\n\n選択内容：模擬演習だけで進める\n\n現在位置 STEP 0 / 7 · 閲覧記録 0/8 · 現在の模擬確認 6/8\n\n工程への移動は達成や外部操作の成功を意味しません。どの工程からでも再挑戦できます。",
+    "noInitial": "まだ初版がありません。STEP 4で制作指示を組み立ててください。",
+    "after": {
+      "topic": "history",
+      "step": 6,
+      "mode": 0,
+      "environment": 0,
+      "artifact": 0,
+      "audience": 0,
+      "requirements": [
+        0,
+        1,
+        2
+      ],
+      "plan": [],
+      "prediction": -1,
+      "researched": false,
+      "research": [
+        -1,
+        -1,
+        -1
+      ],
+      "sources": [
+        0,
+        1
+      ],
+      "compared": false,
+      "notebook": -1,
+      "prompt": [],
+      "created": false,
+      "version": "initial",
+      "repairStyle": 0,
+      "applied": false,
+      "trials": [],
+      "quality": {
+        "initial": [
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          },
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          },
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          },
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          },
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          },
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          },
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          },
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          },
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          },
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          }
+        ],
+        "repair": [
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          },
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          },
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          },
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          },
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          },
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          },
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          },
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          },
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          },
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          }
+        ],
+        "final": [
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          },
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          },
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          },
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          },
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          },
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          },
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          },
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          },
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          },
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          }
+        ]
+      },
+      "visited": [
+        6
+      ],
+      "achieved": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "history": [],
+      "copied": [],
+      "real": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "ratings": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "reasons": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ]
+    },
+    "expected": "破損通知し不成立の現在達成を復元しない。過去の履歴と成立条件を照合した現在達成を区別する。"
+  },
+  {
+    "engine": "webkit",
+    "finding": "P2-RUBRIC",
+    "observed": "（結果未表示）",
+    "requirements": [
+      0,
+      1,
+      2
+    ],
+    "prompt": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "accepted": [
+      {
+        "item": 2,
+        "verdict": "適合",
+        "evidence": "選択した完成条件が本文に揃っている",
+        "status": "2. 必要な情報が揃う\n2 判定選んでください\n適合\n要改善\n情報不足・保留\n\n選択内容：適合\n\n2 根拠選んでください\nAIが『すべて成功』と報告した\n選択した完成条件が本文に揃っている\n資料を読んでいないが多分正しい\n\n選択内容：選択した完成条件が本文に揃っている\n\n2 改善案選んでください\n変更不要・根拠を維持\n原文に合わせて訂正\n不足条件を追加\n同条件で操作し再検証\n元の正常部分を復元\n追加資料を確認するまで保留\n\n選択内容：変更不要・根拠を維持\n\n2 根拠を照合\n\n固定資料との照合OK。STEP 1の現在の完成条件と成果物を照合する。"
+      },
+      {
+        "item": 6,
+        "verdict": "適合",
+        "evidence": "制作指示の対象・形式・根拠・完成条件を確認できる",
+        "status": "6. 制作指示に従う\n6 判定選んでください\n適合\n要改善\n情報不足・保留\n\n選択内容：適合\n\n6 根拠選んでください\nAIが『すべて成功』と報告した\n見た目がきれいで使えそう\n制作指示の対象・形式・根拠・完成条件を確認できる\n\n選択内容：制作指示の対象・形式・根拠・完成条件を確認できる\n\n6 改善案選んでください\n変更不要・根拠を維持\n原文に合わせて訂正\n不足条件を追加\n同条件で操作し再検証\n元の正常部分を復元\n追加資料を確認するまで保留\n\n選択内容：変更不要・根拠を維持\n\n6 根拠を照合\n\n固定資料との照合OK。よい依頼文でも出力が指示通りかは別に検査する。"
+      }
+    ],
+    "expected": "確認問題と解説という選択済み完成条件を満たさない。項目2・6は要改善として根拠を返す。"
+  },
+  {
+    "engine": "webkit",
+    "finding": "P2-CORRUPT",
+    "input": {
+      "achieved": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "topic": "corrupt",
+      "created": "true"
+    },
+    "alertCount": 0,
+    "position": "総合演習の工程STEP 0 環境を準備\nSTEP 1 課題と完成条件\nSTEP 2 調査と出典照合\nSTEP 3 資料を整理\nSTEP 4 制作指示と初版\nSTEP 5 品質を検証\nSTEP 6 改善と再検証\nSTEP 7 評価と振り返り\n\n選択内容：STEP 0 環境を準備\n\n演習方法模擬演習だけで進める\n模擬＋任意の実サービス演習\n\n選択内容：模擬演習だけで進める\n\n現在位置 STEP 0 / 7 · 閲覧記録 0/8 · 現在の模擬確認 6/8\n\n工程への移動は達成や外部操作の成功を意味しません。どの工程からでも再挑戦できます。",
+    "noInitial": "まだ初版がありません。STEP 4で制作指示を組み立ててください。",
+    "after": {
+      "topic": "history",
+      "step": 6,
+      "mode": 0,
+      "environment": 0,
+      "artifact": 0,
+      "audience": 0,
+      "requirements": [
+        0,
+        1,
+        2
+      ],
+      "plan": [],
+      "prediction": -1,
+      "researched": false,
+      "research": [
+        -1,
+        -1,
+        -1
+      ],
+      "sources": [
+        0,
+        1
+      ],
+      "compared": false,
+      "notebook": -1,
+      "prompt": [],
+      "created": false,
+      "version": "initial",
+      "repairStyle": 0,
+      "applied": false,
+      "trials": [],
+      "quality": {
+        "initial": [
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          },
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          },
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          },
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          },
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          },
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          },
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          },
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          },
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          },
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          }
+        ],
+        "repair": [
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          },
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          },
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          },
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          },
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          },
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          },
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          },
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          },
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          },
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          }
+        ],
+        "final": [
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          },
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          },
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          },
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          },
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          },
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          },
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          },
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          },
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          },
+          {
+            "verdict": -1,
+            "evidence": -1,
+            "improvement": -1,
+            "checked": false
+          }
+        ]
+      },
+      "visited": [
+        6
+      ],
+      "achieved": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "history": [],
+      "copied": [],
+      "real": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "ratings": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "reasons": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ]
+    },
+    "expected": "破損通知し不成立の現在達成を復元しない。過去の履歴と成立条件を照合した現在達成を区別する。"
+  }
+]

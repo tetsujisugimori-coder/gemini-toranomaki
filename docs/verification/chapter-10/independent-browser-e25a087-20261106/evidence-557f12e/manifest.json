@@ -1,0 +1,40 @@
+{
+  "candidate": "557f12e3c408a5735f9f0686f1e16361c6578c22",
+  "baseline": "3d4c7acde88ea1ebf2fff0d3009ad877d5a1bbd3",
+  "unit": {
+    "baseline": 129,
+    "candidate": 159,
+    "passed": 159
+  },
+  "e2e": {
+    "baseline": {
+      "passed": 824
+    },
+    "candidate": {
+      "startTime": "2026-11-06T10:20:41.258Z",
+      "duration": 416253.971,
+      "expected": 896,
+      "skipped": 0,
+      "unexpected": 2,
+      "flaky": 0
+    }
+  },
+  "independent_matrix": {
+    "conditions": 32,
+    "failed": 0
+  },
+  "independent_storage_copy": {
+    "cases": 44,
+    "failed": 0
+  },
+  "independent_sequence": "Both engines completed STEP0\u20137 mechanically, with rubric false-pass defects separately reproduced",
+  "confirmed_findings": [
+    "P2-RUBRIC",
+    "P2-CORRUPT",
+    "P2-REGRESSION-EXPECTATION"
+  ],
+  "verdict": "CHANGES_REQUIRED",
+  "product_modified": false,
+  "fix_head_received": false,
+  "ci_for_candidate_observed": false
+}

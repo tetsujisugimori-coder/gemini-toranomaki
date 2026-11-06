@@ -1,0 +1,291 @@
+{
+  "topic": "history",
+  "step": 7,
+  "mode": 1,
+  "environment": 3,
+  "artifact": 0,
+  "audience": 0,
+  "requirements": [
+    0,
+    1,
+    2
+  ],
+  "plan": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "prediction": 0,
+  "researched": true,
+  "research": [
+    1,
+    2,
+    0
+  ],
+  "sources": [
+    0,
+    1
+  ],
+  "compared": true,
+  "notebook": 2,
+  "prompt": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "created": true,
+  "version": "final",
+  "repairStyle": 1,
+  "applied": true,
+  "trials": [
+    "initial",
+    "repair",
+    "final"
+  ],
+  "quality": {
+    "initial": [
+      {
+        "verdict": 0,
+        "evidence": 0,
+        "improvement": 0,
+        "checked": true
+      },
+      {
+        "verdict": 1,
+        "evidence": 1,
+        "improvement": 2,
+        "checked": true
+      },
+      {
+        "verdict": 1,
+        "evidence": 2,
+        "improvement": 1,
+        "checked": true
+      },
+      {
+        "verdict": 1,
+        "evidence": 0,
+        "improvement": 1,
+        "checked": true
+      },
+      {
+        "verdict": 1,
+        "evidence": 1,
+        "improvement": 1,
+        "checked": true
+      },
+      {
+        "verdict": 1,
+        "evidence": 2,
+        "improvement": 2,
+        "checked": true
+      },
+      {
+        "verdict": 2,
+        "evidence": 0,
+        "improvement": 3,
+        "checked": true
+      },
+      {
+        "verdict": 0,
+        "evidence": 1,
+        "improvement": 0,
+        "checked": true
+      },
+      {
+        "verdict": 0,
+        "evidence": 2,
+        "improvement": 0,
+        "checked": true
+      },
+      {
+        "verdict": 1,
+        "evidence": 0,
+        "improvement": 2,
+        "checked": true
+      }
+    ],
+    "repair": [
+      {
+        "verdict": 0,
+        "evidence": 0,
+        "improvement": 0,
+        "checked": true
+      },
+      {
+        "verdict": 1,
+        "evidence": 1,
+        "improvement": 3,
+        "checked": true
+      },
+      {
+        "verdict": 0,
+        "evidence": 2,
+        "improvement": 0,
+        "checked": true
+      },
+      {
+        "verdict": 0,
+        "evidence": 0,
+        "improvement": 0,
+        "checked": true
+      },
+      {
+        "verdict": 0,
+        "evidence": 1,
+        "improvement": 0,
+        "checked": true
+      },
+      {
+        "verdict": 1,
+        "evidence": 2,
+        "improvement": 3,
+        "checked": true
+      },
+      {
+        "verdict": 1,
+        "evidence": 0,
+        "improvement": 4,
+        "checked": true
+      },
+      {
+        "verdict": 1,
+        "evidence": 1,
+        "improvement": 3,
+        "checked": true
+      },
+      {
+        "verdict": 0,
+        "evidence": 2,
+        "improvement": 0,
+        "checked": true
+      },
+      {
+        "verdict": 0,
+        "evidence": 0,
+        "improvement": 0,
+        "checked": true
+      }
+    ],
+    "final": [
+      {
+        "verdict": 0,
+        "evidence": 0,
+        "improvement": 0,
+        "checked": true
+      },
+      {
+        "verdict": 0,
+        "evidence": 1,
+        "improvement": 0,
+        "checked": true
+      },
+      {
+        "verdict": 0,
+        "evidence": 2,
+        "improvement": 0,
+        "checked": true
+      },
+      {
+        "verdict": 0,
+        "evidence": 0,
+        "improvement": 0,
+        "checked": true
+      },
+      {
+        "verdict": 0,
+        "evidence": 1,
+        "improvement": 0,
+        "checked": true
+      },
+      {
+        "verdict": 0,
+        "evidence": 2,
+        "improvement": 0,
+        "checked": true
+      },
+      {
+        "verdict": 0,
+        "evidence": 0,
+        "improvement": 0,
+        "checked": true
+      },
+      {
+        "verdict": 0,
+        "evidence": 1,
+        "improvement": 0,
+        "checked": true
+      },
+      {
+        "verdict": 0,
+        "evidence": 2,
+        "improvement": 0,
+        "checked": true
+      },
+      {
+        "verdict": 0,
+        "evidence": 0,
+        "improvement": 0,
+        "checked": true
+      }
+    ]
+  },
+  "visited": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "achieved": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "history": [
+    "history:0",
+    "history:1",
+    "history:2",
+    "history:3",
+    "history:4",
+    "history:5",
+    "history:6",
+    "history:7"
+  ],
+  "copied": [],
+  "real": [
+    2,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "ratings": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+  ],
+  "reasons": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+  ]
+}

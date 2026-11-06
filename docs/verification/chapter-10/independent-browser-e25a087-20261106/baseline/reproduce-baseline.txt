@@ -1,0 +1,22 @@
+Baseline checkout: /workspace/chapter10-independent-20261106/baseline
+SHA: 3d4c7acde88ea1ebf2fff0d3009ad877d5a1bbd3
+
+npm ci --cache /workspace/chapter10-independent-20261106/npm-cache
+npm run typecheck
+npm run lint
+npm run build
+npm test
+node node_modules/playwright/cli.js test --list
+PLAYWRIGHT_BROWSERS_PATH=/workspace/.cache/ms-playwright node node_modules/playwright/cli.js test --config ../baseline-e2e.config.mjs
+
+Independent route/PNG probe (while the baseline preview server is up):
+PLAYWRIGHT_BROWSERS_PATH=/workspace/.cache/ms-playwright node ../baseline-browser.mjs
+
+Independent configuration changes only test output/reporter/workers and the local
+WebKit executable path. It keeps baseline 4173 baseURL because existing tests have
+explicit 4173 references. Preview reuse is false, so another app is never silently tested.
+Product playwright.config.ts and tests are unmodified.
+
+Local Debian package files are under debs/, apt config/logs under apt/ and root.
+The wrapper uses actual Playwright bundled WebKit MiniBrowser without a dependency
+validation bypass. No host package installation was performed.

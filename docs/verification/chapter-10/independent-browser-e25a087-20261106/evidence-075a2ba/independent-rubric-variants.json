@@ -1,0 +1,394 @@
+[
+  {
+    "engine": "chromium",
+    "topic": "history",
+    "artifact": 0,
+    "requirements": [
+      0,
+      1,
+      2
+    ],
+    "status": "PASS",
+    "observed": [
+      {
+        "version": "initial",
+        "quiz": true,
+        "output": "正解。S1では1924年と確認できます。",
+        "expectedCompleteness": 1,
+        "expectedInstructionCompliance": 1
+      },
+      {
+        "version": "repair",
+        "quiz": true,
+        "output": "（結果未表示）",
+        "expectedCompleteness": 1,
+        "expectedInstructionCompliance": 1
+      },
+      {
+        "version": "final",
+        "quiz": true,
+        "output": "正解。S1では1924年と確認できます。",
+        "expectedCompleteness": 0,
+        "expectedInstructionCompliance": 0
+      }
+    ]
+  },
+  {
+    "engine": "chromium",
+    "topic": "history",
+    "artifact": 1,
+    "requirements": [],
+    "status": "PASS",
+    "observed": [
+      {
+        "version": "initial",
+        "quiz": false,
+        "output": "対象外",
+        "expectedCompleteness": 0,
+        "expectedInstructionCompliance": 1
+      },
+      {
+        "version": "repair",
+        "quiz": false,
+        "output": "対象外",
+        "expectedCompleteness": 0,
+        "expectedInstructionCompliance": 0
+      },
+      {
+        "version": "final",
+        "quiz": false,
+        "output": "対象外",
+        "expectedCompleteness": 0,
+        "expectedInstructionCompliance": 0
+      }
+    ]
+  },
+  {
+    "engine": "chromium",
+    "topic": "education",
+    "artifact": 1,
+    "requirements": [
+      2
+    ],
+    "status": "PASS",
+    "observed": [
+      {
+        "version": "initial",
+        "quiz": true,
+        "output": "正解。S1では8粒と確認できます。",
+        "expectedCompleteness": 0,
+        "expectedInstructionCompliance": 1
+      },
+      {
+        "version": "repair",
+        "quiz": true,
+        "output": "（結果未表示）",
+        "expectedCompleteness": 1,
+        "expectedInstructionCompliance": 1
+      },
+      {
+        "version": "final",
+        "quiz": true,
+        "output": "正解。S1では8粒と確認できます。",
+        "expectedCompleteness": 0,
+        "expectedInstructionCompliance": 0
+      }
+    ]
+  },
+  {
+    "engine": "chromium",
+    "topic": "education",
+    "artifact": 0,
+    "requirements": [
+      0,
+      1
+    ],
+    "status": "PASS",
+    "observed": [
+      {
+        "version": "initial",
+        "quiz": true,
+        "output": "正解。S1では8粒と確認できます。",
+        "expectedCompleteness": 1,
+        "expectedInstructionCompliance": 1
+      },
+      {
+        "version": "repair",
+        "quiz": true,
+        "output": "（結果未表示）",
+        "expectedCompleteness": 0,
+        "expectedInstructionCompliance": 1
+      },
+      {
+        "version": "final",
+        "quiz": true,
+        "output": "正解。S1では8粒と確認できます。",
+        "expectedCompleteness": 0,
+        "expectedInstructionCompliance": 0
+      }
+    ]
+  },
+  {
+    "engine": "chromium",
+    "topic": "business",
+    "artifact": 2,
+    "requirements": [
+      0,
+      1,
+      2
+    ],
+    "status": "PASS",
+    "observed": [
+      {
+        "version": "initial",
+        "quiz": true,
+        "output": "正解。S1では8分と確認できます。",
+        "expectedCompleteness": 1,
+        "expectedInstructionCompliance": 1
+      },
+      {
+        "version": "repair",
+        "quiz": true,
+        "output": "（結果未表示）",
+        "expectedCompleteness": 1,
+        "expectedInstructionCompliance": 1
+      },
+      {
+        "version": "final",
+        "quiz": true,
+        "output": "正解。S1では8分と確認できます。",
+        "expectedCompleteness": 0,
+        "expectedInstructionCompliance": 0
+      }
+    ]
+  },
+  {
+    "engine": "chromium",
+    "topic": "business",
+    "artifact": 2,
+    "requirements": [
+      0,
+      1
+    ],
+    "status": "PASS",
+    "observed": [
+      {
+        "version": "initial",
+        "quiz": false,
+        "output": "対象外",
+        "expectedCompleteness": 1,
+        "expectedInstructionCompliance": 1
+      },
+      {
+        "version": "repair",
+        "quiz": false,
+        "output": "対象外",
+        "expectedCompleteness": 0,
+        "expectedInstructionCompliance": 0
+      },
+      {
+        "version": "final",
+        "quiz": false,
+        "output": "対象外",
+        "expectedCompleteness": 0,
+        "expectedInstructionCompliance": 0
+      }
+    ]
+  },
+  {
+    "engine": "webkit",
+    "topic": "history",
+    "artifact": 0,
+    "requirements": [
+      0,
+      1,
+      2
+    ],
+    "status": "PASS",
+    "observed": [
+      {
+        "version": "initial",
+        "quiz": true,
+        "output": "正解。S1では1924年と確認できます。",
+        "expectedCompleteness": 1,
+        "expectedInstructionCompliance": 1
+      },
+      {
+        "version": "repair",
+        "quiz": true,
+        "output": "（結果未表示）",
+        "expectedCompleteness": 1,
+        "expectedInstructionCompliance": 1
+      },
+      {
+        "version": "final",
+        "quiz": true,
+        "output": "正解。S1では1924年と確認できます。",
+        "expectedCompleteness": 0,
+        "expectedInstructionCompliance": 0
+      }
+    ]
+  },
+  {
+    "engine": "webkit",
+    "topic": "history",
+    "artifact": 1,
+    "requirements": [],
+    "status": "PASS",
+    "observed": [
+      {
+        "version": "initial",
+        "quiz": false,
+        "output": "対象外",
+        "expectedCompleteness": 0,
+        "expectedInstructionCompliance": 1
+      },
+      {
+        "version": "repair",
+        "quiz": false,
+        "output": "対象外",
+        "expectedCompleteness": 0,
+        "expectedInstructionCompliance": 0
+      },
+      {
+        "version": "final",
+        "quiz": false,
+        "output": "対象外",
+        "expectedCompleteness": 0,
+        "expectedInstructionCompliance": 0
+      }
+    ]
+  },
+  {
+    "engine": "webkit",
+    "topic": "education",
+    "artifact": 1,
+    "requirements": [
+      2
+    ],
+    "status": "PASS",
+    "observed": [
+      {
+        "version": "initial",
+        "quiz": true,
+        "output": "正解。S1では8粒と確認できます。",
+        "expectedCompleteness": 0,
+        "expectedInstructionCompliance": 1
+      },
+      {
+        "version": "repair",
+        "quiz": true,
+        "output": "（結果未表示）",
+        "expectedCompleteness": 1,
+        "expectedInstructionCompliance": 1
+      },
+      {
+        "version": "final",
+        "quiz": true,
+        "output": "正解。S1では8粒と確認できます。",
+        "expectedCompleteness": 0,
+        "expectedInstructionCompliance": 0
+      }
+    ]
+  },
+  {
+    "engine": "webkit",
+    "topic": "education",
+    "artifact": 0,
+    "requirements": [
+      0,
+      1
+    ],
+    "status": "PASS",
+    "observed": [
+      {
+        "version": "initial",
+        "quiz": true,
+        "output": "正解。S1では8粒と確認できます。",
+        "expectedCompleteness": 1,
+        "expectedInstructionCompliance": 1
+      },
+      {
+        "version": "repair",
+        "quiz": true,
+        "output": "（結果未表示）",
+        "expectedCompleteness": 0,
+        "expectedInstructionCompliance": 1
+      },
+      {
+        "version": "final",
+        "quiz": true,
+        "output": "正解。S1では8粒と確認できます。",
+        "expectedCompleteness": 0,
+        "expectedInstructionCompliance": 0
+      }
+    ]
+  },
+  {
+    "engine": "webkit",
+    "topic": "business",
+    "artifact": 2,
+    "requirements": [
+      0,
+      1,
+      2
+    ],
+    "status": "PASS",
+    "observed": [
+      {
+        "version": "initial",
+        "quiz": true,
+        "output": "正解。S1では8分と確認できます。",
+        "expectedCompleteness": 1,
+        "expectedInstructionCompliance": 1
+      },
+      {
+        "version": "repair",
+        "quiz": true,
+        "output": "（結果未表示）",
+        "expectedCompleteness": 1,
+        "expectedInstructionCompliance": 1
+      },
+      {
+        "version": "final",
+        "quiz": true,
+        "output": "正解。S1では8分と確認できます。",
+        "expectedCompleteness": 0,
+        "expectedInstructionCompliance": 0
+      }
+    ]
+  },
+  {
+    "engine": "webkit",
+    "topic": "business",
+    "artifact": 2,
+    "requirements": [
+      0,
+      1
+    ],
+    "status": "PASS",
+    "observed": [
+      {
+        "version": "initial",
+        "quiz": false,
+        "output": "対象外",
+        "expectedCompleteness": 1,
+        "expectedInstructionCompliance": 1
+      },
+      {
+        "version": "repair",
+        "quiz": false,
+        "output": "対象外",
+        "expectedCompleteness": 0,
+        "expectedInstructionCompliance": 0
+      },
+      {
+        "version": "final",
+        "quiz": false,
+        "output": "対象外",
+        "expectedCompleteness": 0,
+        "expectedInstructionCompliance": 0
+      }
+    ]
+  }
+]

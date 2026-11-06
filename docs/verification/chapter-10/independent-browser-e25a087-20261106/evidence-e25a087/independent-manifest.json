@@ -1,0 +1,67 @@
+{
+  "baseline": "3d4c7acde88ea1ebf2fff0d3009ad877d5a1bbd3",
+  "red_candidate": "557f12e3c408a5735f9f0686f1e16361c6578c22",
+  "intermediate": "075a2ba59df6f73a2728c64ebedf87ede5b8b6cc",
+  "full_tested": "9281516d56c3babab126114f451b7aa58a089f0b",
+  "final_head": "e25a08791a8b97036e2abaa11457d88a0a6f9519",
+  "src_tree": "aad3fde4eabc1c93272be7b132246768bfffe1ce",
+  "unit_final": 165,
+  "full_e2e_928": {
+    "startTime": "2026-11-06T10:44:35.960Z",
+    "duration": 398717.157,
+    "expected": 906,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "new_final_cases": {
+    "startTime": "2026-11-06T10:51:37.116Z",
+    "duration": 3657.926,
+    "expected": 2,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "independent_final_matrix": {
+    "cases": 32,
+    "failed": 0
+  },
+  "independent_928_restore": {
+    "cases": 28,
+    "failed": 0
+  },
+  "intermediate_copy_storage": {
+    "cases": 44,
+    "failed": 0,
+    "head": "075a2ba"
+  },
+  "intermediate_rubric_variants": {
+    "cases": 12,
+    "failed": 0,
+    "head": "075a2ba"
+  },
+  "P1_P2_remaining": [],
+  "P3_remaining": [],
+  "not_tested": [
+    "real Google",
+    "real Safari/iPhone",
+    "Android hardware",
+    "screen reader",
+    "physical clipboard",
+    "account eligibility or real document transfer",
+    "educational efficacy"
+  ],
+  "product_modified": false,
+  "external_repository_write": false,
+  "ci_run": 42205160413,
+  "verdict": "PASS_SCOPED",
+  "final_ci": {
+    "head": "e25a08791a8b97036e2abaa11457d88a0a6f9519",
+    "run": 42205160413,
+    "job": 127849828521,
+    "conclusion": "success",
+    "unit": 165,
+    "e2e": 908,
+    "raw_file": "final-ci-job-127849828521.exact.log"
+  }
+}

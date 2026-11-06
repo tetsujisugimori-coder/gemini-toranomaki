@@ -1,0 +1,22 @@
+{
+  "head": "e25a08791a8b97036e2abaa11457d88a0a6f9519",
+  "run": 42205160413,
+  "job": 127849828521,
+  "conclusion": "success",
+  "unit": 165,
+  "e2e": 908,
+  "vulnerabilities": {
+    "total": 10,
+    "moderate": 8,
+    "critical": 2
+  },
+  "raw_sha256": "61f5016924344af6f5c2cc208e4e72dcf8e335cb3d4428d125692d2a6cb1bfaa",
+  "raw_utf8_bytes": 303957,
+  "matched_lines": [
+    "2026-11-06T10:46:11.6132943Z (node:2393) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.",
+    "2026-11-06T10:46:43.1280081Z 10 vulnerabilities (8 moderate, 2 critical)",
+    "2026-11-06T10:46:53.5895256Z       Tests  165 passed (165)",
+    "2026-11-06T10:55:15.4932857Z   908 passed (7.6m)",
+    "2026-11-06T10:55:15.4965288Z ##[notice]  908 passed (7.6m)"
+  ]
+}

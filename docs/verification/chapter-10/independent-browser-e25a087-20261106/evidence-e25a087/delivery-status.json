@@ -1,0 +1,14 @@
+{
+  "library_upload": "BLOCKED_BEFORE_PREPARATION",
+  "reason": "hosted apps tools/list HTTP 401",
+  "files_prepared": false,
+  "transferred": false,
+  "finalized": false,
+  "library_ids": [],
+  "retry": false,
+  "history_checked": true,
+  "evidence_branch": "evidence/chapter10-independent-e25a087-20261106",
+  "repository_commit_push": "NOT_PERFORMED",
+  "local_deliverables_ready": true,
+  "not_auto_review_rejection": true
+}

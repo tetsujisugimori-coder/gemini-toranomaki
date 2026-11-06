@@ -1,0 +1,305 @@
+{
+  "included_png": [
+    "baseline/chromium-baseline-ch9-320-dark-root200-reduced.png",
+    "evidence-075a2ba/matrix/webkit-390-dark-100-failure.png",
+    "evidence-557f12e/chromium-counterexample-corrupt-achievement.png",
+    "evidence-557f12e/chromium-counterexample-quality2-false-pass.png",
+    "evidence-557f12e/chromium-counterexample-quality6-false-pass.png",
+    "evidence-557f12e/chromium-counterexample-repair-no-explanation.png",
+    "evidence-557f12e/matrix/webkit-390-dark-200-failure.png",
+    "evidence-557f12e/webkit-counterexample-corrupt-achievement.png",
+    "evidence-557f12e/webkit-counterexample-quality2-false-pass.png",
+    "evidence-557f12e/webkit-counterexample-quality6-false-pass.png",
+    "evidence-557f12e/webkit-counterexample-repair-no-explanation.png",
+    "evidence-557f12e/webkit-independent-failure.png",
+    "evidence-9281516/chromium-invalid-mode-all-current-cleared.png",
+    "evidence-9281516/chromium-protected-P2-fixed.png",
+    "evidence-9281516/sequence/chromium-final-observed.png",
+    "evidence-9281516/sequence/chromium-repair-item2-false-pass-rejected.png",
+    "evidence-9281516/sequence/chromium-repair-item6-false-pass-rejected.png",
+    "evidence-9281516/sequence/webkit-final-observed.png",
+    "evidence-9281516/sequence/webkit-repair-item2-false-pass-rejected.png",
+    "evidence-9281516/sequence/webkit-repair-item6-false-pass-rejected.png",
+    "evidence-9281516/webkit-invalid-mode-all-current-cleared.png",
+    "evidence-9281516/webkit-protected-P2-fixed.png",
+    "evidence-e25a087/matrix/chromium-1280-light-100-quality.png",
+    "evidence-e25a087/matrix/chromium-320-dark-200-quality.png",
+    "evidence-e25a087/matrix/webkit-320-dark-200-quality.png",
+    "evidence-e25a087/matrix/webkit-375-light-200-artifact.png",
+    "evidence-e25a087/matrix/webkit-390-dark-100-artifact.png"
+  ],
+  "omitted_png": [
+    {
+      "path": "baseline/webkit-baseline-ch9-320-dark-root200-reduced.png",
+      "bytes": 750239,
+      "reason": "unselected repeated state or superseded visual; raw script/JSON/log retained"
+    },
+    {
+      "path": "evidence-075a2ba/chromium-protected-P2-fixed.png",
+      "bytes": 321848,
+      "reason": "unselected repeated state or superseded visual; raw script/JSON/log retained"
+    },
+    {
+      "path": "evidence-075a2ba/matrix-run2/chromium-1280-light-100-quality.png",
+      "bytes": 50848,
+      "reason": "unselected repeated state or superseded visual; raw script/JSON/log retained"
+    },
+    {
+      "path": "evidence-075a2ba/matrix-run2/chromium-320-dark-200-quality.png",
+      "bytes": 96780,
+      "reason": "unselected repeated state or superseded visual; raw script/JSON/log retained"
+    },
+    {
+      "path": "evidence-075a2ba/matrix-run2/chromium-375-light-200-artifact.png",
+      "bytes": 177162,
+      "reason": "unselected repeated state or superseded visual; raw script/JSON/log retained"
+    },
+    {
+      "path": "evidence-075a2ba/matrix-run2/chromium-390-dark-100-artifact.png",
+      "bytes": 85240,
+      "reason": "unselected repeated state or superseded visual; raw script/JSON/log retained"
+    },
+    {
+      "path": "evidence-075a2ba/matrix-run2/webkit-1280-light-100-quality.png",
+      "bytes": 64261,
+      "reason": "unselected repeated state or superseded visual; raw script/JSON/log retained"
+    },
+    {
+      "path": "evidence-075a2ba/matrix-run2/webkit-320-dark-200-quality.png",
+      "bytes": 141329,
+      "reason": "unselected repeated state or superseded visual; raw script/JSON/log retained"
+    },
+    {
+      "path": "evidence-075a2ba/matrix-run2/webkit-375-light-200-artifact.png",
+      "bytes": 218583,
+      "reason": "unselected repeated state or superseded visual; raw script/JSON/log retained"
+    },
+    {
+      "path": "evidence-075a2ba/matrix-run2/webkit-390-dark-100-artifact.png",
+      "bytes": 111580,
+      "reason": "unselected repeated state or superseded visual; raw script/JSON/log retained"
+    },
+    {
+      "path": "evidence-075a2ba/matrix/chromium-1280-light-100-quality.png",
+      "bytes": 50848,
+      "reason": "unselected repeated state or superseded visual; raw script/JSON/log retained"
+    },
+    {
+      "path": "evidence-075a2ba/matrix/chromium-320-dark-200-quality.png",
+      "bytes": 96780,
+      "reason": "unselected repeated state or superseded visual; raw script/JSON/log retained"
+    },
+    {
+      "path": "evidence-075a2ba/matrix/chromium-375-light-200-artifact.png",
+      "bytes": 177162,
+      "reason": "unselected repeated state or superseded visual; raw script/JSON/log retained"
+    },
+    {
+      "path": "evidence-075a2ba/matrix/chromium-390-dark-100-artifact.png",
+      "bytes": 85240,
+      "reason": "unselected repeated state or superseded visual; raw script/JSON/log retained"
+    },
+    {
+      "path": "evidence-075a2ba/matrix/webkit-1280-light-100-quality.png",
+      "bytes": 64261,
+      "reason": "unselected repeated state or superseded visual; raw script/JSON/log retained"
+    },
+    {
+      "path": "evidence-075a2ba/matrix/webkit-320-dark-200-quality.png",
+      "bytes": 140027,
+      "reason": "unselected repeated state or superseded visual; raw script/JSON/log retained"
+    },
+    {
+      "path": "evidence-075a2ba/matrix/webkit-375-light-200-artifact.png",
+      "bytes": 218583,
+      "reason": "unselected repeated state or superseded visual; raw script/JSON/log retained"
+    },
+    {
+      "path": "evidence-075a2ba/sequence/chromium-final-observed.png",
+      "bytes": 89381,
+      "reason": "unselected repeated state or superseded visual; raw script/JSON/log retained"
+    },
+    {
+      "path": "evidence-075a2ba/sequence/chromium-repair-item2-false-pass-rejected.png",
+      "bytes": 67861,
+      "reason": "unselected repeated state or superseded visual; raw script/JSON/log retained"
+    },
+    {
+      "path": "evidence-075a2ba/sequence/chromium-repair-item6-false-pass-rejected.png",
+      "bytes": 60720,
+      "reason": "unselected repeated state or superseded visual; raw script/JSON/log retained"
+    },
+    {
+      "path": "evidence-075a2ba/sequence/chromium-repair-observed.png",
+      "bytes": 85832,
+      "reason": "unselected repeated state or superseded visual; raw script/JSON/log retained"
+    },
+    {
+      "path": "evidence-075a2ba/sequence/webkit-final-observed.png",
+      "bytes": 115783,
+      "reason": "unselected repeated state or superseded visual; raw script/JSON/log retained"
+    },
+    {
+      "path": "evidence-075a2ba/sequence/webkit-repair-item2-false-pass-rejected.png",
+      "bytes": 97746,
+      "reason": "unselected repeated state or superseded visual; raw script/JSON/log retained"
+    },
+    {
+      "path": "evidence-075a2ba/sequence/webkit-repair-item6-false-pass-rejected.png",
+      "bytes": 82361,
+      "reason": "unselected repeated state or superseded visual; raw script/JSON/log retained"
+    },
+    {
+      "path": "evidence-075a2ba/sequence/webkit-repair-observed.png",
+      "bytes": 111718,
+      "reason": "unselected repeated state or superseded visual; raw script/JSON/log retained"
+    },
+    {
+      "path": "evidence-075a2ba/webkit-protected-P2-fixed.png",
+      "bytes": 419107,
+      "reason": "unselected repeated state or superseded visual; raw script/JSON/log retained"
+    },
+    {
+      "path": "evidence-557f12e/chromium-final-observed.png",
+      "bytes": 89381,
+      "reason": "unselected repeated state or superseded visual; raw script/JSON/log retained"
+    },
+    {
+      "path": "evidence-557f12e/chromium-repair-observed.png",
+      "bytes": 85832,
+      "reason": "unselected repeated state or superseded visual; raw script/JSON/log retained"
+    },
+    {
+      "path": "evidence-557f12e/matrix-run2/chromium-1280-light-100-quality.png",
+      "bytes": 50848,
+      "reason": "unselected repeated state or superseded visual; raw script/JSON/log retained"
+    },
+    {
+      "path": "evidence-557f12e/matrix-run2/chromium-320-dark-200-quality.png",
+      "bytes": 96760,
+      "reason": "unselected repeated state or superseded visual; raw script/JSON/log retained"
+    },
+    {
+      "path": "evidence-557f12e/matrix-run2/chromium-375-light-200-artifact.png",
+      "bytes": 177162,
+      "reason": "unselected repeated state or superseded visual; raw script/JSON/log retained"
+    },
+    {
+      "path": "evidence-557f12e/matrix-run2/chromium-390-dark-100-artifact.png",
+      "bytes": 85240,
+      "reason": "unselected repeated state or superseded visual; raw script/JSON/log retained"
+    },
+    {
+      "path": "evidence-557f12e/matrix-run2/webkit-1280-light-100-quality.png",
+      "bytes": 64261,
+      "reason": "unselected repeated state or superseded visual; raw script/JSON/log retained"
+    },
+    {
+      "path": "evidence-557f12e/matrix-run2/webkit-320-dark-200-quality.png",
+      "bytes": 141319,
+      "reason": "unselected repeated state or superseded visual; raw script/JSON/log retained"
+    },
+    {
+      "path": "evidence-557f12e/matrix-run2/webkit-375-light-200-artifact.png",
+      "bytes": 218583,
+      "reason": "unselected repeated state or superseded visual; raw script/JSON/log retained"
+    },
+    {
+      "path": "evidence-557f12e/matrix-run2/webkit-390-dark-100-artifact.png",
+      "bytes": 111580,
+      "reason": "unselected repeated state or superseded visual; raw script/JSON/log retained"
+    },
+    {
+      "path": "evidence-557f12e/matrix/chromium-1280-light-100-quality.png",
+      "bytes": 50848,
+      "reason": "unselected repeated state or superseded visual; raw script/JSON/log retained"
+    },
+    {
+      "path": "evidence-557f12e/matrix/chromium-320-dark-200-quality.png",
+      "bytes": 96760,
+      "reason": "unselected repeated state or superseded visual; raw script/JSON/log retained"
+    },
+    {
+      "path": "evidence-557f12e/matrix/chromium-375-light-200-artifact.png",
+      "bytes": 177162,
+      "reason": "unselected repeated state or superseded visual; raw script/JSON/log retained"
+    },
+    {
+      "path": "evidence-557f12e/matrix/chromium-390-dark-100-artifact.png",
+      "bytes": 85240,
+      "reason": "unselected repeated state or superseded visual; raw script/JSON/log retained"
+    },
+    {
+      "path": "evidence-557f12e/matrix/webkit-1280-light-100-quality.png",
+      "bytes": 64261,
+      "reason": "unselected repeated state or superseded visual; raw script/JSON/log retained"
+    },
+    {
+      "path": "evidence-557f12e/matrix/webkit-320-dark-100-failure.png",
+      "bytes": 876410,
+      "reason": "unselected repeated state or superseded visual; raw script/JSON/log retained"
+    },
+    {
+      "path": "evidence-557f12e/matrix/webkit-320-dark-200-quality.png",
+      "bytes": 140023,
+      "reason": "unselected repeated state or superseded visual; raw script/JSON/log retained"
+    },
+    {
+      "path": "evidence-557f12e/matrix/webkit-375-light-200-failure.png",
+      "bytes": 1601016,
+      "reason": "unselected repeated state or superseded visual; raw script/JSON/log retained"
+    },
+    {
+      "path": "evidence-557f12e/matrix/webkit-390-dark-100-artifact.png",
+      "bytes": 111580,
+      "reason": "unselected repeated state or superseded visual; raw script/JSON/log retained"
+    },
+    {
+      "path": "evidence-557f12e/sequence-run2/chromium-final-observed.png",
+      "bytes": 89381,
+      "reason": "unselected repeated state or superseded visual; raw script/JSON/log retained"
+    },
+    {
+      "path": "evidence-557f12e/sequence-run2/chromium-repair-observed.png",
+      "bytes": 85832,
+      "reason": "unselected repeated state or superseded visual; raw script/JSON/log retained"
+    },
+    {
+      "path": "evidence-557f12e/sequence-run2/webkit-final-observed.png",
+      "bytes": 115783,
+      "reason": "unselected repeated state or superseded visual; raw script/JSON/log retained"
+    },
+    {
+      "path": "evidence-557f12e/sequence-run2/webkit-repair-observed.png",
+      "bytes": 111718,
+      "reason": "unselected repeated state or superseded visual; raw script/JSON/log retained"
+    },
+    {
+      "path": "evidence-9281516/sequence/chromium-repair-observed.png",
+      "bytes": 85832,
+      "reason": "unselected repeated state or superseded visual; raw script/JSON/log retained"
+    },
+    {
+      "path": "evidence-9281516/sequence/webkit-repair-observed.png",
+      "bytes": 111718,
+      "reason": "unselected repeated state or superseded visual; raw script/JSON/log retained"
+    },
+    {
+      "path": "evidence-e25a087/matrix/chromium-375-light-200-artifact.png",
+      "bytes": 177162,
+      "reason": "unselected repeated state or superseded visual; raw script/JSON/log retained"
+    },
+    {
+      "path": "evidence-e25a087/matrix/chromium-390-dark-100-artifact.png",
+      "bytes": 85240,
+      "reason": "unselected repeated state or superseded visual; raw script/JSON/log retained"
+    },
+    {
+      "path": "evidence-e25a087/matrix/webkit-1280-light-100-quality.png",
+      "bytes": 64261,
+      "reason": "unselected repeated state or superseded visual; raw script/JSON/log retained"
+    }
+  ],
+  "original_full_zip_local_sha256": "dcba7c32827c806386dde4c292f2109e6a15ece23a1f8ac9c6ce7a40c5fd8a5e",
+  "zip_not_committed": true
+}

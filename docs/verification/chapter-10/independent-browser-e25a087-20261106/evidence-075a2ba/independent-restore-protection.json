@@ -1,0 +1,158 @@
+[
+  {
+    "engine": "chromium",
+    "test": "normal",
+    "status": "PASS",
+    "protectedExpected": false
+  },
+  {
+    "engine": "chromium",
+    "test": "normal-key-order",
+    "status": "PASS",
+    "protectedExpected": false
+  },
+  {
+    "engine": "chromium",
+    "test": "partial-valid",
+    "status": "PASS",
+    "protectedExpected": false
+  },
+  {
+    "engine": "chromium",
+    "test": "original-P2",
+    "status": "PASS",
+    "protectedExpected": true
+  },
+  {
+    "engine": "chromium",
+    "test": "impossible-achievements",
+    "status": "PASS",
+    "protectedExpected": true
+  },
+  {
+    "engine": "chromium",
+    "test": "invalid-boolean",
+    "status": "PASS",
+    "protectedExpected": true
+  },
+  {
+    "engine": "chromium",
+    "test": "invalid-artifact",
+    "status": "PASS",
+    "protectedExpected": true
+  },
+  {
+    "engine": "chromium",
+    "test": "invalid-answers",
+    "status": "PASS",
+    "protectedExpected": true
+  },
+  {
+    "engine": "chromium",
+    "test": "unknown-property",
+    "status": "PASS",
+    "protectedExpected": true
+  },
+  {
+    "engine": "chromium",
+    "test": "primitive",
+    "status": "PASS",
+    "protectedExpected": true
+  },
+  {
+    "engine": "chromium",
+    "test": "null",
+    "status": "PASS",
+    "protectedExpected": true
+  },
+  {
+    "engine": "chromium",
+    "test": "array",
+    "status": "PASS",
+    "protectedExpected": true
+  },
+  {
+    "engine": "chromium",
+    "test": "invalid-JSON",
+    "status": "PASS",
+    "protectedExpected": true
+  },
+  {
+    "engine": "webkit",
+    "test": "normal",
+    "status": "PASS",
+    "protectedExpected": false
+  },
+  {
+    "engine": "webkit",
+    "test": "normal-key-order",
+    "status": "PASS",
+    "protectedExpected": false
+  },
+  {
+    "engine": "webkit",
+    "test": "partial-valid",
+    "status": "PASS",
+    "protectedExpected": false
+  },
+  {
+    "engine": "webkit",
+    "test": "original-P2",
+    "status": "PASS",
+    "protectedExpected": true
+  },
+  {
+    "engine": "webkit",
+    "test": "impossible-achievements",
+    "status": "PASS",
+    "protectedExpected": true
+  },
+  {
+    "engine": "webkit",
+    "test": "invalid-boolean",
+    "status": "PASS",
+    "protectedExpected": true
+  },
+  {
+    "engine": "webkit",
+    "test": "invalid-artifact",
+    "status": "PASS",
+    "protectedExpected": true
+  },
+  {
+    "engine": "webkit",
+    "test": "invalid-answers",
+    "status": "PASS",
+    "protectedExpected": true
+  },
+  {
+    "engine": "webkit",
+    "test": "unknown-property",
+    "status": "PASS",
+    "protectedExpected": true
+  },
+  {
+    "engine": "webkit",
+    "test": "primitive",
+    "status": "PASS",
+    "protectedExpected": true
+  },
+  {
+    "engine": "webkit",
+    "test": "null",
+    "status": "PASS",
+    "protectedExpected": true
+  },
+  {
+    "engine": "webkit",
+    "test": "array",
+    "status": "PASS",
+    "protectedExpected": true
+  },
+  {
+    "engine": "webkit",
+    "test": "invalid-JSON",
+    "status": "PASS",
+    "protectedExpected": true
+  }
+]
