@@ -1112,3 +1112,31 @@ fieldset + fieldset {
 .services-practice li { margin-block: .6rem; }
 .services-practice fieldset { min-width: 0; }
 .services-practice nav a { display: inline-flex; align-items: center; min-height: 44px; }
+
+/* Chapter 10: keep source context near the decision, stack on narrow screens. */
+.capstone { overflow-wrap: anywhere; }
+.cap-toolbar { display: grid; gap: .6rem; }
+.cap-field { display: grid; gap: .35rem; margin-block: .8rem; }
+.cap-field select, .cap-field textarea { width: 100%; min-width: 0; font: inherit; color: inherit; background: var(--surface); border: 1px solid var(--line); padding: .6rem; border-radius: .4rem; }
+.cap-field select { max-width: 100%; white-space: normal; }
+.cap-field textarea { resize: vertical; }
+.cap-field :focus-visible, .capstone h2:focus { outline: 3px solid #c07123; outline-offset: 3px; }
+.cap-check { display: flex; gap: .65rem; align-items: flex-start; margin-block: .6rem; }
+.cap-check input { flex: 0 0 auto; margin-top: .6rem; }
+.cap-workspace { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 1.2rem; align-items: start; }
+.cap-main, .cap-context, .cap-comparison > * { min-width: 0; }
+.cap-context { margin-top: 0; }
+.capstone fieldset { min-width: 0; padding: .8rem; margin-block: 1rem; border: 1px solid var(--line); border-radius: .5rem; }
+.capstone legend { max-width: 100%; font-weight: 700; }
+.capstone pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+.cap-comparison { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: .7rem; }
+.cap-artifact { padding: 1rem; background: var(--soft); border: 1px solid var(--line); border-radius: .5rem; }
+.cap-artifact:only-child { grid-column: 1 / -1; }
+.cap-panel-switch, .cap-navigation { display: flex; flex-wrap: wrap; gap: .5rem; margin-block: 1rem; }
+.cap-panel-switch button[aria-pressed="true"] { border: 2px solid var(--accent); }
+.capstone button { max-width: 100%; overflow-wrap: anywhere; }
+.capstone nav { display: flex; flex-wrap: wrap; gap: 1rem; padding: 0; }
+.cap-quality { border-left: 4px solid var(--accent) !important; }
+@media (max-width: 760px) { .cap-workspace, .cap-comparison { grid-template-columns: minmax(0,1fr); } }
+@media (prefers-reduced-motion: reduce) { .capstone *, .capstone *::before, .capstone *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+.cap-selection { margin: .2rem 0 0; font-size: .9em; color: var(--muted); overflow-wrap: anywhere; }

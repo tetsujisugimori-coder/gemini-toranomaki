@@ -206,7 +206,7 @@ async function settleCopy(p: Page, index: number, success: boolean) {
   );
 }
 
-test("chapter eight is reachable from navigation, curriculum and chapter-one music map; ten remains planned", async ({
+test("chapter eight is reachable from navigation, curriculum and chapter-one music map; ten is available", async ({
   page,
 }) => {
   await page.goto("#curriculum");
@@ -222,7 +222,7 @@ test("chapter eight is reachable from navigation, curriculum and chapter-one mus
   for (const n of [10]) {
     await page.goto(`#chapter-${n}`);
     await expect(
-      page.getByRole("heading", { name: "準備中", exact: true }),
+      page.getByRole("heading", { name: "STEP 0 環境を準備", exact: true }),
     ).toBeVisible();
   }
   await page.getByRole("link", { name: "第8章を学ぶ", exact: true }).click();

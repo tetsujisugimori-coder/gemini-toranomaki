@@ -54,7 +54,7 @@ test("purpose and reverse map show reasons, alternatives and real chapter overvi
   ).toBeVisible();
   await page.goto("#chapter-10");
   await expect(
-    page.getByRole("heading", { name: "準備中", exact: true }),
+    page.getByRole("heading", { name: "STEP 0 環境を準備", exact: true }),
   ).toBeVisible();
   await page.getByRole("link", { name: "第1章を学ぶ", exact: true }).click();
   await page.getByRole("button", { name: "機能から探す", exact: true }).click();

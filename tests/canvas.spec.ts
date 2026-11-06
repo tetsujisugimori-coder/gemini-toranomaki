@@ -119,7 +119,7 @@ async function clipboard(p: Page) {
   );
 }
 
-test("Canvas is reachable from curriculum, navigation and chapter-one map; chapters seven and eight are available and chapters nine through ten remain planned", async ({
+test("Canvas is reachable from curriculum, navigation and chapter-one map; chapters seven and eight are available and chapters nine through ten are available", async ({
   page,
 }) => {
   await page.goto("#curriculum");
@@ -151,7 +151,7 @@ test("Canvas is reachable from curriculum, navigation and chapter-one map; chapt
       await expect(page.getByRole("heading", { name: "AI家庭教師を設計する" })).toBeVisible();
     } else {
       await expect(
-        page.getByRole("heading", { name: "準備中", exact: true }),
+        page.getByRole("heading", { name: "STEP 0 環境を準備", exact: true }),
       ).toBeVisible();
     }
   }

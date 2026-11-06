@@ -72,7 +72,7 @@ async function stored(page: Page) {
     nanoKey,
   );
 }
-test("chapter navigation and intro connect to chapter7 while chapter10 stays planned", async ({
+test("chapter navigation and intro connect to chapter7 while chapter10 is available", async ({
   page,
 }) => {
   await page.goto("#curriculum");
@@ -90,7 +90,7 @@ test("chapter navigation and intro connect to chapter7 while chapter10 stays pla
   ).toBeVisible();
   await page.goto("#chapter-10");
   await expect(
-    page.getByRole("heading", { name: "準備中", exact: true }),
+    page.getByRole("heading", { name: "STEP 0 環境を準備", exact: true }),
   ).toBeVisible();
 });
 test("workshop predicts before display and renders four independent conditions with exact text", async ({
