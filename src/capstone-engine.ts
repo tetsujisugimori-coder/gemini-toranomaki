@@ -11,6 +11,21 @@ import {
 import type { CapstoneRecord, QualityAnswer } from "./capstone-storage";
 export const interactive = (r: CapstoneRecord) =>
   r.artifact === 0 || r.requirements.includes(2);
+// Shared by the rendered artifact and the rubric; a broken button cannot provide its explanation.
+export function artifactFeatures(r: CapstoneRecord, version: Version) {
+  return {
+    references: version !== "initial" && r.requirements.includes(0),
+    limits: version !== "initial" && r.requirements.includes(1),
+    quiz: interactive(r),
+    explanation: interactive(r) && version !== "repair",
+  };
+}
+export function missingRequirements(r: CapstoneRecord, version: Version) {
+  const f = artifactFeatures(r, version);
+  return r.requirements.filter(
+    (n) => ![f.references, f.limits, f.explanation][n],
+  );
+}
 export function notebookText(r: CapstoneRecord) {
   const t = topicFor(r.topic);
   return [
@@ -52,7 +67,9 @@ export function qualityCase(
   const t = topicFor(r.topic),
     initial = v === "initial",
     missing = !r.sources.includes(0) || !r.sources.includes(1),
-    needs = r.requirements.some((n) => n !== 2),
+    unmet = missingRequirements(r, v),
+    brokenInteraction =
+      artifactFeatures(r, v).quiz && !artifactFeatures(r, v).explanation,
     incompletePrompt = r.prompt.length < 4;
   const cases: QualityCase[] = [
     {
@@ -62,18 +79,17 @@ export function qualityCase(
       reason: "テーマの対象と目的を本文で確認できる。",
     },
     {
-      verdict: initial && needs ? 1 : missing ? 2 : 0,
-      improvement: initial && needs ? 2 : missing ? 5 : 0,
+      verdict: unmet.length > 0 ? 1 : missing ? 2 : 0,
+      improvement:
+        unmet.length > 0 ? (brokenInteraction ? 3 : 2) : missing ? 5 : 0,
       evidence:
-        initial && needs
-          ? `初版には完成条件「${r.requirements
-              .filter((n) => n !== 2)
-              .map((n) => requirements[n])
-              .join("／")}」がない`
+        unmet.length > 0
+          ? `現在の版には完成条件「${unmet.map((n) => requirements[n]).join("／")}」の表示がない${brokenInteraction ? "（確認ボタンが反応せず解説を表示できない）" : ""}`
           : missing
             ? "参照資料が不足し必要な事実を確認できない"
             : "選択した完成条件が本文に揃っている",
-      reason: "STEP 1の現在の完成条件と成果物を照合する。",
+      reason:
+        "STEP 1の現在の完成条件と、実際に利用できる本文・解説を照合する。",
     },
     {
       verdict: initial ? 1 : missing ? 2 : 0,
@@ -104,15 +120,25 @@ export function qualityCase(
       reason: "発行日と対象時期の両方を確認する。",
     },
     {
-      verdict: initial || incompletePrompt ? 1 : missing ? 2 : 0,
-      improvement: initial || incompletePrompt ? 2 : missing ? 5 : 0,
+      verdict:
+        initial || incompletePrompt || brokenInteraction ? 1 : missing ? 2 : 0,
+      improvement:
+        initial || incompletePrompt
+          ? 2
+          : brokenInteraction
+            ? 3
+            : missing
+              ? 5
+              : 0,
       evidence: incompletePrompt
         ? "制作指示自体に不足する要素があり、指示を改善する必要がある"
         : initial
           ? "制作指示の『資料外の主張は採用しない』に反する断定がある"
-          : missing
-            ? "制作指示の根拠確認が資料不足で保留"
-            : "制作指示の対象・形式・根拠・完成条件を確認できる",
+          : brokenInteraction
+            ? "制作指示の動作確認・解説条件を、反応しない確認ボタンが満たしていない"
+            : missing
+              ? "制作指示の根拠確認が資料不足で保留"
+              : "制作指示の対象・形式・根拠・完成条件を確認できる",
       reason: "よい依頼文でも出力が指示通りかは別に検査する。",
     },
     {

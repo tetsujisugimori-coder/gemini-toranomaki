@@ -116,7 +116,7 @@ describe("capstone evidence and assignment", () => {
     const r = candidate();
     expect(
       Array.from({ length: 10 }, (_, i) => qualityCase(r, "repair", i).verdict),
-    ).toEqual([0, 0, 0, 0, 0, 0, 1, 1, 0, 0]);
+    ).toEqual([0, 1, 0, 0, 0, 1, 1, 1, 0, 0]);
     expect(qualityCase(r, "repair", 6).improvement).toBe(4);
     expect(qualityCase(r, "repair", 7).improvement).toBe(3);
     expect(
@@ -231,7 +231,7 @@ describe("capstone storage isolation and invalidation", () => {
   });
   it("validates unknown types, oversized values and exact array lengths", () => {
     const r = sanitizeCapstone({
-      topic: "unknown",
+      topic: "history",
       step: 99,
       mode: -2,
       sources: [0, 1, 1, "2", 9],
@@ -245,6 +245,9 @@ describe("capstone storage isolation and invalidation", () => {
       version: "other",
     });
     expect(r.topic).toBe("history");
+    expect(
+      sanitizeCapstone({ topic: "unknown", achieved: [2, 3] }).achieved,
+    ).toEqual([]);
     expect(r.step).toBe(0);
     expect(r.sources).toEqual([0, 1]);
     expect(r.plan).toEqual([0, 1, 2, 3]);
@@ -351,6 +354,7 @@ describe("capstone storage isolation and invalidation", () => {
     expect(loadCapstone()).toEqual({
       record: freshCapstone(),
       available: false,
+      protected: true,
     });
     expect(map.get(capstoneKey)).toBe("{bad");
   });
@@ -380,4 +384,81 @@ it("quality follows selected conditions and the instruction in every version", (
   expect(
     qualityCase({ ...r, requirements: [] }, "initial", 9).evidence,
   ).toContain("本文には説明がない");
+});
+it("independent P2-1: broken revision cannot satisfy required explanation or instructions", () => {
+  const r = candidate();
+  expect(qualityCase(r, "repair", 1).verdict).toBe(1);
+  expect(qualityCase(r, "repair", 1).improvement).toBe(3);
+  expect(qualityCase(r, "repair", 1).evidence).toContain("解説");
+  expect(qualityCase(r, "repair", 5).verdict).toBe(1);
+  expect(qualityCase(r, "repair", 5).improvement).toBe(3);
+  expect(qualityCase(r, "repair", 7).verdict).toBe(1);
+});
+it("independent P2-2: valid JSON with corrupt types and unrelated achievements is protected", () => {
+  const map = storage(),
+    raw = JSON.stringify({
+      achieved: [2, 3, 4, 5, 6, 7],
+      topic: "corrupt",
+      created: "true",
+    });
+  map.set(capstoneKey, raw);
+  const loaded = loadCapstone();
+  expect(loaded.record.achieved).toEqual([]);
+  expect(loaded.available).toBe(false);
+  expect(map.get(capstoneKey)).toBe(raw);
+  expect(loaded.record.created).toBe(false);
+});
+it("storage correlation rejects impossible current successes but preserves historical IDs", () => {
+  const map = storage();
+  const raw = JSON.stringify({
+    ...freshCapstone(),
+    achieved: [2, 3, 4, 5, 6, 7],
+    history: ["education:2"],
+    copied: ["history:4"],
+  });
+  map.set(capstoneKey, raw);
+  const loaded = loadCapstone();
+  expect(loaded.record.achieved).toEqual([]);
+  expect(loaded.record.history).toEqual(["education:2"]);
+  expect(loaded.record.copied).toEqual(["history:4"]);
+  expect(loaded.protected).toBe(true);
+  expect(map.get(capstoneKey)).toBe(raw);
+});
+it("load rejects wrong boolean/ID/answer types and primitive JSON without rewriting originals", () => {
+  const map = storage();
+  for (const raw of [
+    "42",
+    "null",
+    "[]",
+    JSON.stringify({ ...freshCapstone(), created: "true" }),
+    JSON.stringify({ ...freshCapstone(), topic: "corrupt" }),
+    JSON.stringify({ ...freshCapstone(), requirements: [0, 7] }),
+    JSON.stringify({ ...freshCapstone(), research: [1, "2", 0] }),
+    JSON.stringify({ ...freshCapstone(), extra: "not persisted" }),
+  ]) {
+    map.set(capstoneKey, raw);
+    const loaded = loadCapstone();
+    expect(loaded.available).toBe(false);
+    expect(loaded.protected).toBe(true);
+    expect(map.get(capstoneKey)).toBe(raw);
+  }
+  map.delete(capstoneKey);
+  expect(loadCapstone().protected).toBe(false);
+});
+it("shared artifact features make the rubric track explanation availability in every topic/condition/version", () => {
+  for (const topic of topics)
+    for (let mask = 0; mask < 8; mask++) {
+      const requirements = [0, 1, 2].filter((i) => mask & (1 << i));
+      const r = { ...candidate(), topic: topic.id, requirements };
+      for (const v of versions) {
+        const missing =
+          v === "initial"
+            ? requirements.some((i) => i !== 2)
+            : v === "repair"
+              ? requirements.includes(2)
+              : false;
+        expect(qualityCase(r, v, 1).verdict).toBe(missing ? 1 : 0);
+        expect(qualityCase(r, v, 5).verdict).toBe(v === "final" ? 0 : 1);
+      }
+    }
 });

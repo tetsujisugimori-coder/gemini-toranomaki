@@ -21,9 +21,9 @@ import {
 } from "./capstone-data";
 import {
   answerCorrect,
+  artifactFeatures,
   capstonePrompt,
   evidenceOptions,
-  interactive,
   notebookText,
   promptIdentity,
   qualityCase,
@@ -150,7 +150,8 @@ function Artifact({
     [answer, setAnswer] = useState(-1),
     [result, setResult] = useState(""),
     [attempted, setAttempted] = useState<number[]>([]);
-  const initial = version === "initial";
+  const initial = version === "initial",
+    features = artifactFeatures(r, version);
   return (
     <section
       className="cap-artifact"
@@ -172,12 +173,12 @@ function Artifact({
       </p>
       <p>{r.sources.includes(0) ? t.second : "S1未選択：数値は保留"}。</p>
       {initial ? <p>{t.unsupported}。</p> : <p>断定を避ける：{t.scope}。</p>}
-      {!initial && r.requirements.includes(0) && (
+      {features.references && (
         <p>
           出典：S1「{t.primary}」、S2「{t.appendix}」。原文は資料パネルで確認。
         </p>
       )}
-      {!initial && r.requirements.includes(1) && (
+      {features.limits && (
         <p>対象範囲・制約：{t.scope}。追加の比較調査は未実施。</p>
       )}
       {r.artifact === 2 && (
@@ -185,7 +186,7 @@ function Artifact({
           提案：この記録の範囲で小さく試し、別条件の資料を集めてから拡張する。
         </p>
       )}
-      {interactive(r) && (
+      {features.quiz && (
         <fieldset>
           <legend>{t.question}</legend>
           {t.options.map((o, i) => (
@@ -216,7 +217,7 @@ function Artifact({
               setAttempted(next);
               if (next.includes(-1) && next.includes(0) && next.includes(1))
                 onTrial(version);
-              if (version !== "repair")
+              if (features.explanation)
                 setResult(
                   answer < 0
                     ? "回答を選んでください。"
@@ -264,6 +265,7 @@ export function Capstone({
       sources: number[];
       text: string;
     } | null>(null);
+  const preserveStored = useRef(boot.protected);
   const latest = useRef(r),
     copy = useStudyCopy(),
     customRef = useRef(custom),
@@ -278,7 +280,7 @@ export function Capstone({
       copy.invalidate();
     latest.current = n;
     setR(n);
-    setAvailable(saveCapstone(n));
+    setAvailable(preserveStored.current ? false : saveCapstone(n));
   }
   function patch(p: Partial<CapstoneRecord>) {
     update({ ...latest.current, ...p });
@@ -399,6 +401,8 @@ export function Capstone({
       {!available && (
         <p role="alert">
           保存できないか、保存データが破損しています。画面内では続けられますが、再読み込みで変更が失われたり古い記録が復活する場合があります。
+          {preserveStored.current &&
+            " 元の保存データは保持し、現在の達成へ転用せず、自動で上書きしません。記録保存を再開する場合は第10章の記録だけを確認付きで初期化してください。"}
         </p>
       )}
       <section className="cap-toolbar panel" aria-label="総合演習の現在位置">
@@ -1239,6 +1243,7 @@ export function Capstone({
                 setEpoch((e) => e + 1);
                 const dataOk = removeCapstone(),
                   progressOk = onComplete(false);
+                preserveStored.current = !dataOk;
                 setAvailable(dataOk);
                 setConfirm(false);
                 setMessage(

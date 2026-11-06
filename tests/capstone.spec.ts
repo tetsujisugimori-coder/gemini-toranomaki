@@ -95,13 +95,13 @@ async function quality(p: Page, v: Version) {
       v === "initial"
         ? [0, 1, 1, 1, 1, 1, 2, 0, 0, 1]
         : v === "repair"
-          ? [0, 0, 0, 0, 0, 0, 1, 1, 0, 0]
+          ? [0, 1, 0, 0, 0, 1, 1, 1, 0, 0]
           : Array(10).fill(0),
     improvement =
       v === "initial"
         ? [0, 2, 1, 1, 1, 2, 3, 0, 0, 2]
         : v === "repair"
-          ? [0, 0, 0, 0, 0, 0, 4, 3, 0, 0]
+          ? [0, 3, 0, 0, 0, 3, 4, 3, 0, 0]
           : Array(10).fill(0);
   for (let i = 0; i < 10; i++) {
     await select(p, `${i + 1} 判定`).selectOption(String(verdict[i]));
@@ -559,6 +559,7 @@ for (const width of [320, 375, 390, 1280])
             ...freshCapstone(),
             created: true,
             applied: true,
+            repairStyle: 1,
             version: "repair",
           },
         },
@@ -587,6 +588,7 @@ for (const width of [320, 375, 390, 1280])
         ).toBe(0);
       }
       await step(page, 5);
+      await expect(page.locator(".cap-comparison .cap-artifact")).toHaveCount(2);
       await select(page, "検査する版").focus();
       await page.keyboard.press("ArrowDown");
       await page.keyboard.press("Enter");
@@ -603,3 +605,146 @@ for (const width of [320, 375, 390, 1280])
         ),
       ).toBe(true);
     });
+
+test("independent P2-1: unavailable explanations fail completeness and instruction checks, then recover", async ({
+  page,
+}) => {
+  await candidate(page);
+  await step(page, 6);
+  await select(page, "修正指示の具体性").selectOption("1");
+  await button(page, "修正指示を適用").click();
+  await trial(page, "repair");
+  for (const i of [2, 6]) {
+    await select(page, `${i} 判定`).selectOption("0");
+    await select(page, `${i} 根拠`).selectOption(String((i - 1) % 3));
+    await select(page, `${i} 改善案`).selectOption("0");
+    await button(page, `${i} 根拠を照合`).click();
+    await expect(page.locator(".cap-quality").nth(i - 1)).toContainText(
+      "再確認",
+    );
+    await select(page, `${i} 判定`).selectOption("1");
+    await select(page, `${i} 改善案`).selectOption("3");
+    await button(page, `${i} 根拠を照合`).click();
+    await expect(page.locator(".cap-quality").nth(i - 1)).toContainText(
+      "固定資料との照合OK",
+    );
+    await expect(page.locator(".cap-quality").nth(i - 1)).toContainText(
+      i === 2 ? "解説を表示できない" : "反応しない確認ボタン",
+    );
+  }
+  await button(page, "退行も直した再修正版を確認").click();
+  await trial(page, "final");
+  for (const i of [2, 6]) {
+    await select(page, `${i} 判定`).selectOption("0");
+    await select(page, `${i} 根拠`).selectOption(String((i - 1) % 3));
+    await select(page, `${i} 改善案`).selectOption("0");
+    await button(page, `${i} 根拠を照合`).click();
+    await expect(page.locator(".cap-quality").nth(i - 1)).toContainText(
+      "固定資料との照合OK",
+    );
+  }
+});
+for (const corrupt of ["invalid-context", "impossible-achievements"] as const)
+  test(`independent P2-2 ${corrupt}: protect raw storage through operations until explicit scoped reset`, async ({
+    page,
+  }) => {
+    const raw = JSON.stringify(
+      corrupt === "invalid-context"
+        ? { achieved: [2, 3, 4, 5, 6, 7], topic: "corrupt", created: "true" }
+        : {
+            ...freshCapstone(),
+            achieved: [2, 3, 4, 5, 6, 7],
+            history: ["education:2"],
+            copied: ["history:4"],
+          },
+    );
+    await page.addInitScript(
+      ({ key, raw }) => {
+        if (!sessionStorage.getItem("capstone-seeded")) {
+          localStorage.setItem(key, raw);
+          localStorage.setItem(
+            "gemini-toranomaki:research:v1",
+            "other-chapter-original",
+          );
+          sessionStorage.setItem("capstone-seeded", "1");
+        }
+        Object.defineProperty(navigator, "clipboard", {
+          configurable: true,
+          value: { writeText: async () => {} },
+        });
+      },
+      { key: capstoneKey, raw },
+    );
+    await page.goto("#chapter-10");
+    await expect(page.locator(".capstone").getByRole("alert")).toContainText(
+      "元の保存データは保持",
+    );
+    await expect(
+      page.getByText(/現在位置 STEP 0.*現在の模擬確認 0\/8/),
+    ).toBeVisible();
+    await step(page, 3);
+    await button(page, "指示文全文をコピー").click();
+    await expect(
+      page.getByRole("region", { name: "組み立てた指示文" }),
+    ).toContainText("全文をコピーしました");
+    expect(
+      await page.evaluate((key) => localStorage.getItem(key), capstoneKey),
+    ).toBe(raw);
+    await page.reload();
+    await expect(page.locator(".capstone").getByRole("alert")).toContainText(
+      "自動で上書きしません",
+    );
+    await button(page, "第10章の記録だけを初期化").click();
+    await button(page, "初期化をキャンセル").click();
+    expect(
+      await page.evaluate((key) => localStorage.getItem(key), capstoneKey),
+    ).toBe(raw);
+    await button(page, "第10章の記録だけを初期化").click();
+    await button(page, "第10章だけ削除する").click();
+    expect(
+      await page.evaluate((key) => localStorage.getItem(key), capstoneKey),
+    ).toBeNull();
+    await step(page, 1);
+    await select(page, "演習テーマ").selectOption("business");
+    expect((await saved(page)).topic).toBe("business");
+    expect(
+      await page.evaluate(() =>
+        localStorage.getItem("gemini-toranomaki:research:v1"),
+      ),
+    ).toBe("other-chapter-original");
+    await page.reload();
+    await expect(page.locator(".capstone").getByRole("alert")).toHaveCount(0);
+  });
+test("unreadable existing data is not overwritten even if writes would be permitted", async ({
+  page,
+}) => {
+  await page.addInitScript((key) => {
+    const get = Storage.prototype.getItem,
+      set = Storage.prototype.setItem;
+    localStorage.setItem(key, "unreadable-original");
+    (window as unknown as { capWrites: number }).capWrites = 0;
+    Storage.prototype.getItem = function (k) {
+      if (k === key) throw Error("read denied");
+      return get.call(this, k);
+    };
+    Storage.prototype.setItem = function (k, v) {
+      if (k === key) (window as unknown as { capWrites: number }).capWrites++;
+      set.call(this, k, v);
+    };
+  }, capstoneKey);
+  await page.goto("#chapter-10");
+  await step(page, 2);
+  expect(
+    await page.evaluate(
+      () => (window as unknown as { capWrites: number }).capWrites,
+    ),
+  ).toBe(0);
+  await button(page, "第10章の記録だけを初期化").click();
+  await button(page, "第10章だけ削除する").click();
+  await step(page, 3);
+  expect(
+    await page.evaluate(
+      () => (window as unknown as { capWrites: number }).capWrites,
+    ),
+  ).toBe(1);
+});
