@@ -454,3 +454,5 @@ Issue #24は別の安全課題。全依存auditはmoderate8/critical2、prod-onl
 - 既存10章を維持し、独立入口と6実践レシピ、PDF/CSV/比較資料、独立学習記録を追加。
 - 局所型検査・lint・185単体試験・build成功。PDF実レンダリング、CSV独立検算済み。
 - 独立静的レビューP2三件を修正。ブラウザ環境制約のため局所E2E未実施。正式CIと実Geminiの結果を混同しない。詳細は docs/verification/advanced/RESULTS.md。
+
+応用編初回正式CI f4c90c7: E2E933成功9失敗、旧908回帰成功。原decodedログ保全、artifactなし。比較条件の明示ラベルと段階フォーカスの遅延callbackを最小修正。試験条件と期待値は維持し、新HEADの正式再検証待ち。

@@ -1,4 +1,4 @@
-import {useRef,useState,type RefObject} from 'react';
+import {useRef,useState,useLayoutEffect,type RefObject} from 'react';
 import {recipes,recipeIds,promptFor,salesSummary,type RecipeId} from './advanced-data';
 import {advancedKey,loadAdvanced,saveAdvanced,freshEntry,freshRecords,changeOption,type Entry} from './advanced-storage';
 import {useStudyCopy} from './StudyShared';
@@ -7,16 +7,18 @@ const realLabels=['未実施','実施（自己申告）','利用不可','保留'
 export function Advanced({route,heading}:{route:string;heading:RefObject<HTMLHeadingElement|null>}){
  const [initial]=useState(loadAdvanced);const [records,setRecords]=useState(initial.records);
  const [protectedRaw,setProtected]=useState(initial.protected);const [notice,setNotice]=useState('');
+ const [focusEpoch,setFocusEpoch]=useState(0);
  const [reset,setReset]=useState(false);const [hint,setHint]=useState(0);
  const recipe=recipes.find(r=>route===`advanced-${r.id}`);
  const id=recipe?.id;const entry=id?records[id]:freshEntry();
  const copy=useStudyCopy(); const current=useRef(''); const stageHeading=useRef<HTMLHeadingElement>(null);
+ useLayoutEffect(()=>{if(focusEpoch>0)(stageHeading.current??heading.current)?.focus();},[focusEpoch,heading]);
  const text=recipe?promptFor(recipe,entry.option,entry.step>=4):'';current.current=text;
  function update(patch:Partial<Entry>){if(!id)return;const next={...records,[id]:{...entry,...patch}};setRecords(next);setNotice(protectedRaw?'保存値を保護中。画面内のみ更新しました。応用編全体の保存回復初期化まで書き込みません。':saveAdvanced(next)?'応用編の固定状態だけ保存しました。':'保存できません。画面内で続行できます。再読込で旧記録が戻る場合があります。');}
- function step(n:number){if(n===entry.step)return;copy.invalidate();update({step:n,viewed:true});setHint(0);setReset(false);requestAnimationFrame(()=>stageHeading.current?.focus());}
+ function step(n:number){if(n===entry.step)return;setFocusEpoch(v=>v+1);copy.invalidate();update({step:n,viewed:true});setHint(0);setReset(false);}
  function option(n:number){if(!id||n===entry.option)return;copy.invalidate();const next={...records,[id]:changeOption(entry,n)};setRecords(next);setNotice(protectedRaw?'保存値保護中。条件を変更し旧確認を解除しました。':saveAdvanced(next)?'条件を変更し、旧コピーと現在確認を解除しました。':'保存失敗。画面内の旧確認は解除しました。');}
- function resetOne(){if(!id)return;copy.invalidate();const next={...records,[id]:freshEntry()};setRecords(next);setReset(false);setHint(0);setNotice(protectedRaw?'破損した保存値は保持し、画面内だけ初期化しました。':saveAdvanced(next)?'このレシピだけ初期化しました。他章と他レシピは保持しました。':'初期化を保存できません。再読込で旧記録が戻る場合があります。');requestAnimationFrame(()=>stageHeading.current?.focus());}
- function recover(){try{localStorage.removeItem(advancedKey);setProtected(false);setRecords(freshRecords());copy.invalidate();setNotice('応用編全体を初期化して保存を再開しました。他章は変更していません。');}catch{setNotice('削除できません。破損値の保護を続けます。');}}
+ function resetOne(){if(!id)return;setFocusEpoch(v=>v+1);copy.invalidate();const next={...records,[id]:freshEntry()};setRecords(next);setReset(false);setHint(0);setNotice(protectedRaw?'破損した保存値は保持し、画面内だけ初期化しました。':saveAdvanced(next)?'このレシピだけ初期化しました。他章と他レシピは保持しました。':'初期化を保存できません。再読込で旧記録が戻る場合があります。');}
+ function recover(){try{localStorage.removeItem(advancedKey);setProtected(false);setRecords(freshRecords());setFocusEpoch(v=>v+1);copy.invalidate();setNotice('応用編全体を初期化して保存を再開しました。他章は変更していません。');}catch{setNotice('削除できません。破損値の保護を続けます。');}}
  return <section className="advanced">
  <h1 ref={heading} tabIndex={-1}>{recipe?`${id}：${recipe.title}`:'応用編：実践レシピ'}</h1>
  <p className="lead">自分の作業に組み込み、結果を確かめ、依頼を改善する。</p>
@@ -27,7 +29,7 @@ export function Advanced({route,heading}:{route:string;heading:RefObject<HTMLHea
  {!recipe?<div className="cards">{recipes.map(r=><a className="card" key={r.id} href={`#advanced-${r.id}`}><h2>{r.id} {r.title}</h2><p>{r.goal}</p><p>想定{r.minutes}分 / 成果物：{r.output}</p></a>)}</div>:<>
  <dl><dt>目的・想定時間</dt><dd>{recipe.goal} / 約{recipe.minutes}分</dd><dt>必要なもの</dt><dd>{recipe.needs}</dd><dt>利用条件</dt><dd>{recipe.conditions}</dd><dt>成果物</dt><dd>{recipe.output}</dd></dl>
  <p>PC：教材とGeminiを別窓で左右に並べます。スマートフォン：依頼文をコピー→Geminiへ移動→教材へ戻って正本と照合します。教材は外部回答を取得・自動採点しません。</p>
- <label>比較条件<select value={entry.option} onChange={e=>option(Number(e.target.value))}>{recipe.options.map((x,i)=><option key={x} value={i}>{x}</option>)}</select></label>
+ <label>比較条件<select aria-label="比較条件" value={entry.option} onChange={e=>option(Number(e.target.value))}>{recipe.options.map((x,i)=><option key={x} value={i}>{x}</option>)}</select></label>
  <ol className="service-steps" aria-label="実践の7工程">{steps.map((s,i)=><li key={s}><button onClick={()=>step(i)} aria-current={entry.step===i?'step':undefined}>{i+1}. {s}</button></li>)}</ol>
  <h2 ref={stageHeading} tabIndex={-1}>{steps[entry.step]}</h2>
  {entry.step===0&&<><p>まず資料を読み、自分の比較軸と確認箇所を決めましょう。資料の記載と推論は別物です。</p>{recipe.materials.map(m=><article className="panel" key={m.id}><h3>{m.id} {m.title}</h3><p>{m.date} / 目的：{m.purpose}</p><p>{m.body}</p>{m.file&&<a href={`${"/gemini-toranomaki/"}advanced/${m.file}`} target="_blank" rel="noreferrer">{m.title}を開く・保存する（別タブ）</a>}{m.file?.endsWith('.pdf')&&<p><a href={`${"/gemini-toranomaki/"}advanced/${m.file.replace('.pdf','.html')}`} target="_blank" rel="noreferrer">同内容のHTML版</a></p>}</article>)}{id==='C'&&<table><caption>架空売上（円）・CSVと同一</caption><thead><tr><th>ID</th><th>日付</th><th>売上円</th></tr></thead><tbody>{[1200,1800,-300,null,12000,2300].map((v,i)=><tr key={i}><th>T{i+1}</th><td>2026-11-01</td><td>{v===null?'欠損（未確認）':v}</td></tr>)}</tbody></table>}<button onClick={()=>update({viewed:true})}>資料を閲覧したと記録</button></>}

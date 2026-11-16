@@ -22,3 +22,12 @@ P2-01 保存recordsの配列誤受理、P2-02 Eの条件ラベル、P2-03 改善
 
 ## 制限
 実Gemini、Chrome共有、Skills、スケジュールの操作はすべてNOT_TESTED。公式資料の記載と実際のアカウント適格性を区別。外部回答は採点しない。実機Safari、VoiceOver、物理touch、OS文字拡大未実施。正式CI・最終版独立監査・証拠の永続保管と再取得が未完了の間はHOLD。局所の案件専用領域への保存は永続保全完了ではない。
+
+## 正式CI初回と修正候補（履歴保持）
+提出 f4c90c7 の run43781381493/job133019122457 はFAIL。正式942 E2E中933成功9失敗。既存908成功、応用編34中25成功9失敗。A〜Fの全導線12件は成功したが、遅延コピー2件は比較条件のexactラベル解決timeout、7条件でTab/ShiftTabのフォーカス確認が失敗。型/lint/unit/buildは成功。artifact uploadはskipで原artifact0。失敗のtrace/error-contextはuploadされず取得不能。公式API取得のdecoded job logを保存し、局所補助ZIPと区別する。
+
+修正候補：selectの明示aria-labelを追加し、ラベルにoption文言が連結される曖昧さを除く。段階変更後のrequestAnimationFrame focusをReact commit同期のuseLayoutEffectへ変更し、次のキーボード操作の後からフォーカスを奪う遅延callbackを廃止。試験の入力・順序・期待値は変更せず、同じ34件を新HEADで再検証する。正式GREEN確認前は修正候補・HOLD。
+
+修正候補独立レビューでは、step0のまま個別初期化すると同じstepのeffectが走らずフォーカスを失う指摘を受けた。focusEpochによる明示要求をcommit同期で消費し、初期mountでは要求しない方式へ補訂。元34件はそのまま保持し、初期stepでの初期化フォーカス2件（各engine1件）を追加。新規総数は944件予定。rAFと実際のキー入力の時間順は旧ログに記録されておらず、原因仮説と変更理由を分離する。
+
+破損保存回復の消えるボタンについても同じ明示focus要求を追加（区域内は段階見出し、一覧はページ見出し）。既存の保存回復試験に復帰focus assertionを追加して強化した。削除・弱化はない。補訂候補の型/lint/185単体/buildを再確認し、ブラウザ判定は正式CI待ち。

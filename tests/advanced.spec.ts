@@ -49,7 +49,7 @@ test('copy failure offers manual text and never marks external done',async({page
 });
 test('corrupt raw preserved; recovery scoped; storage failure usable',async({page})=>{
  await page.goto('#advanced');await page.evaluate(k=>{localStorage.setItem(k,'{bad');localStorage.setItem('gemini-toranomaki:progress:v1','{"completed":["chapter-1"]}');},key);await page.goto('#advanced-D');await page.reload();await page.getByRole('button',{name:'資料を閲覧したと記録'}).click();expect(await page.evaluate(k=>localStorage.getItem(k),key)).toBe('{bad');
- await page.getByText('保存回復の初期化を確認する',{exact:true}).click();await page.getByRole('button',{name:'応用編全体を初期化して保存回復',exact:true}).click();expect(await page.evaluate(()=>localStorage.getItem('gemini-toranomaki:progress:v1'))).toBe('{"completed":["chapter-1"]}');
+ await page.getByText('保存回復の初期化を確認する',{exact:true}).click();await page.getByRole('button',{name:'応用編全体を初期化して保存回復',exact:true}).click();await expect(page.getByRole('heading',{name:'課題と材料',exact:true})).toBeFocused();expect(await page.evaluate(()=>localStorage.getItem('gemini-toranomaki:progress:v1'))).toBe('{"completed":["chapter-1"]}');
  await page.evaluate(()=>{Storage.prototype.setItem=()=>{throw new DOMException('full','QuotaExceededError');};});await page.getByRole('button',{name:'資料を閲覧したと記録'}).click();await expect(page.getByText(/^保存できません。/)).toBeVisible();await page.getByRole('button',{name:'次へ',exact:true}).click();await expect(page.getByRole('heading',{name:'予想とヒント',exact:true})).toBeVisible();
 });
 for(const width of [320,375,390,1280])for(const dark of [false,true])test(`advanced layout ${width} dark=${dark}`,async({page})=>{
@@ -59,4 +59,8 @@ for(const width of [320,375,390,1280])for(const dark of [false,true])test(`advan
  for(const n of [0,1,2,3,4,5,6]){await page.getByRole('button',{name:`${n+1}. ${['課題と材料','予想とヒント','実践する','結果を確かめる','依頼を改善','前後を比較','振り返り'][n]}`,exact:true}).click();expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);}
  await page.getByRole('button',{name:'6. 前後を比較',exact:true}).click();
  await page.getByRole('button',{name:'前へ',exact:true}).focus();await page.keyboard.press('Tab');await expect(page.getByRole('button',{name:'次へ',exact:true})).toBeFocused();await page.keyboard.press('Shift+Tab');await expect(page.getByRole('button',{name:'前へ',exact:true})).toBeFocused();await page.keyboard.press('Space');await expect(page.getByRole('heading',{name:'依頼を改善',exact:true})).toBeFocused();
+});
+
+test('reset at initial step restores focus without a stage change',async({page})=>{
+ await page.goto('#advanced-A');await page.getByRole('button',{name:'このレシピだけ初期化',exact:true}).click();await page.getByRole('button',{name:'初期化を実行',exact:true}).click();await expect(page.getByRole('heading',{name:'課題と材料',exact:true})).toBeFocused();
 });
