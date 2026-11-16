@@ -456,3 +456,6 @@ Issue #24は別の安全課題。全依存auditはmoderate8/critical2、prod-onl
 - 独立静的レビューP2三件を修正。ブラウザ環境制約のため局所E2E未実施。正式CIと実Geminiの結果を混同しない。詳細は docs/verification/advanced/RESULTS.md。
 
 応用編初回正式CI f4c90c7: E2E933成功9失敗、旧908回帰成功。原decodedログ保全、artifactなし。比較条件の明示ラベルと段階フォーカスの遅延callbackを最小修正。試験条件と期待値は維持し、新HEADの正式再検証待ち。
+
+## 2026-11-16 応用編P2/P3修正候補
+工程移動の閲覧自己申告誤更新を除去し、改善指示はコピー後Gemini側で編集する説明へ訂正。既存保存値の由来は推定せず保持。新E2E4件/engineを追加、既存944を維持。局所185単体・型/lint/build成功、実handler限定RED/GREEN。局所ブラウザは環境BLOCKEDで視覚監査未完。Draft/HOLD、詳細 docs/verification/advanced/p2p3/RESULTS.md。
