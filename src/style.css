@@ -1140,3 +1140,17 @@ fieldset + fieldset {
 @media (max-width: 760px) { .cap-workspace, .cap-comparison { grid-template-columns: minmax(0,1fr); } }
 @media (prefers-reduced-motion: reduce) { .capstone *, .capstone *::before, .capstone *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
 .cap-selection { margin: .2rem 0 0; font-size: .9em; color: var(--muted); overflow-wrap: anywhere; }
+
+/* Advanced recipes keep fixed records separate from external self reports. */
+.advanced { max-width: 100%; overflow-wrap: anywhere; }
+.advanced nav { display:flex; flex-wrap:wrap; gap:1rem; margin-block:1.5rem; }
+.advanced label { display:block; margin-block:1rem; }
+.advanced textarea { display:block; width:100%; max-width:100%; min-height:6rem; font:inherit; }
+.advanced select { display:block; max-width:100%; font:inherit; }
+.advanced-prompt { white-space:pre-wrap; overflow-wrap:anywhere; font:inherit; padding:1rem; border:1px solid currentColor; }
+.advanced dt { font-weight:bold; margin-top:.6rem; }
+.advanced dd { margin-inline-start:0; }
+.advanced table { width:100%; border-collapse:collapse; }
+.advanced th,.advanced td { padding:.5rem; border:1px solid currentColor; text-align:left; }
+.advanced .actions { display:flex; flex-wrap:wrap; gap:.7rem; margin-block:1rem; }
+.advanced input[type=checkbox],.advanced input[type=radio] { margin-inline-end:.6rem; }
