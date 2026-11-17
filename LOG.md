@@ -449,3 +449,13 @@ Issue #24は別の安全課題。全依存auditはmoderate8/critical2、prod-onl
 破損保護の最終補強：mode等の課題外フィールドだけが破損している場合も、STEP0/1を含む保存済みの現在達成を全解除する。過去履歴とraw保持は不変。単体165PASS（追加36）。候補9281516をpushし、追加1ケース/engineで全908 E2Eへ揃えるため、075a2baの途中回帰はSIGTERM中断として原票を保存した。既存の検査を削除・弱化せず、最終候補で一括再検証する。
 
 第10章の最終ローカル回帰：最新src `aad3fde4eabc1c93272be7b132246768bfffe1ce`（9281516）に対し全908 E2Eが7.0分で一括PASS（Chromium454＋WebKit454、既存824＋新84、失敗/skip/expected failureなし）。単体165件、型/lint/build/diff-checkもPASS。依存・lockfile・CI/公開設定は不変。証拠だけを提出コミットへ追加し、最終HEADのremote同一性と終端CIをDraft PR本文へ固定する。
+
+## 2026-11-16 応用編 第1弾（Issue #27）
+- 既存10章を維持し、独立入口と6実践レシピ、PDF/CSV/比較資料、独立学習記録を追加。
+- 局所型検査・lint・185単体試験・build成功。PDF実レンダリング、CSV独立検算済み。
+- 独立静的レビューP2三件を修正。ブラウザ環境制約のため局所E2E未実施。正式CIと実Geminiの結果を混同しない。詳細は docs/verification/advanced/RESULTS.md。
+
+応用編初回正式CI f4c90c7: E2E933成功9失敗、旧908回帰成功。原decodedログ保全、artifactなし。比較条件の明示ラベルと段階フォーカスの遅延callbackを最小修正。試験条件と期待値は維持し、新HEADの正式再検証待ち。
+
+## 2026-11-16 応用編P2/P3修正候補
+工程移動の閲覧自己申告誤更新を除去し、改善指示はコピー後Gemini側で編集する説明へ訂正。既存保存値の由来は推定せず保持。新E2E4件/engineを追加、既存944を維持。局所185単体・型/lint/build成功、実handler限定RED/GREEN。局所ブラウザは環境BLOCKEDで視覚監査未完。Draft/HOLD、詳細 docs/verification/advanced/p2p3/RESULTS.md。

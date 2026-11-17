@@ -6,6 +6,7 @@ import "./style.css";
 import { Lab } from "./Lab";
 import { Exploration } from "./Exploration";
 import { Services } from "./ServicesPractice";
+import { Advanced } from "./Advanced";
 import { Capstone } from "./Capstone";
 import { Skills } from "./Skills";
 import { VideoMusic } from "./VideoMusic";
@@ -106,6 +107,7 @@ function App() {
         </button>
       </header>
       <nav aria-label="メインナビゲーション">
+        <a href="#advanced" aria-current={route.startsWith("advanced") ? "page" : undefined}>応用編・6実践レシピ</a>
         <a href="#home" aria-current={route === "home" ? "page" : undefined}>
           ホーム
         </a>
@@ -174,7 +176,7 @@ function App() {
       </nav>
       <main id="main" ref={main} tabIndex={-1}>
         <div className="eyebrow">非公式インタラクティブ教材 · v0.2</div>
-        {route === "lab" || route.startsWith("lab-") ? (
+        {route === "advanced" || /^advanced-[A-F]$/.test(route) ? (<Advanced key={route} route={route} heading={heading} />) : route === "lab" || route.startsWith("lab-") ? (
           <Lab route={route} heading={heading} />
         ) : route === "home" ? (
           <>
@@ -209,6 +211,7 @@ function App() {
             </section>
             <section className="panel">
               <h2>学習の始め方</h2>
+              <p><a href="#advanced">応用編で、仕事に組み込み・検証・改善する6レシピへ →</a></p>
               <ol>
                 <li>この教材で操作手順を読む</li>
                 <li>別タブのGeminiで実際に操作する</li>
